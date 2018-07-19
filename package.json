@@ -1,0 +1,22 @@
+{
+  "name": "figma-json",
+  "version": "0.1.0",
+  "description": "figma json ast parsing & types",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "figma",
+    "json",
+    "api",
+    "parser",
+    "ast"
+  ],
+  "author": "morglod",
+  "license": "MIT",
+  "dependencies": {
+    "@types/node": "^10.5.2"
+  }
+}
