@@ -376,15 +376,6 @@ export interface Version {
     user: User,
 }
 
-export type NodeType = keyof NodeTypes;
-
-export type Node<NType extends NodeType = NodeType> = {
-    id: string;
-    name: string;
-    visible: boolean;
-    type: NType;
-} & NodeTypes[NType];
-
 /** The root node */
 export interface DOCUMENT {
     /** An array of canvases attached to the document */
@@ -590,3 +581,16 @@ export type NodeTypes = {
     /** An instance of a component, changes to the component result in the same changes applied to the instance */
     INSTANCE: INSTANCE,
 };
+
+export type NodeType = keyof NodeTypes;
+
+export type Node<NType extends NodeType = NodeType> = {
+    id: string;
+    name: string;
+    visible: boolean;
+    type: NType;
+} & NodeTypes[NType];
+
+export function isNodeType<NType extends NodeType, R = Node<NType>>(node: Node<any>, type: NType): node is R {
+    return node.type === type;
+}
