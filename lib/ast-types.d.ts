@@ -336,6 +336,9 @@ export interface FRAME {
 }
 /** A logical grouping of nodes */
 export interface GROUP {
+    /** How this node blends with nodes behind it in the scene (see blend mode section for more details) */
+    blendMode: BlendMode;
+    children: Node[];
 }
 /** A vector network, consisting of vertices and edges */
 export interface VECTOR {
@@ -386,10 +389,10 @@ export interface VECTOR {
     };
 }
 /** A group that has a boolean operation applied to it */
-export interface BOOLEAN {
+export declare type BOOLEAN = VECTOR & {
     /** An array of nodes that are being boolean operated on */
     children: Node[];
-}
+};
 /** A regular star shape */
 export interface STAR {
 }
@@ -403,12 +406,12 @@ export interface ELLIPSE {
 export interface REGULAR_POLYGON {
 }
 /** A rectangle */
-export interface RECTANGLE {
+export declare type RECTANGLE = VECTOR & {
     /** Radius of each corner of the rectangle */
     cornerRadius: number;
-}
+};
 /** A text box */
-export interface TEXT {
+export declare type TEXT = VECTOR & {
     /** Text contained within text box */
     characters: string;
     /** Style of text including font family and weight (see type style section for more information) */
@@ -419,7 +422,7 @@ export interface TEXT {
     styleOverrideTable: {
         [mapId: number]: TypeStyle;
     };
-}
+};
 /** A rectangular region of the canvas that can be exported */
 export interface SLICE {
     /** An array of export settings representing images to export from this node */
@@ -435,10 +438,10 @@ export interface SLICE {
 export interface COMPONENT {
 }
 /** An instance of a component, changes to the component result in the same changes applied to the instance */
-export interface INSTANCE {
+export declare type INSTANCE = VECTOR & {
     /** ID of component that this instance came from, refers to components table (see endpoints section below) */
     componentId: string;
-}
+};
 export declare type NodeTypes = {
     /** The root node */
     DOCUMENT: DOCUMENT;
