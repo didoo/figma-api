@@ -1,7 +1,7 @@
 {
-  "name": "figma-json",
+  "name": "figma-js-api",
   "version": "0.1.0",
-  "description": "figma json ast parsing & types",
+  "description": "Figma js api with all types",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {

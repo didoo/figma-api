@@ -378,12 +378,12 @@ export interface Version {
 
 export type NodeType = keyof NodeTypes;
 
-export interface Node {
+export type Node<NType extends NodeType = NodeType> = {
     id: string;
     name: string;
     visible: boolean;
-    type: NodeType;
-};
+    type: NType;
+} & NodeTypes[NType];
 
 /** The root node */
 export interface DOCUMENT {
