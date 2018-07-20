@@ -57,15 +57,30 @@ export type Color = {
     a: number,
 };
 
+export enum ImageType {
+    JPG='JPG',
+    PNG='PNG',
+    SVG='SVG',
+}
+
 /** Format and size to export an asset at */
 export type ExportSetting = {
     /** File suffix to append to all filenames */
     suffix: string,
     /** Image type, string enum that supports values "JPG", "PNG", and "SVG" */
-    format: 'JPG'|'PNG'|'SVG',
+    format: ImageType,
     /** Constraint that determines sizing of exported asset */
     constraint: Constrain,
 };
+
+export enum ConstrainType {
+    /** Scale by value */
+    SCALE='SCALE',
+    /** Scale proportionally and set width to value */
+    WIDTH='WIDTH',
+    /** Scale proportionally and set width to value */
+    HEIGHT='HEIGHT',
+}
 
 /** Sizing constraint for exports */
 export type Constrain = {
@@ -75,7 +90,7 @@ export type Constrain = {
      * "WIDTH": Scale proportionally and set width to value  
      * "HEIGHT": Scale proportionally and set height to value
      */
-    type: 'SCALE'|'WIDTH'|'HEIGHT',
+    type: ConstrainType,
     /** See type property for effect of this field */
     value: number,
 };
@@ -125,7 +140,39 @@ export type Rectangle = {
  * "COLOR"  
  * "LUMINOSITY"  
  */
-export type BlendMode = string;
+export enum BlendMode {
+    // Normal blends:
+    /** (Only applicable to objects with children) */
+    PASS_THROUGH = "PASS_THROUGH",
+    NORMAL = "NORMAL",  
+    
+    /** Darken */  
+    DARKEN = "DARKEN",  
+    MULTIPLY = "MULTIPLY",  
+    LINEAR_BURN = "LINEAR_BURN",  
+    COLOR_BURN = "COLOR_BURN",  
+    
+    /** Lighten */
+    LIGHTEN = "LIGHTEN",  
+    SCREEN = "SCREEN",  
+    LINEAR_DODGE = "LINEAR_DODGE",  
+    COLOR_DODGE = "COLOR_DODGE",  
+    
+    /** Contrast */
+    OVERLAY = "OVERLAY",  
+    SOFT_LIGHT = "SOFT_LIGHT",  
+    HARD_LIGHT = "HARD_LIGHT",  
+    
+    /** Inversion */
+    DIFFERENCE = "DIFFERENCE",  
+    EXCLUSION = "EXCLUSION",  
+    
+    /** Component */  
+    HUE = "HUE",  
+    SATURATION = "SATURATION",  
+    COLOR = "COLOR",  
+    LUMINOSITY = "LUMINOSITY",  
+}
 
 /**
  * Enum describing animation easing curves  
@@ -134,7 +181,11 @@ export type BlendMode = string;
  * "EASE_OUT": Ease out with an animation curve similar to CSS ease-out.  
  * "EASE_IN_AND_OUT": Ease in and then out with an animation curve similar to CSS ease-in-out.  
  */
-export type EasingType = 'EASE_IN'|'EASE_OUT'|'EASE_IN_AND_OUT';
+export enum EasingType {
+    EASE_IN = 'EASE_IN',
+    EASE_OUT = 'EASE_OUT',
+    EASE_IN_AND_OUT = 'EASE_IN_AND_OUT',
+}
 
 /** Layout constraint relative to containing Frame */
 export type LayoutConstraint = {
