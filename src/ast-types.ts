@@ -1,50 +1,3 @@
-/*
-
-Types parser from https://www.figma.com/developers/docs
-
-var ch = [ ...$0.children ]
-var types = {};
-
-ch.forEach(c => {
-	var typeName = c.querySelector('td > .developer_docs--literal--1pEvW').innerText;
-	var typeDesc = c.querySelector('td > .developer_docs--desc--1p4rP').innerText;
-	var typeFields = [ ...c.querySelectorAll('.developer_docs--tableProps--1_lpS > div') ];
-	
-	var typeFds = {};
-	types[typeName] = {
-		desc: typeDesc,
-		fields: typeFds,
-	};
-
-	typeFields.forEach(field => {
-		try {
-			var fieldName = field.querySelector('.developer_docs--literal--1pEvW').innerText;
-			var fieldType = field.querySelector('.developer_docs--type--3gJ4C').innerText;
-			var fieldDesc = field.children[1].innerText;
-			typeFds[fieldName] = {
-				type: fieldType,
-				desc: fieldDesc,
-			};
-		} catch {}
-	});
-});
-
-Object.entries(types).map(([ typeName, type ]) =>
-`/** ${type.desc} *
-export interface ${typeName} {
-    ${Object.entries(type.fields).map(([ fieldName, field ]) => (
-        `/** ${(field).desc} *\n${fieldName}: ${(field).type};`
-    )).join('\n')}
-}`
-).join('\n');
-
-Object.entries(types).map(([ typeName, type ]) =>
-`/** ${type.desc} *
-${typeName}: ${typeName},`
-).join('\n');
-
-*/
-
 /** An RGBA color */
 export type Color = {
     /** Red channel value, between 0 and 1 */
@@ -293,11 +246,9 @@ type Effect_ = {
 
     /** Radius of the blur effect (applies to shadows as well) */
     radius: number,
-};
+}
 
-export type EffectShadow = Effect_ & {
-    type: EffectType.DROP_SHADOW|EffectType.INNER_SHADOW,
-
+type EffectShadow_ = {
     /** The color of the shadow */
     color: Color,
 
@@ -308,19 +259,18 @@ export type EffectShadow = Effect_ & {
     offset: Vector,
 };
 
-/** A visual effect such as a shadow or blur */
-export type Effect = Effect_ & {
-    /**
-     * Type of effect as a string enum  
-     * "INNER_SHADOW"  
-     * "DROP_SHADOW"  
-     * "LAYER_BLUR"  
-     * "BACKGROUND_BLUR"  
-     */
-    type: EffectType,
-};
+export type EffectShadow = {
+    type: EffectType.DROP_SHADOW|EffectType.INNER_SHADOW,
+} & Effect_ & EffectShadow_;
 
-export enum PainType {
+/** A visual effect such as a shadow or blur */
+export type Effect = { type: EffectType } & Effect_ & Partial<EffectShadow>;
+
+export function isEffectShadow(effect: Effect): effect is EffectShadow {
+    return (effect.type === EffectType.DROP_SHADOW || effect.type === EffectType.INNER_SHADOW)
+}
+
+export enum PaintType {
     SOLID = 'SOLID',
     GRADIENT_LINEAR = 'GRADIENT_LINEAR',
     GRADIENT_RADIAL = 'GRADIENT_RADIAL',
@@ -330,6 +280,13 @@ export enum PainType {
     EMOJI = 'EMOJI',
 }
 
+export enum PaintSolidScaleMode {
+    FILL = 'FILL',
+    FIT = 'FIT',
+    TILE = 'TILE',
+    STRETCH = 'STRETCH',
+}
+
 export type Paint_ = {
 
     /** `default: true` Is the paint enabled? */
@@ -337,22 +294,14 @@ export type Paint_ = {
 
     /** `default: 1` Overall opacity of paint (colors within the paint can also have opacity values which would blend with this) */
     opacity: number,
-}
+};
 
-export enum PainSolidScaleMode {
-    FILL = 'FILL',
-    FIT = 'FIT',
-    TILE = 'TILE',
-    STRETCH = 'STRETCH',
-}
-
-export type PainSolid = Paint_ & {
-    /** Type of paint as a string enum */
-    type: PainType.SOLID,
-
+type PaintSolid_ = {
     /** Solid color of the paint */
     color: Color,
+};
 
+type PaintGradient_ = {
     /**
      * This field contains three vectors, each of which are a position in normalized object space (normalized object space is if the top left corner of the bounding box of the object is (0, 0) and the bottom right is (1,1)). The first position corresponds to the start of the gradient (value 0 for the purposes of calculating gradient stops), the second position is the end of the gradient (value 1), and the third handle position determines the width of the gradient (only relevant for non-linear gradients).
      */
@@ -362,16 +311,44 @@ export type PainSolid = Paint_ & {
      * Positions of key points along the gradient axis with the colors anchored there. Colors along the gradient are interpolated smoothly between neighboring gradient stops.
      */
     gradientStops: ColorStop[],
+};
 
+type PaintImage_ = {
     /** Image scaling mode */
-    scaleMode: PainSolidScaleMode,
-}
+    scaleMode: PaintSolidScaleMode,
+};
+
+export type PaintSolid = {
+    type: PaintType.SOLID,
+} & PaintSolid_ & Paint_;
+
+export type PaintGradient = {
+    type: PaintType.GRADIENT_ANGULAR|PaintType.GRADIENT_DIAMOND|PaintType.GRADIENT_LINEAR|PaintType.GRADIENT_RADIAL,
+} & PaintGradient_ & Paint_;
+
+export type PaintImage = {
+    type: PaintType.IMAGE,
+} & PaintImage_ & Paint_;
 
 /** A solid color, gradient, or image texture that can be applied as fills or strokes */
-export type Paint = Paint_ & {
-    /** Type of paint as a string enum */
-    type: PainType,
-};
+export type Paint =
+    { type: PaintType } &
+    Paint_ &
+    Partial<PaintSolid_> &
+    Partial<PaintGradient_> &
+    Partial<PaintImage_>;
+
+export function isPaintSolid(paint: Paint): paint is PaintSolid {
+    return paint.type === PaintType.SOLID;
+}
+
+export function isPaintGradient(paint: Paint): paint is PaintGradient {
+    return paint.type === PaintType.GRADIENT_ANGULAR || paint.type === PaintType.GRADIENT_DIAMOND || paint.type === PaintType.GRADIENT_LINEAR || paint.type === PaintType.GRADIENT_RADIAL;
+}
+
+export function isPaintImage(paint: Paint): paint is PaintImage {
+    return paint.type === PaintType.IMAGE;
+}
 
 /** A 2d vector */
 export type Vector = {
@@ -709,3 +686,53 @@ export type Node<NType extends NodeType = NodeType> = {
 export function isNodeType<NType extends NodeType, R = Node<NType>>(node: Node<any>, type: NType): node is R {
     return node.type === type;
 }
+
+
+// ---------
+
+/*
+
+Earilier types parser from https://www.figma.com/developers/docs
+
+var ch = [ ...$0.children ]
+var types = {};
+
+ch.forEach(c => {
+	var typeName = c.querySelector('td > .developer_docs--literal--1pEvW').innerText;
+	var typeDesc = c.querySelector('td > .developer_docs--desc--1p4rP').innerText;
+	var typeFields = [ ...c.querySelectorAll('.developer_docs--tableProps--1_lpS > div') ];
+	
+	var typeFds = {};
+	types[typeName] = {
+		desc: typeDesc,
+		fields: typeFds,
+	};
+
+	typeFields.forEach(field => {
+		try {
+			var fieldName = field.querySelector('.developer_docs--literal--1pEvW').innerText;
+			var fieldType = field.querySelector('.developer_docs--type--3gJ4C').innerText;
+			var fieldDesc = field.children[1].innerText;
+			typeFds[fieldName] = {
+				type: fieldType,
+				desc: fieldDesc,
+			};
+		} catch {}
+	});
+});
+
+Object.entries(types).map(([ typeName, type ]) =>
+`/** ${type.desc} *
+export interface ${typeName} {
+    ${Object.entries(type.fields).map(([ fieldName, field ]) => (
+        `/** ${(field).desc} *\n${fieldName}: ${(field).type};`
+    )).join('\n')}
+}`
+).join('\n');
+
+Object.entries(types).map(([ typeName, type ]) =>
+`/** ${type.desc} *
+${typeName}: ${typeName},`
+).join('\n');
+
+*/

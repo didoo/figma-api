@@ -231,3 +231,31 @@ function oAuthToken(
 } ]>
 ```
 Returns `access token` info from oauth code (see `oAuthLink` method).
+
+## File types
+
+[All types with description](src/ast-types.ts)
+
+<details>
+<summary>
+Helpers
+</summary>
+
+```ts
+isEffectShadow(effect: Effect): effect is EffectShadow;
+```
+Check if effect is one of shadow effects.
+
+```ts
+isPaintSolid(paint: Paint): paint is PaintSolid;
+isPaintGradient(paint: Paint): paint is PaintGradient;
+isPaintImage(paint: Paint): paint is PaintImage;
+```
+Check if paint is one of pain types.
+
+```ts
+isNodeType<NodeType>(node: Node): node is type of NodeType;
+```
+Check if node is type of specified node.
+
+</details>
