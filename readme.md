@@ -1,3 +1,5 @@
+[![NPM Version](https://badge.fury.io/js/figmajs.svg?style=flat)](https://www.npmjs.com/package/figmajs)
+
 # figmajs
 
 Full implementation of [Figma API](https://www.figma.com/developers/docs).
