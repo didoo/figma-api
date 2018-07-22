@@ -1,5 +1,5 @@
 {
-  "name": "figmajs",
+  "name": "figma-api",
   "version": "1.0.0",
   "description": "Figma js typed api",
   "main": "lib/index.js",
@@ -28,6 +28,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Morglod/figmajs"
+    "url": "https://github.com/Morglod/figma-api"
   }
 }
