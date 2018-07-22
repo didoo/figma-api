@@ -1,4 +1,4 @@
-[![NPM Version](https://badge.fury.io/js/figmajs.svg?style=flat)](https://www.npmjs.com/package/figmajs)
+[![NPM Version](https://badge.fury.io/js/figma-api.svg?style=flat)](https://www.npmjs.com/package/figma-api)
 
 # figma-api
 
