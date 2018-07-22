@@ -216,8 +216,7 @@ declare type Effect_ = {
     /** Radius of the blur effect (applies to shadows as well) */
     radius: number;
 };
-export declare type EffectShadow = Effect_ & {
-    type: EffectType.DROP_SHADOW | EffectType.INNER_SHADOW;
+declare type EffectShadow_ = {
     /** The color of the shadow */
     color: Color;
     /** Blend mode of the shadow */
@@ -225,18 +224,15 @@ export declare type EffectShadow = Effect_ & {
     /** How far the shadow is projected in the x and y directions */
     offset: Vector;
 };
+export declare type EffectShadow = {
+    type: EffectType.DROP_SHADOW | EffectType.INNER_SHADOW;
+} & Effect_ & EffectShadow_;
 /** A visual effect such as a shadow or blur */
-export declare type Effect = Effect_ & {
-    /**
-     * Type of effect as a string enum
-     * "INNER_SHADOW"
-     * "DROP_SHADOW"
-     * "LAYER_BLUR"
-     * "BACKGROUND_BLUR"
-     */
+export declare type Effect = {
     type: EffectType;
-};
-export declare enum PainType {
+} & Effect_ & Partial<EffectShadow>;
+export declare function isEffectShadow(effect: Effect): effect is EffectShadow;
+export declare enum PaintType {
     SOLID = "SOLID",
     GRADIENT_LINEAR = "GRADIENT_LINEAR",
     GRADIENT_RADIAL = "GRADIENT_RADIAL",
@@ -245,23 +241,23 @@ export declare enum PainType {
     IMAGE = "IMAGE",
     EMOJI = "EMOJI"
 }
+export declare enum PaintSolidScaleMode {
+    FILL = "FILL",
+    FIT = "FIT",
+    TILE = "TILE",
+    STRETCH = "STRETCH"
+}
 export declare type Paint_ = {
     /** `default: true` Is the paint enabled? */
     visible: boolean;
     /** `default: 1` Overall opacity of paint (colors within the paint can also have opacity values which would blend with this) */
     opacity: number;
 };
-export declare enum PainSolidScaleMode {
-    FILL = "FILL",
-    FIT = "FIT",
-    TILE = "TILE",
-    STRETCH = "STRETCH"
-}
-export declare type PainSolid = Paint_ & {
-    /** Type of paint as a string enum */
-    type: PainType.SOLID;
+declare type PaintSolid_ = {
     /** Solid color of the paint */
     color: Color;
+};
+declare type PaintGradient_ = {
     /**
      * This field contains three vectors, each of which are a position in normalized object space (normalized object space is if the top left corner of the bounding box of the object is (0, 0) and the bottom right is (1,1)). The first position corresponds to the start of the gradient (value 0 for the purposes of calculating gradient stops), the second position is the end of the gradient (value 1), and the third handle position determines the width of the gradient (only relevant for non-linear gradients).
      */
@@ -270,14 +266,27 @@ export declare type PainSolid = Paint_ & {
      * Positions of key points along the gradient axis with the colors anchored there. Colors along the gradient are interpolated smoothly between neighboring gradient stops.
      */
     gradientStops: ColorStop[];
+};
+declare type PaintImage_ = {
     /** Image scaling mode */
-    scaleMode: PainSolidScaleMode;
+    scaleMode: PaintSolidScaleMode;
 };
+export declare type PaintSolid = {
+    type: PaintType.SOLID;
+} & PaintSolid_ & Paint_;
+export declare type PaintGradient = {
+    type: PaintType.GRADIENT_ANGULAR | PaintType.GRADIENT_DIAMOND | PaintType.GRADIENT_LINEAR | PaintType.GRADIENT_RADIAL;
+} & PaintGradient_ & Paint_;
+export declare type PaintImage = {
+    type: PaintType.IMAGE;
+} & PaintImage_ & Paint_;
 /** A solid color, gradient, or image texture that can be applied as fills or strokes */
-export declare type Paint = Paint_ & {
-    /** Type of paint as a string enum */
-    type: PainType;
-};
+export declare type Paint = {
+    type: PaintType;
+} & Paint_ & Partial<PaintSolid_> & Partial<PaintGradient_> & Partial<PaintImage_>;
+export declare function isPaintSolid(paint: Paint): paint is PaintSolid;
+export declare function isPaintGradient(paint: Paint): paint is PaintGradient;
+export declare function isPaintImage(paint: Paint): paint is PaintImage;
 /** A 2d vector */
 export declare type Vector = {
     /** X coordinate of the vector */
