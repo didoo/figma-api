@@ -1,6 +1,6 @@
 [![NPM Version](https://badge.fury.io/js/figmajs.svg?style=flat)](https://www.npmjs.com/package/figmajs)
 
-# figmajs
+# figma-api
 
 Full implementation of [Figma API](https://www.figma.com/developers/docs).
 
@@ -14,7 +14,7 @@ Promises & ES6.
 
 ## Install
 
-`npm i figmajs`
+`npm i figma-api`
 
 ## Usage
 
