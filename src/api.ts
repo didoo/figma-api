@@ -77,7 +77,7 @@ export class Api {
         if (this.oAuthToken) headers['Authorization'] =  `Bearer ${this.oAuthToken}`;
     };
 
-    request = <T>(url: string, opts?: { method: string, data: string }) => ResultA<T, ApiError>(async resolve => {
+    request = <T>(url: string, opts?: { method: string, data: string }) => ResultA<T, ApiError>(async (resolve, reject) => {
         const headers = {};
         this.appendHeaders(headers);
         const axiosParams: AxiosRequestConfig = {
@@ -85,8 +85,8 @@ export class Api {
             ...opts,
             headers,
         };
-        const res = await axios(axiosParams);
-        if (res.status !== 200) resolve(new ApiError(res));
+        const [ err, res ] = await ResultA(axios(axiosParams));
+        if (err || !res || res.status !== 200) reject(new ApiError(res!, err instanceof Error ? err.message : ''));
         else resolve(res.data);
     });
 
@@ -181,9 +181,9 @@ export function oAuthToken(
         grant_type,
     });
     const url = `https://www.figma.com/api/oauth/token?${queryParams}`;
-    return ResultA(async resolve => {
-        const a = await axios({ url });
-        if (a.status !== 200) resolve(new ApiError(a));
-        else resolve(a.data);
+    return ResultA(async (resolve, reject) => {
+        const [ err, res ] = await ResultA(axios({ url }));
+        if (err || !res || res.status !== 200) resolve(new ApiError(res!, err instanceof Error ? err.message : ''));
+        else resolve(res.data);
     });
 }
