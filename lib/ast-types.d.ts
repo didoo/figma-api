@@ -9,15 +9,28 @@ export declare type Color = {
     /** Alpha channel value, between 0 and 1 */
     a: number;
 };
+export declare enum ImageType {
+    JPG = "JPG",
+    PNG = "PNG",
+    SVG = "SVG"
+}
 /** Format and size to export an asset at */
 export declare type ExportSetting = {
     /** File suffix to append to all filenames */
     suffix: string;
     /** Image type, string enum that supports values "JPG", "PNG", and "SVG" */
-    format: 'JPG' | 'PNG' | 'SVG';
+    format: ImageType;
     /** Constraint that determines sizing of exported asset */
     constraint: Constrain;
 };
+export declare enum ConstrainType {
+    /** Scale by value */
+    SCALE = "SCALE",
+    /** Scale proportionally and set width to value */
+    WIDTH = "WIDTH",
+    /** Scale proportionally and set width to value */
+    HEIGHT = "HEIGHT"
+}
 /** Sizing constraint for exports */
 export declare type Constrain = {
     /**
@@ -26,7 +39,7 @@ export declare type Constrain = {
      * "WIDTH": Scale proportionally and set width to value
      * "HEIGHT": Scale proportionally and set height to value
      */
-    type: 'SCALE' | 'WIDTH' | 'HEIGHT';
+    type: ConstrainType;
     /** See type property for effect of this field */
     value: number;
 };
@@ -74,7 +87,34 @@ export declare type Rectangle = {
  * "COLOR"
  * "LUMINOSITY"
  */
-export declare type BlendMode = string;
+export declare enum BlendMode {
+    /** (Only applicable to objects with children) */
+    PASS_THROUGH = "PASS_THROUGH",
+    /** (Only applicable to objects with children) */
+    NORMAL = "NORMAL",
+    /** Darken */
+    DARKEN = "DARKEN",
+    MULTIPLY = "MULTIPLY",
+    LINEAR_BURN = "LINEAR_BURN",
+    COLOR_BURN = "COLOR_BURN",
+    /** Lighten */
+    LIGHTEN = "LIGHTEN",
+    SCREEN = "SCREEN",
+    LINEAR_DODGE = "LINEAR_DODGE",
+    COLOR_DODGE = "COLOR_DODGE",
+    /** Contrast */
+    OVERLAY = "OVERLAY",
+    SOFT_LIGHT = "SOFT_LIGHT",
+    HARD_LIGHT = "HARD_LIGHT",
+    /** Inversion */
+    DIFFERENCE = "DIFFERENCE",
+    EXCLUSION = "EXCLUSION",
+    /** Component */
+    HUE = "HUE",
+    SATURATION = "SATURATION",
+    COLOR = "COLOR",
+    LUMINOSITY = "LUMINOSITY"
+}
 /**
  * Enum describing animation easing curves
  * This type is a string enum with the following possible values
@@ -82,7 +122,28 @@ export declare type BlendMode = string;
  * "EASE_OUT": Ease out with an animation curve similar to CSS ease-out.
  * "EASE_IN_AND_OUT": Ease in and then out with an animation curve similar to CSS ease-in-out.
  */
-export declare type EasingType = 'EASE_IN' | 'EASE_OUT' | 'EASE_IN_AND_OUT';
+export declare enum EasingType {
+    /** Ease in with an animation curve similar to CSS ease-in. */
+    EASE_IN = "EASE_IN",
+    /** Ease out with an animation curve similar to CSS ease-out. */
+    EASE_OUT = "EASE_OUT",
+    /** Ease in and then out with an animation curve similar to CSS ease-in-out. */
+    EASE_IN_AND_OUT = "EASE_IN_AND_OUT"
+}
+export declare enum LayoutConstraintVertical {
+    TOP = "TOP",
+    BOTTOM = "BOTTOM",
+    CENTER = "CENTER",
+    TOP_BOTTOM = "TOP_BOTTOM",
+    SCALE = "SCALE"
+}
+export declare enum LayoutConstraintHorizontal {
+    LEFT = "LEFT",
+    RIGHT = "RIGHT",
+    CENTER = "CENTER",
+    LEFT_RIGHT = "LEFT_RIGHT",
+    SCALE = "SCALE"
+}
 /** Layout constraint relative to containing Frame */
 export declare type LayoutConstraint = {
     /**
@@ -93,7 +154,7 @@ export declare type LayoutConstraint = {
      * "TOP_BOTTOM": Both top and bottom of node are constrained relative to containing frame (node stretches with frame)
      * "SCALE": Node scales vertically with containing frame
      */
-    vertical: 'TOP' | 'BOTTOM' | 'CENTER' | 'TOP_BOTTOM' | 'SCALE';
+    vertical: LayoutConstraintVertical;
     /**
      * Horizontal constraint as an enum
      * "LEFT": Node is laid out relative to left of the containing frame
@@ -102,8 +163,18 @@ export declare type LayoutConstraint = {
      * "LEFT_RIGHT": Both left and right of node are constrained relative to containing frame (node stretches with frame)
      * "SCALE": Node scales horizontally with containing frame
      */
-    horizontal: 'LEFT' | 'RIGHT' | 'CENTER' | 'LEFT_RIGHT' | 'SCALE';
+    horizontal: LayoutConstraintHorizontal;
 };
+export declare enum LayoutGridPattern {
+    COLUMNS = "COLUMNS",
+    ROWS = "ROWS",
+    GRID = "GRID"
+}
+export declare enum LayoutGridAligment {
+    MIN = "MIN",
+    MAX = "MAX",
+    CENTER = "CENTER"
+}
 /** Guides to align and place objects within a frame */
 export declare type LayoutGrid = {
     /**
@@ -112,7 +183,7 @@ export declare type LayoutGrid = {
      * "ROWS": Horizontal grid
      * "GRID": Square grid
      */
-    pattern: 'COLUMNS' | 'ROWS' | 'GRID';
+    pattern: LayoutGridPattern;
     /** Width of column grid or height of row grid or square grid spacing */
     sectionSize: number;
     /** Is the grid currently visible? */
@@ -125,7 +196,7 @@ export declare type LayoutGrid = {
      * "MAX": Grid starts at the right or bottom of the frame
      * "CENTER": Grid is center aligned
      */
-    alignment: 'MIN' | 'MAX' | 'CENTER';
+    alignment: LayoutGridAligment;
     /** Spacing in between columns and rows */
     gutterSize: number;
     /** Spacing before the first column or row */
@@ -133,20 +204,20 @@ export declare type LayoutGrid = {
     /** Number of columns or rows */
     count: number;
 };
-/** A visual effect such as a shadow or blur */
-export declare type Effect = {
-    /**
-     * Type of effect as a string enum
-     * "INNER_SHADOW"
-     * "DROP_SHADOW"
-     * "LAYER_BLUR"
-     * "BACKGROUND_BLUR"
-     */
-    type: 'INNER_SHADOW' | 'DROP_SHADOW' | 'LAYER_BLUR' | 'BACKGROUND_BLUR';
+export declare enum EffectType {
+    INNER_SHADOW = "INNER_SHADOW",
+    DROP_SHADOW = "DROP_SHADOW",
+    LAYER_BLUR = "LAYER_BLUR",
+    BACKGROUND_BLUR = "BACKGROUND_BLUR"
+}
+declare type Effect_ = {
     /** Is the effect active? */
     visible: boolean;
     /** Radius of the blur effect (applies to shadows as well) */
     radius: number;
+};
+export declare type EffectShadow = Effect_ & {
+    type: EffectType.DROP_SHADOW | EffectType.INNER_SHADOW;
     /** The color of the shadow */
     color: Color;
     /** Blend mode of the shadow */
@@ -154,14 +225,41 @@ export declare type Effect = {
     /** How far the shadow is projected in the x and y directions */
     offset: Vector;
 };
-/** A solid color, gradient, or image texture that can be applied as fills or strokes */
-export declare type Paint = {
-    /** Type of paint as a string enum */
-    type: 'SOLID' | 'GRADIENT_LINEAR' | 'GRADIENT_RADIAL' | 'GRADIENT_ANGULAR' | 'GRADIENT_DIAMOND' | 'IMAGE' | 'EMOJI';
+/** A visual effect such as a shadow or blur */
+export declare type Effect = Effect_ & {
+    /**
+     * Type of effect as a string enum
+     * "INNER_SHADOW"
+     * "DROP_SHADOW"
+     * "LAYER_BLUR"
+     * "BACKGROUND_BLUR"
+     */
+    type: EffectType;
+};
+export declare enum PainType {
+    SOLID = "SOLID",
+    GRADIENT_LINEAR = "GRADIENT_LINEAR",
+    GRADIENT_RADIAL = "GRADIENT_RADIAL",
+    GRADIENT_ANGULAR = "GRADIENT_ANGULAR",
+    GRADIENT_DIAMOND = "GRADIENT_DIAMOND",
+    IMAGE = "IMAGE",
+    EMOJI = "EMOJI"
+}
+export declare type Paint_ = {
     /** `default: true` Is the paint enabled? */
     visible: boolean;
     /** `default: 1` Overall opacity of paint (colors within the paint can also have opacity values which would blend with this) */
     opacity: number;
+};
+export declare enum PainSolidScaleMode {
+    FILL = "FILL",
+    FIT = "FIT",
+    TILE = "TILE",
+    STRETCH = "STRETCH"
+}
+export declare type PainSolid = Paint_ & {
+    /** Type of paint as a string enum */
+    type: PainType.SOLID;
     /** Solid color of the paint */
     color: Color;
     /**
@@ -173,7 +271,12 @@ export declare type Paint = {
      */
     gradientStops: ColorStop[];
     /** Image scaling mode */
-    scaleMode: 'FILL' | 'FIT' | 'TILE' | 'STRETCH';
+    scaleMode: PainSolidScaleMode;
+};
+/** A solid color, gradient, or image texture that can be applied as fills or strokes */
+export declare type Paint = Paint_ & {
+    /** Type of paint as a string enum */
+    type: PainType;
 };
 /** A 2d vector */
 export declare type Vector = {
@@ -184,12 +287,16 @@ export declare type Vector = {
 };
 /** A 2x3 2D affine transformation matrix */
 export declare type Transform = number[][];
-/** A vector path */
+export declare enum PathWindingRule {
+    EVENODD = "EVENODD",
+    NONZERO = "NONZERO"
+}
+/** A vector svg path */
 export declare type Path = {
     /** A sequence of path commands in SVG notation */
     path: string;
     /** Winding rule for the path, either "EVENODD" or "NONZERO" */
-    windingRule: 'EVENODD' | 'NONZERO';
+    windingRule: PathWindingRule;
 };
 /** A relative offset within a frame */
 export declare type FrameOffset = {
@@ -261,7 +368,7 @@ export interface Comment {
     /** If set, the UTC ISO 8601 time the comment was resolved */
     resolved_at: string;
     /** Only set for top level comments. The number displayed with the comment in the UI */
-    order_id: number;
+    order_id?: number;
 }
 /** A description of a user */
 export interface User {
@@ -335,11 +442,7 @@ export interface FRAME {
     isMask: Boolean;
 }
 /** A logical grouping of nodes */
-export interface GROUP {
-    /** How this node blends with nodes behind it in the scene (see blend mode section for more details) */
-    blendMode: BlendMode;
-    children: Node[];
-}
+export declare type GROUP = FRAME;
 /** A vector network, consisting of vertices and edges */
 export interface VECTOR {
     /** default: [] An array of export settings representing images to export from node */
@@ -347,44 +450,44 @@ export interface VECTOR {
     /** How this node blends with nodes behind it in the scene (see blend mode section for more details) */
     blendMode: BlendMode;
     /** default: false Keep height and width constrained to same ratio */
-    preserveRatio: Boolean;
+    preserveRatio?: Boolean;
     /** Horizontal and vertical layout constraints for node */
     constraints: LayoutConstraint;
     /** default: null Node ID of node to transition to in prototyping */
-    transitionNodeID: string;
+    transitionNodeID?: string | null;
     /** default: null The duration of the prototyping transition on this node (in milliseconds). */
-    transitionDuration: number;
+    transitionDuration?: number | null;
     /** default: null The easing curve used in the prototyping transition on this node. */
-    transitionEasing: EasingType;
+    transitionEasing?: EasingType | null;
     /** default: 1 Opacity of the node */
-    opacity: number;
+    opacity?: number;
     /** Bounding box of the node in absolute space coordinates */
     absoluteBoundingBox: Rectangle;
     /** Width and height of element. This is different from the width and height of the bounding box in that the absolute bounding box represents the element after scaling and rotation. Only present if geometry=paths is passed */
-    size: Vector;
+    size?: Vector;
     /** The top two rows of a matrix that represents the 2D transform of this node relative to its parent. The bottom row of the matrix is implicitly always (0, 0, 1). Use to transform coordinates in geometry. Only present if geometry=paths is passed */
-    relativeTransform: Transform;
+    relativeTransform?: Transform;
     /** default: [] An array of effects attached to this node (see effects section for more details) */
-    effects: Effect[];
+    effects?: Effect[];
     /** default: false Does this node mask sibling nodes in front of it? */
-    isMask: Boolean;
+    isMask?: Boolean;
     /** default: [] An array of fill paints applied to the node */
     fills: Paint[];
     /** Only specified if parameter geometry=paths is used. An array of paths representing the object fill */
-    fillGeometry: Path[];
+    fillGeometry?: Path[];
     /** default: [] An array of stroke paints applied to the node */
     strokes: Paint[];
     /** The weight of strokes on the node */
     strokeWeight: number;
     /** Only specified if parameter geometry=paths is used. An array of paths representing the object stroke */
-    strokeGeometry: Path[];
+    strokeGeometry?: Path[];
     /** Where stroke is drawn relative to the vector outline as a string enum
     "INSIDE": draw stroke inside the shape boundary
     "OUTSIDE": draw stroke outside the shape boundary
     "CENTER": draw stroke centered along the shape boundary */
     strokeAlign: string;
     /** A mapping of a StyleType to style ID (see Style) of styles present on this node. The style ID can be used to look up more information about the style in the top-level styles field. */
-    styles: {
+    styles?: {
         [styleType in StyleType]: string;
     };
 }
@@ -394,17 +497,13 @@ export declare type BOOLEAN = VECTOR & {
     children: Node[];
 };
 /** A regular star shape */
-export interface STAR {
-}
+export declare type STAR = VECTOR;
 /** A straight line */
-export interface LINE {
-}
+export declare type LINE = VECTOR;
 /** An ellipse */
-export interface ELLIPSE {
-}
+export declare type ELLIPSE = VECTOR;
 /** A regular n-sided polygon */
-export interface REGULAR_POLYGON {
-}
+export declare type REGULAR_POLYGON = VECTOR;
 /** A rectangle */
 export declare type RECTANGLE = VECTOR & {
     /** Radius of each corner of the rectangle */
@@ -435,12 +534,11 @@ export interface SLICE {
     relativeTransform: Transform;
 }
 /** A node that can have instances created of it that share the same properties */
-export interface COMPONENT {
-}
+export declare type COMPONENT = FRAME;
 /** An instance of a component, changes to the component result in the same changes applied to the instance */
-export declare type INSTANCE = VECTOR & {
+export declare type INSTANCE<ComponentID = string> = VECTOR & {
     /** ID of component that this instance came from, refers to components table (see endpoints section below) */
-    componentId: string;
+    componentId: ComponentID;
 };
 export declare type NodeTypes = {
     /** The root node */
@@ -482,3 +580,4 @@ export declare type Node<NType extends NodeType = NodeType> = {
     type: NType;
 } & NodeTypes[NType];
 export declare function isNodeType<NType extends NodeType, R = Node<NType>>(node: Node<any>, type: NType): node is R;
+export {};

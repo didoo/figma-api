@@ -144,6 +144,7 @@ export enum BlendMode {
     // Normal blends:
     /** (Only applicable to objects with children) */
     PASS_THROUGH = "PASS_THROUGH",
+    /** (Only applicable to objects with children) */
     NORMAL = "NORMAL",  
     
     /** Darken */  
@@ -182,9 +183,28 @@ export enum BlendMode {
  * "EASE_IN_AND_OUT": Ease in and then out with an animation curve similar to CSS ease-in-out.  
  */
 export enum EasingType {
+    /** Ease in with an animation curve similar to CSS ease-in. */
     EASE_IN = 'EASE_IN',
+    /** Ease out with an animation curve similar to CSS ease-out. */
     EASE_OUT = 'EASE_OUT',
+    /** Ease in and then out with an animation curve similar to CSS ease-in-out. */
     EASE_IN_AND_OUT = 'EASE_IN_AND_OUT',
+}
+
+export enum LayoutConstraintVertical {
+    TOP = 'TOP',
+    BOTTOM = 'BOTTOM',
+    CENTER = 'CENTER',
+    TOP_BOTTOM = 'TOP_BOTTOM',
+    SCALE = 'SCALE',
+}
+
+export enum LayoutConstraintHorizontal {
+    LEFT = 'LEFT',
+    RIGHT = 'RIGHT',
+    CENTER = 'CENTER',
+    LEFT_RIGHT = 'LEFT_RIGHT',
+    SCALE = 'SCALE',
 }
 
 /** Layout constraint relative to containing Frame */
@@ -197,7 +217,7 @@ export type LayoutConstraint = {
      * "TOP_BOTTOM": Both top and bottom of node are constrained relative to containing frame (node stretches with frame)  
      * "SCALE": Node scales vertically with containing frame  
      */
-    vertical: 'TOP'|'BOTTOM'|'CENTER'|'TOP_BOTTOM'|'SCALE',
+    vertical: LayoutConstraintVertical,
     /**
      * Horizontal constraint as an enum  
      * "LEFT": Node is laid out relative to left of the containing frame  
@@ -206,8 +226,20 @@ export type LayoutConstraint = {
      * "LEFT_RIGHT": Both left and right of node are constrained relative to containing frame (node stretches with frame)  
      * "SCALE": Node scales horizontally with containing frame  
      */
-    horizontal: 'LEFT'|'RIGHT'|'CENTER'|'LEFT_RIGHT'|'SCALE',
+    horizontal: LayoutConstraintHorizontal,
 };
+
+export enum LayoutGridPattern {
+    COLUMNS = 'COLUMNS',
+    ROWS = 'ROWS',
+    GRID = 'GRID',
+}
+
+export enum LayoutGridAligment {
+    MIN = 'MIN',
+    MAX = 'MAX',
+    CENTER = 'CENTER',
+}
 
 /** Guides to align and place objects within a frame */
 export type LayoutGrid = {
@@ -217,7 +249,7 @@ export type LayoutGrid = {
      * "ROWS": Horizontal grid  
      * "GRID": Square grid  
      */
-    pattern: 'COLUMNS'|'ROWS'|'GRID',
+    pattern: LayoutGridPattern,
 
     /** Width of column grid or height of row grid or square grid spacing */
     sectionSize: number,
@@ -236,7 +268,7 @@ export type LayoutGrid = {
      * "MAX": Grid starts at the right or bottom of the frame  
      * "CENTER": Grid is center aligned  
      */
-    alignment: 'MIN'|'MAX'|'CENTER',
+    alignment: LayoutGridAligment,
 
     /** Spacing in between columns and rows */
     gutterSize: number,
@@ -248,24 +280,23 @@ export type LayoutGrid = {
     count: number,
 };
 
-/** A visual effect such as a shadow or blur */
-export type Effect = {
-    /**
-     * Type of effect as a string enum  
-     * "INNER_SHADOW"  
-     * "DROP_SHADOW"  
-     * "LAYER_BLUR"  
-     * "BACKGROUND_BLUR"  
-     */
-    type: 'INNER_SHADOW'|'DROP_SHADOW'|'LAYER_BLUR'|'BACKGROUND_BLUR',
+export enum EffectType {
+    INNER_SHADOW = 'INNER_SHADOW',
+    DROP_SHADOW = 'DROP_SHADOW',
+    LAYER_BLUR = 'LAYER_BLUR',
+    BACKGROUND_BLUR = 'BACKGROUND_BLUR',
+}
 
+type Effect_ = {
     /** Is the effect active? */
     visible: boolean,
 
     /** Radius of the blur effect (applies to shadows as well) */
     radius: number,
+};
 
-    // The following properties are for shadows only:
+export type EffectShadow = Effect_ & {
+    type: EffectType.DROP_SHADOW|EffectType.INNER_SHADOW,
 
     /** The color of the shadow */
     color: Color,
@@ -277,18 +308,47 @@ export type Effect = {
     offset: Vector,
 };
 
-/** A solid color, gradient, or image texture that can be applied as fills or strokes */
-export type Paint = {
-    /** Type of paint as a string enum */
-    type: 'SOLID'|'GRADIENT_LINEAR'|'GRADIENT_RADIAL'|'GRADIENT_ANGULAR'|'GRADIENT_DIAMOND'|'IMAGE'|'EMOJI',
+/** A visual effect such as a shadow or blur */
+export type Effect = Effect_ & {
+    /**
+     * Type of effect as a string enum  
+     * "INNER_SHADOW"  
+     * "DROP_SHADOW"  
+     * "LAYER_BLUR"  
+     * "BACKGROUND_BLUR"  
+     */
+    type: EffectType,
+};
+
+export enum PainType {
+    SOLID = 'SOLID',
+    GRADIENT_LINEAR = 'GRADIENT_LINEAR',
+    GRADIENT_RADIAL = 'GRADIENT_RADIAL',
+    GRADIENT_ANGULAR = 'GRADIENT_ANGULAR',
+    GRADIENT_DIAMOND = 'GRADIENT_DIAMOND',
+    IMAGE = 'IMAGE',
+    EMOJI = 'EMOJI',
+}
+
+export type Paint_ = {
 
     /** `default: true` Is the paint enabled? */
     visible: boolean,
 
     /** `default: 1` Overall opacity of paint (colors within the paint can also have opacity values which would blend with this) */
     opacity: number,
+}
 
-    // For solid paints:
+export enum PainSolidScaleMode {
+    FILL = 'FILL',
+    FIT = 'FIT',
+    TILE = 'TILE',
+    STRETCH = 'STRETCH',
+}
+
+export type PainSolid = Paint_ & {
+    /** Type of paint as a string enum */
+    type: PainType.SOLID,
 
     /** Solid color of the paint */
     color: Color,
@@ -304,7 +364,13 @@ export type Paint = {
     gradientStops: ColorStop[],
 
     /** Image scaling mode */
-    scaleMode: 'FILL'|'FIT'|'TILE'|'STRETCH',
+    scaleMode: PainSolidScaleMode,
+}
+
+/** A solid color, gradient, or image texture that can be applied as fills or strokes */
+export type Paint = Paint_ & {
+    /** Type of paint as a string enum */
+    type: PainType,
 };
 
 /** A 2d vector */
@@ -318,12 +384,17 @@ export type Vector = {
 /** A 2x3 2D affine transformation matrix */
 export type Transform = number[][];
 
-/** A vector path */
+export enum PathWindingRule {
+    EVENODD = 'EVENODD',
+    NONZERO = 'NONZERO',
+}
+
+/** A vector svg path */
 export type Path = {
     /** A sequence of path commands in SVG notation */
     path: string,
     /** Winding rule for the path, either "EVENODD" or "NONZERO" */
-    windingRule: 'EVENODD'|'NONZERO',
+    windingRule: PathWindingRule,
 };
 
 /** A relative offset within a frame */
@@ -402,7 +473,7 @@ export interface Comment {
     /** If set, the UTC ISO 8601 time the comment was resolved */
     resolved_at: string,
     /** Only set for top level comments. The number displayed with the comment in the UI */
-    order_id: number,
+    order_id?: number,
 }
 
 /** A description of a user */
@@ -482,11 +553,12 @@ export interface FRAME {
 }
 
 /** A logical grouping of nodes */
-export interface GROUP {
-    /** How this node blends with nodes behind it in the scene (see blend mode section for more details) */
-    blendMode: BlendMode;
-    children: Node[],
-}
+export type GROUP = FRAME;
+//  {
+//     /** How this node blends with nodes behind it in the scene (see blend mode section for more details) */
+//     blendMode: BlendMode;
+//     children: Node[],
+// }
 
 /** A vector network, consisting of vertices and edges */
 export interface VECTOR {
@@ -495,44 +567,44 @@ export interface VECTOR {
     /** How this node blends with nodes behind it in the scene (see blend mode section for more details) */
     blendMode: BlendMode;
     /** default: false Keep height and width constrained to same ratio */
-    preserveRatio: Boolean;
+    preserveRatio?: Boolean;
     /** Horizontal and vertical layout constraints for node */
     constraints: LayoutConstraint;
     /** default: null Node ID of node to transition to in prototyping */
-    transitionNodeID: string;
+    transitionNodeID?: string|null;
     /** default: null The duration of the prototyping transition on this node (in milliseconds). */
-    transitionDuration: number;
+    transitionDuration?: number|null;
     /** default: null The easing curve used in the prototyping transition on this node. */
-    transitionEasing: EasingType;
+    transitionEasing?: EasingType|null;
     /** default: 1 Opacity of the node */
-    opacity: number;
+    opacity?: number;
     /** Bounding box of the node in absolute space coordinates */
     absoluteBoundingBox: Rectangle;
     /** Width and height of element. This is different from the width and height of the bounding box in that the absolute bounding box represents the element after scaling and rotation. Only present if geometry=paths is passed */
-    size: Vector;
+    size?: Vector;
     /** The top two rows of a matrix that represents the 2D transform of this node relative to its parent. The bottom row of the matrix is implicitly always (0, 0, 1). Use to transform coordinates in geometry. Only present if geometry=paths is passed */
-    relativeTransform: Transform;
+    relativeTransform?: Transform;
     /** default: [] An array of effects attached to this node (see effects section for more details) */
-    effects: Effect[];
+    effects?: Effect[];
     /** default: false Does this node mask sibling nodes in front of it? */
-    isMask: Boolean;
+    isMask?: Boolean;
     /** default: [] An array of fill paints applied to the node */
     fills: Paint[];
     /** Only specified if parameter geometry=paths is used. An array of paths representing the object fill */
-    fillGeometry: Path[];
+    fillGeometry?: Path[];
     /** default: [] An array of stroke paints applied to the node */
     strokes: Paint[];
     /** The weight of strokes on the node */
     strokeWeight: number;
     /** Only specified if parameter geometry=paths is used. An array of paths representing the object stroke */
-    strokeGeometry: Path[];
+    strokeGeometry?: Path[];
     /** Where stroke is drawn relative to the vector outline as a string enum
     "INSIDE": draw stroke inside the shape boundary
     "OUTSIDE": draw stroke outside the shape boundary
     "CENTER": draw stroke centered along the shape boundary */
     strokeAlign: string;
     /** A mapping of a StyleType to style ID (see Style) of styles present on this node. The style ID can be used to look up more information about the style in the top-level styles field. */
-    styles: { [styleType in StyleType]: string };
+    styles?: { [styleType in StyleType]: string };
 }
 
 /** A group that has a boolean operation applied to it */
@@ -542,24 +614,16 @@ export type BOOLEAN = VECTOR & {
 }
 
 /** A regular star shape */
-export interface STAR {
-    
-}
+export type STAR = VECTOR;
 
 /** A straight line */
-export interface LINE {
-    
-}
+export type LINE = VECTOR;
 
 /** An ellipse */
-export interface ELLIPSE {
-    
-}
+export type ELLIPSE = VECTOR;
 
 /** A regular n-sided polygon */
-export interface REGULAR_POLYGON {
-    
-}
+export type REGULAR_POLYGON = VECTOR;
 
 /** A rectangle */
 export type RECTANGLE = VECTOR & {
@@ -592,14 +656,12 @@ export interface SLICE {
 }
 
 /** A node that can have instances created of it that share the same properties */
-export interface COMPONENT {
-    
-}
+export type COMPONENT = FRAME;
 
 /** An instance of a component, changes to the component result in the same changes applied to the instance */
-export type INSTANCE = VECTOR & {
+export type INSTANCE<ComponentID = string> = VECTOR & {
     /** ID of component that this instance came from, refers to components table (see endpoints section below) */
-    componentId: string;
+    componentId: ComponentID;
 }
 
 export type NodeTypes = {

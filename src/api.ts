@@ -1,6 +1,6 @@
-import { request } from './http';
 import { API_DOMAIN, API_VER } from './config';
 import { Node, Style, Component, Version, Comment, Vector, FrameOffset } from './ast-types';
+import axios, { AxiosRequestConfig } from 'axios';
 
 export type GetFileResult = {
     document: Node<'DOCUMENT'>,
@@ -62,15 +62,20 @@ export class Api {
         }
     }
 
-    appendHeaders(headers: Headers) {
-        if (this.personalAccessToken) headers.append('X-Figma-Token', this.personalAccessToken);
-        if (this.oAuthToken) headers.append('Authorization', `Bearer ${this.oAuthToken}`);
+    appendHeaders(headers: { [x: string]: string }) {
+        if (this.personalAccessToken) headers['X-Figma-Token'] = this.personalAccessToken;
+        if (this.oAuthToken) headers['Authorization'] =  `Bearer ${this.oAuthToken}`;
     }
 
-    request(url: string, opts?: { method: string, body: string }) {
-        const headers = new Headers;
+    request(url: string, opts?: { method: string, data: string }) {
+        const headers = {};
         this.appendHeaders(headers);
-        return request(url, { ...opts, headers });
+        const axiosParams: AxiosRequestConfig = {
+            url,
+            ...opts,
+            headers,
+        };
+        return axios(axiosParams);
     }
 
     async getFile(key: string, opts?: {
@@ -81,7 +86,7 @@ export class Api {
     }) {
         const queryParams = toQueryParams(opts);
         const resp = await this.request(`${API_DOMAIN}/${API_VER}/files/${key}?${queryParams}`);
-        return await resp.json() as GetFileResult;
+        return resp.data as GetFileResult;
     }
     
     async getImage(key: string, opts: {
@@ -100,17 +105,17 @@ export class Api {
     }) {
         const queryParams = toQueryParams(opts);
         const resp = await this.request(`${API_DOMAIN}/${API_VER}/images/${key}?${queryParams}`);
-        return await resp.json() as GetImageResult;
+        return resp.data as GetImageResult;
     }
     
     async getVersions(key: string) {
         const resp = await this.request(`${API_DOMAIN}/${API_VER}/files/${key}/versions`);
-        return await resp.json() as GetVersionsResult;
+        return resp.data as GetVersionsResult;
     }
     
     async getComments(key: string) {
         const resp = await this.request(`${API_DOMAIN}/${API_VER}/files/${key}/comments`);
-        return await resp.json() as GetCommentsResult;
+        return resp.data as GetCommentsResult;
     }
     
     async postComment(key: string, message: string, client_meta: Vector|FrameOffset) {
@@ -120,19 +125,19 @@ export class Api {
         };
         const resp = await this.request(`${API_DOMAIN}/${API_VER}/files/${key}/comments`, {
             method: 'POST',
-            body: JSON.stringify(body),
+            data: JSON.stringify(body),
         });
-        return await resp.json() as PostCommentResult;
+        return resp.data as PostCommentResult;
     }
     
     async getTeamProjects(team_id: string) {
         const resp = await this.request(`${API_DOMAIN}/${API_VER}/teams/${team_id}/projects`);
-        return await resp.json() as GetTeamProjectsResult;
+        return resp.data as GetTeamProjectsResult;
     }
     
     async getProjectFiles(project_id: string) {
         const resp = await this.request(`${API_DOMAIN}/${API_VER}/projects/${project_id}/files`);
-        return await resp.json() as GetProjectFilesResult;
+        return resp.data as GetProjectFilesResult;
     }
 }
 
@@ -167,8 +172,9 @@ export async function oAuthToken(
         code,
         grant_type,
     });
-    const resp = await request(`https://www.figma.com/api/oauth/token?${queryParams}`);
-    return await resp.json() as {
+    const url = `https://www.figma.com/api/oauth/token?${queryParams}`;
+    const resp = await axios({ url });
+    return resp.data as {
         access_token: string,
         expires_in: number,
     };

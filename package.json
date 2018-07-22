@@ -1,22 +1,28 @@
 {
-  "name": "figma-js-api",
+  "name": "figmajs",
   "version": "0.1.0",
-  "description": "Figma js api with all types",
+  "description": "Figma js typed api",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc"
   },
   "keywords": [
     "figma",
     "json",
     "api",
     "parser",
-    "ast"
+    "ast",
+    "typed"
   ],
   "author": "morglod",
   "license": "MIT",
   "dependencies": {
-    "@types/node": "^10.5.2"
+    "@types/axios": "^0.14.0",
+    "@types/node": "^10.5.2",
+    "axios": "^0.18.0"
+  },
+  "devDependencies": {
+    "typescript": "^2.9.2"
   }
 }

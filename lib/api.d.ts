@@ -46,11 +46,13 @@ export declare class Api {
     } | {
         oAuthToken: string;
     });
-    appendHeaders(headers: Headers): void;
+    appendHeaders(headers: {
+        [x: string]: string;
+    }): void;
     request(url: string, opts?: {
         method: string;
-        body: string;
-    }): Promise<Response>;
+        data: string;
+    }): import("../../../../Libs/projects/figma-js-api/node_modules/axios").AxiosPromise<any>;
     getFile(key: string, opts?: {
         /** A specific version ID to get. Omitting this will get the current version of the file */
         version?: string;
