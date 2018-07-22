@@ -1,11 +1,13 @@
 {
   "name": "figma-api",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Figma js typed api",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc & npm run-script browserify & npm run-script uglify",
+    "browserify": "browserify lib/index.js --standalone Figma -o lib/figma-api.js",
+    "uglify": "browserify -g [ uglifyify ] lib/index.js --standalone Figma -o lib/figma-api.min.js"
   },
   "keywords": [
     "figma",
@@ -24,7 +26,9 @@
     "go-result-js": "^1.0.1"
   },
   "devDependencies": {
-    "typescript": "^2.9.2"
+    "browserify": "^16.2.2",
+    "typescript": "^2.9.2",
+    "uglifyify": "^5.0.1"
   },
   "repository": {
     "type": "git",

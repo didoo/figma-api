@@ -16,6 +16,13 @@ Promises & ES6.
 
 `npm i figma-api`
 
+or browser version:
+
+`https://raw.githubusercontent.com/Morglod/figma-api/master/lib/figma-api.js`  
+`https://raw.githubusercontent.com/Morglod/figma-api/master/lib/figma-api.min.js`
+
+All api in browser exported to global `Figma` object.
+
 ## Usage
 
 ```ts
@@ -26,11 +33,23 @@ export async function main() {
         personalAccessToken: 'my token',
     });
 
-    const [ err, file ] = await api.getFile('figma file key');
+    const [ err, file ] = await api.getFile('my file key');
     if (file) {
         // ... access file data ...
     }
 }
+```
+
+or in browser:
+
+```js
+const api = new Figma.Api({ personalAccessToken: 'my token' });
+
+api.getFile('my file key').then(([ err, file ]) => {
+    if (file) {
+        // access file data
+    }
+});
 ```
 
 ## Api
@@ -261,3 +280,13 @@ isNodeType<NodeType>(node: Node): node is type of NodeType;
 Check if node is type of specified node.
 
 </details>
+
+## Development
+
+```
+git clone https://github.com/Morglod/figma-api.git
+cd figma-api
+git checkout dev
+npm i
+npm run build
+```
