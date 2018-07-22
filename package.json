@@ -19,7 +19,6 @@
   "author": "morglod",
   "license": "MIT",
   "dependencies": {
-    "@types/axios": "^0.14.0",
     "@types/node": "^10.5.2",
     "axios": "^0.18.0",
     "go-result-js": "^1.0.1"
