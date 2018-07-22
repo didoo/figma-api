@@ -506,23 +506,23 @@ export interface FRAME {
     /** Horizontal and vertical layout constraints for node */
     constraints: LayoutConstraint;
     /** default: null Node ID of node to transition to in prototyping */
-    transitionNodeID: string;
+    transitionNodeID?: string;
     /** default: null The duration of the prototyping transition on this node (in milliseconds). */
-    transitionDuration: number;
+    transitionDuration?: number;
     /** default: null The easing curve used in the prototyping transition on this node. */
-    transitionEasing: EasingType;
+    transitionEasing?: EasingType;
     /** default: 1 Opacity of the node */
     opacity: number;
     /** Bounding box of the node in absolute space coordinates */
     absoluteBoundingBox: Rectangle;
     /** Width and height of element. This is different from the width and height of the bounding box in that the absolute bounding box represents the element after scaling and rotation. Only present if geometry=paths is passed */
-    size: Vector;
+    size?: Vector;
     /** The top two rows of a matrix that represents the 2D transform of this node relative to its parent. The bottom row of the matrix is implicitly always (0, 0, 1). Use to transform coordinates in geometry. Only present if geometry=paths is passed */
-    relativeTransform: Transform;
+    relativeTransform?: Transform;
     /** Does this node clip content outside of its bounds? */
     clipsContent: Boolean;
     /** default: [] An array of layout grids attached to this node (see layout grids section for more details). GROUP nodes do not have this attribute */
-    layoutGrids: LayoutGrid[];
+    layoutGrids?: LayoutGrid[];
     /** default: [] An array of effects attached to this node (see effects section for more details) */
     effects: Effect[];
     /** default: false Does this node mask sibling nodes in front of it? */
@@ -627,9 +627,9 @@ export interface SLICE {
     /** Bounding box of the node in absolute space coordinates */
     absoluteBoundingBox: Rectangle;
     /** Width and height of element. This is different from the width and height of the bounding box in that the absolute bounding box represents the element after scaling and rotation. Only present if geometry=paths is passed */
-    size: Vector;
+    size?: Vector;
     /** The top two rows of a matrix that represents the 2D transform of this node relative to its parent. The bottom row of the matrix is implicitly always (0, 0, 1). Use to transform coordinates in geometry. Only present if geometry=paths is passed */
-    relativeTransform: Transform;
+    relativeTransform?: Transform;
 }
 
 /** A node that can have instances created of it that share the same properties */
