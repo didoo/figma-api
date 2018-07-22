@@ -1,6 +1,7 @@
 import { API_DOMAIN, API_VER } from './config';
 import { Node, Style, Component, Version, Comment, Vector, FrameOffset } from './ast-types';
-import axios, { AxiosRequestConfig } from 'axios';
+import axios, { AxiosRequestConfig, AxiosPromise, AxiosResponse } from 'axios';
+import { ResultA, ResultOk, ResultErr, Result } from 'go-result-js';
 
 export type GetFileResult = {
     document: Node<'DOCUMENT'>,
@@ -45,6 +46,15 @@ export function toQueryParams(x: any): string {
     )).join('&')
 }
 
+export class ApiError extends Error {
+    constructor(
+        public response: AxiosResponse,
+        message?: string,
+    ) {
+        super(message);
+    }
+}
+
 export class Api {
     personalAccessToken?: string;
     oAuthToken?: string;
@@ -62,12 +72,12 @@ export class Api {
         }
     }
 
-    appendHeaders(headers: { [x: string]: string }) {
+    appendHeaders = (headers: { [x: string]: string }) => {
         if (this.personalAccessToken) headers['X-Figma-Token'] = this.personalAccessToken;
         if (this.oAuthToken) headers['Authorization'] =  `Bearer ${this.oAuthToken}`;
-    }
+    };
 
-    request(url: string, opts?: { method: string, data: string }) {
+    request = <T>(url: string, opts?: { method: string, data: string }) => ResultA<T, ApiError>(async resolve => {
         const headers = {};
         this.appendHeaders(headers);
         const axiosParams: AxiosRequestConfig = {
@@ -75,21 +85,22 @@ export class Api {
             ...opts,
             headers,
         };
-        return axios(axiosParams);
-    }
+        const res = await axios(axiosParams);
+        if (res.status !== 200) resolve(new ApiError(res));
+        else resolve(res.data);
+    });
 
-    async getFile(key: string, opts?: {
+    getFile = (key: string, opts?: {
         /** A specific version ID to get. Omitting this will get the current version of the file */
         version?: string,
         /** Set to "paths" to export vector data */
         geometry?: string,
-    }) {
+    }): ResultA<GetFileResult, ApiError> => {
         const queryParams = toQueryParams(opts);
-        const resp = await this.request(`${API_DOMAIN}/${API_VER}/files/${key}?${queryParams}`);
-        return resp.data as GetFileResult;
-    }
+        return this.request<GetFileResult>(`${API_DOMAIN}/${API_VER}/files/${key}?${queryParams}`);
+    };
     
-    async getImage(key: string, opts: {
+    getImage = (key: string, opts: {
         /** A comma separated list of node IDs to render */
         ids: string,
         /** A number between 0.01 and 4, the image scaling factor */
@@ -102,46 +113,40 @@ export class Api {
         svg_simplify_stroke?: boolean,
         /** A specific version ID to get. Omitting this will get the current version of the file */
         version?: string,
-    }) {
+    }): ResultA<GetImageResult, ApiError> =>  {
         const queryParams = toQueryParams(opts);
-        const resp = await this.request(`${API_DOMAIN}/${API_VER}/images/${key}?${queryParams}`);
-        return resp.data as GetImageResult;
+        return this.request<GetImageResult>(`${API_DOMAIN}/${API_VER}/images/${key}?${queryParams}`);
     }
     
-    async getVersions(key: string) {
-        const resp = await this.request(`${API_DOMAIN}/${API_VER}/files/${key}/versions`);
-        return resp.data as GetVersionsResult;
+    getVersions = (key: string): ResultA<GetVersionsResult, ApiError> => {
+        return this.request(`${API_DOMAIN}/${API_VER}/files/${key}/versions`);
     }
     
-    async getComments(key: string) {
-        const resp = await this.request(`${API_DOMAIN}/${API_VER}/files/${key}/comments`);
-        return resp.data as GetCommentsResult;
+    getComments = (key: string): ResultA<GetImageResult, ApiError> => {
+        return this.request(`${API_DOMAIN}/${API_VER}/files/${key}/comments`);
     }
     
-    async postComment(key: string, message: string, client_meta: Vector|FrameOffset) {
+    postComment = (key: string, message: string, client_meta: Vector|FrameOffset): ResultA<PostCommentResult, ApiError> => {
         const body = {
             message,
             client_meta,
         };
-        const resp = await this.request(`${API_DOMAIN}/${API_VER}/files/${key}/comments`, {
+        return this.request(`${API_DOMAIN}/${API_VER}/files/${key}/comments`, {
             method: 'POST',
             data: JSON.stringify(body),
         });
-        return resp.data as PostCommentResult;
     }
     
-    async getTeamProjects(team_id: string) {
-        const resp = await this.request(`${API_DOMAIN}/${API_VER}/teams/${team_id}/projects`);
-        return resp.data as GetTeamProjectsResult;
+    getTeamProjects = (team_id: string): ResultA<GetTeamProjectsResult, ApiError> => {
+        return this.request(`${API_DOMAIN}/${API_VER}/teams/${team_id}/projects`);
     }
     
-    async getProjectFiles(project_id: string) {
-        const resp = await this.request(`${API_DOMAIN}/${API_VER}/projects/${project_id}/files`);
-        return resp.data as GetProjectFilesResult;
+    getProjectFiles = (project_id: string): ResultA<GetProjectFilesResult, ApiError> => {
+        return this.request(`${API_DOMAIN}/${API_VER}/projects/${project_id}/files`);
     }
 }
 
-export async function oAuthLink(
+export function oAuthLink(
     client_id: string,
     redirect_uri: string,
     scope: 'file_read',
@@ -158,13 +163,16 @@ export async function oAuthLink(
     return `https://www.figma.com/oauth?${queryParams}`;
 }
 
-export async function oAuthToken(
+export function oAuthToken(
     client_id: string,
     client_secret: string,
     redirect_uri: string,
     code: string,
     grant_type: 'authorization_code',
-) {
+): ResultA<{
+    access_token: string,
+    expires_in: number,
+}, ApiError> {
     const queryParams = toQueryParams({
         client_id,
         client_secret,
@@ -173,9 +181,9 @@ export async function oAuthToken(
         grant_type,
     });
     const url = `https://www.figma.com/api/oauth/token?${queryParams}`;
-    const resp = await axios({ url });
-    return resp.data as {
-        access_token: string,
-        expires_in: number,
-    };
+    return ResultA(async resolve => {
+        const a = await axios({ url });
+        if (a.status !== 200) resolve(new ApiError(a));
+        else resolve(a.data);
+    });
 }

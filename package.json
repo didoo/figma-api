@@ -1,6 +1,6 @@
 {
   "name": "figmajs",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Figma js typed api",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -9,6 +9,7 @@
   },
   "keywords": [
     "figma",
+    "figmajs",
     "json",
     "api",
     "parser",
@@ -20,7 +21,8 @@
   "dependencies": {
     "@types/axios": "^0.14.0",
     "@types/node": "^10.5.2",
-    "axios": "^0.18.0"
+    "axios": "^0.18.0",
+    "go-result-js": "^1.0.1"
   },
   "devDependencies": {
     "typescript": "^2.9.2"

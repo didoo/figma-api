@@ -1,4 +1,6 @@
 import { Node, Style, Component, Version, Comment, Vector, FrameOffset } from './ast-types';
+import { AxiosResponse } from 'axios';
+import { ResultA, ResultErr } from 'go-result-js';
 export declare type GetFileResult = {
     document: Node<'DOCUMENT'>;
     components: {
@@ -38,6 +40,10 @@ export declare type GetProjectFilesResult = {
     }[];
 };
 export declare function toQueryParams(x: any): string;
+export declare class ApiError extends Error {
+    response: AxiosResponse;
+    constructor(response: AxiosResponse, message?: string);
+}
 export declare class Api {
     personalAccessToken?: string;
     oAuthToken?: string;
@@ -46,41 +52,41 @@ export declare class Api {
     } | {
         oAuthToken: string;
     });
-    appendHeaders(headers: {
+    appendHeaders: (headers: {
         [x: string]: string;
-    }): void;
-    request(url: string, opts?: {
+    }) => void;
+    request: <T>(url: string, opts?: {
         method: string;
         data: string;
-    }): import("../../../../Libs/projects/figma-js-api/node_modules/axios").AxiosPromise<any>;
-    getFile(key: string, opts?: {
+    } | undefined) => Promise<[ResultErr<ApiError>, T | undefined]>;
+    getFile: (key: string, opts?: {
         /** A specific version ID to get. Omitting this will get the current version of the file */
-        version?: string;
+        version?: string | undefined;
         /** Set to "paths" to export vector data */
-        geometry?: string;
-    }): Promise<GetFileResult>;
-    getImage(key: string, opts: {
+        geometry?: string | undefined;
+    } | undefined) => Promise<[ResultErr<ApiError>, GetFileResult | undefined]>;
+    getImage: (key: string, opts: {
         /** A comma separated list of node IDs to render */
         ids: string;
         /** A number between 0.01 and 4, the image scaling factor */
         scale: number;
         /** A string enum for the image output format */
-        format: 'jpg' | 'png' | 'svg';
+        format: "svg" | "jpg" | "png";
         /** Whether to include id attributes for all SVG elements. `Default: false` */
-        svg_include_id?: boolean;
+        svg_include_id?: boolean | undefined;
         /** Whether to simplify inside/outside strokes and use stroke attribute if possible instead of <mask>. `Default: true` */
-        svg_simplify_stroke?: boolean;
+        svg_simplify_stroke?: boolean | undefined;
         /** A specific version ID to get. Omitting this will get the current version of the file */
-        version?: string;
-    }): Promise<GetImageResult>;
-    getVersions(key: string): Promise<GetVersionsResult>;
-    getComments(key: string): Promise<GetCommentsResult>;
-    postComment(key: string, message: string, client_meta: Vector | FrameOffset): Promise<Comment>;
-    getTeamProjects(team_id: string): Promise<GetTeamProjectsResult>;
-    getProjectFiles(project_id: string): Promise<GetProjectFilesResult>;
+        version?: string | undefined;
+    }) => Promise<[ResultErr<ApiError>, GetImageResult | undefined]>;
+    getVersions: (key: string) => Promise<[ResultErr<ApiError>, GetVersionsResult | undefined]>;
+    getComments: (key: string) => Promise<[ResultErr<ApiError>, GetImageResult | undefined]>;
+    postComment: (key: string, message: string, client_meta: Vector | FrameOffset) => Promise<[ResultErr<ApiError>, Comment | undefined]>;
+    getTeamProjects: (team_id: string) => Promise<[ResultErr<ApiError>, GetTeamProjectsResult | undefined]>;
+    getProjectFiles: (project_id: string) => Promise<[ResultErr<ApiError>, GetProjectFilesResult | undefined]>;
 }
-export declare function oAuthLink(client_id: string, redirect_uri: string, scope: 'file_read', state: string, response_type: 'code'): Promise<string>;
-export declare function oAuthToken(client_id: string, client_secret: string, redirect_uri: string, code: string, grant_type: 'authorization_code'): Promise<{
+export declare function oAuthLink(client_id: string, redirect_uri: string, scope: 'file_read', state: string, response_type: 'code'): string;
+export declare function oAuthToken(client_id: string, client_secret: string, redirect_uri: string, code: string, grant_type: 'authorization_code'): ResultA<{
     access_token: string;
     expires_in: number;
-}>;
+}, ApiError>;
