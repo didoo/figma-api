@@ -562,6 +562,7 @@ export declare type NodeTypes = {
     VECTOR: VECTOR;
     /** A group that has a boolean operation applied to it */
     BOOLEAN: BOOLEAN;
+    BOOLEAN_OPERATION: BOOLEAN;
     /** A regular star shape */
     STAR: STAR;
     /** A straight line */
