@@ -212,6 +212,77 @@ Returns:
 
 <details>
 <summary>
+Api.watchVersion
+</summary>
+
+Observe version changes.
+
+```ts
+Api.watchVersion = (
+    key: string,
+    onNewVersion: (newVersion: Version) => void|Promise<void>,
+    opts: {
+        /** in milliseconds */
+        timeout: number,
+        onError?: (error: ResultErr<ApiError>|undefined, dispose: Disposer) => void,
+        immediate?: boolean,
+    } = {
+        timeout: 6000,
+    },
+) => Disposer;
+```
+
+Example:
+
+```ts
+function onNewVersion(newVersion) {
+    console.log(`${newVersion.user.handle} just released new version!`);
+}
+
+api.watchVersion('my file key', onNewVersion, { timeout: 10000 });
+```
+
+</details>
+
+<details>
+<summary>
+Api.watchComments
+</summary>
+
+Observe new comments.
+
+```ts
+Api.watchComments = (
+    key: string,
+    onNewComments: (newComments: Comment[]) => void|Promise<void>,
+    opts: {
+        /** in milliseconds */
+        timeout: number,
+        onError?: (error: ResultErr<ApiError>|undefined, dispose: Disposer) => void,
+        immediate?: boolean,
+    } = {
+        timeout: 5000,
+    },
+) => Disposer;
+```
+
+Example:
+
+```ts
+function onNewComments(comments) {
+    console.log(`${comments.length} new comments!`);
+    for (const comment of comments) {
+        console.log(`${comment.user.handler}: ${comment.message}`);
+    }
+}
+
+api.watchComments('my file key', onNewComments, { timeout: 10000 });
+```
+
+</details>
+
+<details>
+<summary>
 Helpers
 </summary>
 

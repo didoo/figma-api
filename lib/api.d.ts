@@ -40,6 +40,7 @@ export declare type GetProjectFilesResult = {
     }[];
 };
 export declare function toQueryParams(x: any): string;
+export declare type Disposer = () => void;
 export declare class ApiError extends Error {
     response: AxiosResponse;
     constructor(response: AxiosResponse, message?: string);
@@ -80,10 +81,22 @@ export declare class Api {
         version?: string | undefined;
     }) => Promise<[ResultErr<ApiError>, GetImageResult | undefined]>;
     getVersions: (key: string) => Promise<[ResultErr<ApiError>, GetVersionsResult | undefined]>;
-    getComments: (key: string) => Promise<[ResultErr<ApiError>, GetImageResult | undefined]>;
+    getComments: (key: string) => Promise<[ResultErr<ApiError>, GetCommentsResult | undefined]>;
     postComment: (key: string, message: string, client_meta: Vector | FrameOffset) => Promise<[ResultErr<ApiError>, Comment | undefined]>;
     getTeamProjects: (team_id: string) => Promise<[ResultErr<ApiError>, GetTeamProjectsResult | undefined]>;
     getProjectFiles: (project_id: string) => Promise<[ResultErr<ApiError>, GetProjectFilesResult | undefined]>;
+    watchVersion: (key: string, onNewVersion: (newVersion: Version) => void | Promise<void>, opts?: {
+        /** in milliseconds */
+        timeout: number;
+        onError?: ((error: ResultErr<ApiError>, dispose: Disposer) => void) | undefined;
+        immediate?: boolean | undefined;
+    }) => Disposer;
+    watchComments: (key: string, onNewComments: (newComments: Comment[]) => void | Promise<void>, opts?: {
+        /** in milliseconds */
+        timeout: number;
+        onError?: ((error: ResultErr<ApiError>, dispose: Disposer) => void) | undefined;
+        immediate?: boolean | undefined;
+    }) => Disposer;
 }
 export declare function oAuthLink(client_id: string, redirect_uri: string, scope: 'file_read', state: string, response_type: 'code'): string;
 export declare function oAuthToken(client_id: string, client_secret: string, redirect_uri: string, code: string, grant_type: 'authorization_code'): ResultA<{

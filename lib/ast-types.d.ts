@@ -378,6 +378,8 @@ export interface Comment {
     resolved_at: string;
     /** Only set for top level comments. The number displayed with the comment in the UI */
     order_id?: number;
+    /** Comment message */
+    message: string;
 }
 /** A description of a user */
 export interface User {

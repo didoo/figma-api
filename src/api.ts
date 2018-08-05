@@ -46,6 +46,8 @@ export function toQueryParams(x: any): string {
     )).join('&')
 }
 
+export type Disposer = () => void;
+
 export class ApiError extends Error {
     constructor(
         public response: AxiosResponse,
@@ -122,7 +124,7 @@ export class Api {
         return this.request(`${API_DOMAIN}/${API_VER}/files/${key}/versions`);
     }
     
-    getComments = (key: string): ResultA<GetImageResult, ApiError> => {
+    getComments = (key: string): ResultA<GetCommentsResult, ApiError> => {
         return this.request(`${API_DOMAIN}/${API_VER}/files/${key}/comments`);
     }
     
@@ -143,6 +145,107 @@ export class Api {
     
     getProjectFiles = (project_id: string): ResultA<GetProjectFilesResult, ApiError> => {
         return this.request(`${API_DOMAIN}/${API_VER}/projects/${project_id}/files`);
+    }
+
+    watchVersion = (
+        key: string,
+        onNewVersion: (newVersion: Version) => void|Promise<void>,
+        opts: {
+            /** in milliseconds */
+            timeout: number,
+            onError?: (error: ResultErr<ApiError>|undefined, dispose: Disposer) => void,
+            immediate?: boolean,
+        } = {
+            timeout: 6000,
+        },
+    ): Disposer => {
+        let currentPromise: ResultA<GetVersionsResult, ApiError>|null;
+        let lastVersionId: string;
+
+        const interval = setInterval(async () => {
+            if (!currentPromise) {
+                currentPromise = this.getVersions(key);
+                const [ err, res ] = await currentPromise;
+                if (err || !res) {
+                    if (opts.onError) {
+                        opts.onError(err, disposer);
+                    } else {
+                        console.error('Figma.watchVersion: Unhandled error', err);
+                    }
+                } else {
+                    if (res.versions.length === 0) {
+                        console.warn('Figma.watchVersion: Strange, versions === 0, skipping');
+                        return;
+                    }
+
+                    const lastVer = res.versions[res.versions.length - 1];
+                    if (!lastVersionId) {
+                        if (opts.immediate) {
+                            await onNewVersion(lastVer);
+                        }
+                    } else {
+                        await onNewVersion(lastVer);
+                    }
+                    lastVersionId = lastVer.id;
+                }
+            }
+        }, opts.timeout);
+
+        const disposer = () => clearInterval(interval);
+        return disposer;
+    }
+
+    watchComments = (
+        key: string,
+        onNewComments: (newComments: Comment[]) => void|Promise<void>,
+        opts: {
+            /** in milliseconds */
+            timeout: number,
+            onError?: (error: ResultErr<ApiError>|undefined, dispose: Disposer) => void,
+            immediate?: boolean,
+        } = {
+            timeout: 5000,
+        },
+    ): Disposer => {
+        let currentPromise: ResultA<GetCommentsResult, ApiError>|null;
+        let lastCommentId: string;
+
+        const interval = setInterval(async () => {
+            if (!currentPromise) {
+                currentPromise = this.getComments(key);
+                const [ err, res ] = await currentPromise;
+                if (err || !res) {
+                    if (opts.onError) {
+                        opts.onError(err, disposer);
+                    } else {
+                        console.error('Figma.watchComments: Unhandled error', err);
+                    }
+                } else {
+                    if (res.comments.length === 0) {
+                        return;
+                    }
+
+                    const lastComment = res.comments[res.comments.length - 1];
+                    if (!lastCommentId) {
+                        if (opts.immediate) {
+                            await onNewComments(res.comments);
+                        }
+                    } else {
+                        // find new comments
+                        const lastCommentInd = res.comments.findIndex(x => x.id === lastCommentId);
+                        if (lastCommentInd === -1) await onNewComments(res.comments);
+                        else {
+                            const nextNewCommentInd = lastCommentInd + 1;
+                            await onNewComments(res.comments.slice(nextNewCommentInd));
+                        }
+                    }
+                    lastCommentId = lastComment.id;
+                }
+            }
+        }, opts.timeout);
+
+        const disposer = () => clearInterval(interval);
+        return disposer;
     }
 }
 
