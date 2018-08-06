@@ -166,6 +166,7 @@ export class Api {
             if (!currentPromise) {
                 currentPromise = this.getVersions(key);
                 const [ err, res ] = await currentPromise;
+                
                 if (err || !res) {
                     if (opts.onError) {
                         opts.onError(err, disposer);
@@ -175,19 +176,19 @@ export class Api {
                 } else {
                     if (res.versions.length === 0) {
                         console.warn('Figma.watchVersion: Strange, versions === 0, skipping');
-                        return;
-                    }
-
-                    const lastVer = res.versions[res.versions.length - 1];
-                    if (!lastVersionId) {
-                        if (opts.immediate) {
+                    } else {
+                        const lastVer = res.versions[res.versions.length - 1];
+                        if (!lastVersionId) {
+                            if (opts.immediate) {
+                                await onNewVersion(lastVer);
+                            }
+                        } else {
                             await onNewVersion(lastVer);
                         }
-                    } else {
-                        await onNewVersion(lastVer);
+                        lastVersionId = lastVer.id;
                     }
-                    lastVersionId = lastVer.id;
                 }
+                currentPromise = null;
             }
         }, opts.timeout);
 
@@ -214,6 +215,7 @@ export class Api {
             if (!currentPromise) {
                 currentPromise = this.getComments(key);
                 const [ err, res ] = await currentPromise;
+
                 if (err || !res) {
                     if (opts.onError) {
                         opts.onError(err, disposer);
@@ -221,26 +223,25 @@ export class Api {
                         console.error('Figma.watchComments: Unhandled error', err);
                     }
                 } else {
-                    if (res.comments.length === 0) {
-                        return;
-                    }
-
-                    const lastComment = res.comments[res.comments.length - 1];
-                    if (!lastCommentId) {
-                        if (opts.immediate) {
-                            await onNewComments(res.comments);
+                    if (res.comments.length !== 0) {
+                        const lastComment = res.comments[res.comments.length - 1];
+                        if (!lastCommentId) {
+                            if (opts.immediate) {
+                                await onNewComments(res.comments);
+                            }
+                        } else {
+                            // find new comments
+                            const lastCommentInd = res.comments.findIndex(x => x.id === lastCommentId);
+                            if (lastCommentInd === -1) await onNewComments(res.comments);
+                            else {
+                                const nextNewCommentInd = lastCommentInd + 1;
+                                await onNewComments(res.comments.slice(nextNewCommentInd));
+                            }
                         }
-                    } else {
-                        // find new comments
-                        const lastCommentInd = res.comments.findIndex(x => x.id === lastCommentId);
-                        if (lastCommentInd === -1) await onNewComments(res.comments);
-                        else {
-                            const nextNewCommentInd = lastCommentInd + 1;
-                            await onNewComments(res.comments.slice(nextNewCommentInd));
-                        }
+                        lastCommentId = lastComment.id;
                     }
-                    lastCommentId = lastComment.id;
                 }
+                currentPromise = null;
             }
         }, opts.timeout);
 
