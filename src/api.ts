@@ -285,7 +285,7 @@ export function oAuthToken(
     });
     const url = `https://www.figma.com/api/oauth/token?${queryParams}`;
     return ResultA(async (resolve, reject) => {
-        const [ err, res ] = await ResultA(axios({ url }));
+        const [ err, res ] = await ResultA(axios({ url, method: 'POST' }));
         if (err || !res || res.status !== 200) resolve(new ApiError(res!, err instanceof Error ? err.message : ''));
         else resolve(res.data);
     });
