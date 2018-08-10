@@ -2,6 +2,7 @@ import { Node, Style, Component, Version, Comment, Vector, FrameOffset } from '.
 import { AxiosResponse } from 'axios';
 import { ResultA, ResultErr } from 'go-result-js';
 export declare type GetFileResult = {
+    name: string;
     document: Node<'DOCUMENT'>;
     components: {
         [nodeId: string]: Component;

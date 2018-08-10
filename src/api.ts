@@ -4,6 +4,7 @@ import axios, { AxiosRequestConfig, AxiosPromise, AxiosResponse } from 'axios';
 import { ResultA, ResultOk, ResultErr, Result } from 'go-result-js';
 
 export type GetFileResult = {
+    name: string,
     document: Node<'DOCUMENT'>,
     components: { [nodeId: string]: Component },
     schemaVersion: number,
