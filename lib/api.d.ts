@@ -85,13 +85,13 @@ export declare class Api {
     postComment: (key: string, message: string, client_meta: Vector | FrameOffset) => Promise<[ResultErr<ApiError>, Comment | undefined]>;
     getTeamProjects: (team_id: string) => Promise<[ResultErr<ApiError>, GetTeamProjectsResult | undefined]>;
     getProjectFiles: (project_id: string) => Promise<[ResultErr<ApiError>, GetProjectFilesResult | undefined]>;
-    watchVersion: (key: string, onNewVersion: (newVersion: Version) => void | Promise<void>, opts?: {
+    _watchVersion: (key: string, onNewVersion: (newVersion: Version) => void | Promise<void>, opts?: {
         /** in milliseconds */
         timeout: number;
         onError?: ((error: ResultErr<ApiError>, dispose: Disposer) => void) | undefined;
         immediate?: boolean | undefined;
     }) => Disposer;
-    watchComments: (key: string, onNewComments: (newComments: Comment[]) => void | Promise<void>, opts?: {
+    _watchComments: (key: string, onNewComments: (newComments: Comment[]) => void | Promise<void>, opts?: {
         /** in milliseconds */
         timeout: number;
         onError?: ((error: ResultErr<ApiError>, dispose: Disposer) => void) | undefined;

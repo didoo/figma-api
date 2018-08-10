@@ -147,7 +147,7 @@ export class Api {
         return this.request(`${API_DOMAIN}/${API_VER}/projects/${project_id}/files`);
     }
 
-    watchVersion = (
+    _watchVersion = (
         key: string,
         onNewVersion: (newVersion: Version) => void|Promise<void>,
         opts: {
@@ -195,7 +195,7 @@ export class Api {
         return disposer;
     }
 
-    watchComments = (
+    _watchComments = (
         key: string,
         onNewComments: (newComments: Comment[]) => void|Promise<void>,
         opts: {

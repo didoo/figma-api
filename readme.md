@@ -210,7 +210,7 @@ Returns:
 
 </details>
 
-<details>
+<!-- <details>
 <summary>
 Api.watchVersion
 </summary>
@@ -279,7 +279,7 @@ function onNewComments(comments) {
 api.watchComments('my file key', onNewComments, { timeout: 10000 });
 ```
 
-</details>
+</details> -->
 
 <details>
 <summary>
