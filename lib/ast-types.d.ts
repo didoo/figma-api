@@ -547,7 +547,7 @@ export interface SLICE {
 /** A node that can have instances created of it that share the same properties */
 export declare type COMPONENT = FRAME;
 /** An instance of a component, changes to the component result in the same changes applied to the instance */
-export declare type INSTANCE<ComponentID = string> = VECTOR & {
+export declare type INSTANCE<ComponentID = string> = FRAME & {
     /** ID of component that this instance came from, refers to components table (see endpoints section below) */
     componentId: ComponentID;
 };

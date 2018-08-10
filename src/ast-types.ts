@@ -638,7 +638,7 @@ export interface SLICE {
 export type COMPONENT = FRAME;
 
 /** An instance of a component, changes to the component result in the same changes applied to the instance */
-export type INSTANCE<ComponentID = string> = VECTOR & {
+export type INSTANCE<ComponentID = string> = FRAME & {
     /** ID of component that this instance came from, refers to components table (see endpoints section below) */
     componentId: ComponentID;
 }
