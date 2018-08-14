@@ -73,6 +73,7 @@ Set `geometry='paths'` to export vector data.
 Returns:  
 ```ts
 [ Error?, {
+    name: string,
     document: Node<'DOCUMENT'>,
     components: { [nodeId: string]: Component },
     schemaVersion: number,
