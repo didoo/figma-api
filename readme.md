@@ -26,7 +26,7 @@ All api in browser exported to global `Figma` object.
 ## Usage
 
 ```ts
-import * as Figma from 'figmajs';
+import * as Figma from 'figma-api';
 
 export async function main() {
     const api = new Figma.Api({
