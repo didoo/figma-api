@@ -263,11 +263,19 @@ export type EffectShadow = {
     type: EffectType.DROP_SHADOW|EffectType.INNER_SHADOW,
 } & Effect_ & EffectShadow_;
 
+export type EffectBlur = {
+    type: EffectType.BACKGROUND_BLUR|EffectType.LAYER_BLUR,
+} & Effect_;
+
 /** A visual effect such as a shadow or blur */
-export type Effect = { type: EffectType } & Effect_ & Partial<EffectShadow>;
+export type Effect = { type: EffectType } & Effect_ & Partial<EffectShadow_>;
 
 export function isEffectShadow(effect: Effect): effect is EffectShadow {
-    return (effect.type === EffectType.DROP_SHADOW || effect.type === EffectType.INNER_SHADOW)
+    return (effect.type === EffectType.DROP_SHADOW || effect.type === EffectType.INNER_SHADOW);
+}
+
+export function isEffectBlur(effect: Effect): effect is EffectBlur {
+    return (effect.type === EffectType.BACKGROUND_BLUR || effect.type === EffectType.LAYER_BLUR);
 }
 
 export enum PaintType {

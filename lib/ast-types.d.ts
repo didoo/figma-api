@@ -227,11 +227,15 @@ declare type EffectShadow_ = {
 export declare type EffectShadow = {
     type: EffectType.DROP_SHADOW | EffectType.INNER_SHADOW;
 } & Effect_ & EffectShadow_;
+export declare type EffectBlur = {
+    type: EffectType.BACKGROUND_BLUR | EffectType.LAYER_BLUR;
+} & Effect_;
 /** A visual effect such as a shadow or blur */
 export declare type Effect = {
     type: EffectType;
-} & Effect_ & Partial<EffectShadow>;
+} & Effect_ & Partial<EffectShadow_>;
 export declare function isEffectShadow(effect: Effect): effect is EffectShadow;
+export declare function isEffectBlur(effect: Effect): effect is EffectBlur;
 export declare enum PaintType {
     SOLID = "SOLID",
     GRADIENT_LINEAR = "GRADIENT_LINEAR",

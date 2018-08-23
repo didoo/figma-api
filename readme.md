@@ -340,6 +340,11 @@ isEffectShadow(effect: Effect): effect is EffectShadow;
 Check if effect is one of shadow effects.
 
 ```ts
+isEffectBlur(effect: Effect): effect is EffectBlur;
+```
+Check if effect is one of blur effects.
+
+```ts
 isPaintSolid(paint: Paint): paint is PaintSolid;
 isPaintGradient(paint: Paint): paint is PaintGradient;
 isPaintImage(paint: Paint): paint is PaintImage;
