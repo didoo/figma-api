@@ -17,6 +17,10 @@ export type GetImageResult = {
     status: number,
 };
 
+export type GetImageFillsResult = {
+    images: { [nodeId: string]: string },
+};
+
 export type GetVersionsResult = {
     versions: Version[],
 };
@@ -119,6 +123,10 @@ export class Api {
     }): ResultA<GetImageResult, ApiError> =>  {
         const queryParams = toQueryParams(opts);
         return this.request<GetImageResult>(`${API_DOMAIN}/${API_VER}/images/${key}?${queryParams}`);
+    }
+
+    getImageFills = (fileKey: string): ResultA<GetImageFillsResult, ApiError> =>  {
+        return this.request<GetImageFillsResult>(`${API_DOMAIN}/${API_VER}/files/${fileKey}/images`);
     }
     
     getVersions = (key: string): ResultA<GetVersionsResult, ApiError> => {

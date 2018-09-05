@@ -211,6 +211,27 @@ Returns:
 
 </details>
 
+<details>
+<summary>
+Api.getImageFills
+</summary>
+
+```ts
+Api.getImageFills(fileKey)
+```
+[Download links for all images present in image fills](https://www.figma.com/developers/docs#get-image-fills-endpoint).
+
+Returns:  
+```ts
+[ Error?, {
+    images: {
+        [imageRef: string]: imageUrl,
+    },
+} ]
+```
+
+</details>
+
 <!-- <details>
 <summary>
 Api.watchVersion
