@@ -18,7 +18,12 @@ export type GetImageResult = {
 };
 
 export type GetImageFillsResult = {
-    images: { [nodeId: string]: string },
+    err: string,
+    images?: { [nodeId: string]: string },
+    meta?: {
+        images: { [nodeId: string]: string },
+    },
+    status: number,
 };
 
 export type GetVersionsResult = {

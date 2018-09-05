@@ -20,9 +20,16 @@ export declare type GetImageResult = {
     status: number;
 };
 export declare type GetImageFillsResult = {
-    images: {
+    err: string;
+    images?: {
         [nodeId: string]: string;
     };
+    meta?: {
+        images: {
+            [nodeId: string]: string;
+        };
+    };
+    status: number;
 };
 export declare type GetVersionsResult = {
     versions: Version[];

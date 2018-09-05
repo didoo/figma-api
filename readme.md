@@ -224,11 +224,18 @@ Api.getImageFills(fileKey)
 Returns:  
 ```ts
 [ Error?, {
-    images: {
+    meta?: {
+        images: {
+            [imageRef: string]: imageUrl,
+        },
+    }
+    images?: {
         [imageRef: string]: imageUrl,
     },
 } ]
 ```
+
+Because of great figma api docs, `meta?` & `images?` for now.
 
 </details>
 
