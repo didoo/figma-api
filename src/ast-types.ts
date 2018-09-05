@@ -298,10 +298,10 @@ export enum PaintSolidScaleMode {
 export type Paint_ = {
 
     /** `default: true` Is the paint enabled? */
-    visible: boolean,
+    visible?: boolean,
 
     /** `default: 1` Overall opacity of paint (colors within the paint can also have opacity values which would blend with this) */
-    opacity: number,
+    opacity?: number,
 };
 
 type PaintSolid_ = {
