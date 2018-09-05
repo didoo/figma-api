@@ -324,6 +324,8 @@ type PaintGradient_ = {
 type PaintImage_ = {
     /** Image scaling mode */
     scaleMode: PaintSolidScaleMode,
+    /** Image reference, get it with `Api.getImage` */
+    imageRef: string,
 };
 
 export type PaintSolid = {
