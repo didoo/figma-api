@@ -14,7 +14,9 @@ Promises & ES6.
 
 ## Install
 
-`npm i figma-api`
+`npm i figma-api --save-exact`
+
+!`go-result-js` will be removed in future versions, so install using `--save-exact`!
 
 or browser version:
 
