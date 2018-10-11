@@ -50,6 +50,8 @@ api.getFile('my file key').then(([ err, file ]) => {
 });
 ```
 
+Change API endpoint setting `Figma.API_DOMAIN` & `Figma.API_VER` variables.
+
 ## Api
 
 ### `new Api ({ personalAccessToken, oAuthToken })`
