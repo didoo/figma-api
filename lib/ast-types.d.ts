@@ -253,9 +253,9 @@ export declare enum PaintSolidScaleMode {
 }
 export declare type Paint_ = {
     /** `default: true` Is the paint enabled? */
-    visible: boolean;
+    visible?: boolean;
     /** `default: 1` Overall opacity of paint (colors within the paint can also have opacity values which would blend with this) */
-    opacity: number;
+    opacity?: number;
 };
 declare type PaintSolid_ = {
     /** Solid color of the paint */
@@ -274,6 +274,8 @@ declare type PaintGradient_ = {
 declare type PaintImage_ = {
     /** Image scaling mode */
     scaleMode: PaintSolidScaleMode;
+    /** Image reference, get it with `Api.getImage` */
+    imageRef: string;
 };
 export declare type PaintSolid = {
     type: PaintType.SOLID;

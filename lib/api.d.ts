@@ -18,6 +18,18 @@ export declare type GetImageResult = {
     };
     status: number;
 };
+export declare type GetImageFillsResult = {
+    err: string;
+    images?: {
+        [nodeId: string]: string;
+    };
+    meta?: {
+        images: {
+            [nodeId: string]: string;
+        };
+    };
+    status: number;
+};
 export declare type GetVersionsResult = {
     versions: Version[];
 };
@@ -80,6 +92,7 @@ export declare class Api {
         /** A specific version ID to get. Omitting this will get the current version of the file */
         version?: string | undefined;
     }) => Promise<GetImageResult>;
+    getImageFills: (fileKey: string) => Promise<GetImageFillsResult>;
     getVersions: (key: string) => Promise<GetVersionsResult>;
     getComments: (key: string) => Promise<GetCommentsResult>;
     postComment: (key: string, message: string, client_meta: Vector | FrameOffset) => Promise<Comment>;

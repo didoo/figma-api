@@ -16,6 +16,15 @@ export type GetImageResult = {
     status: number,
 };
 
+export type GetImageFillsResult = {
+    err: string,
+    images?: { [nodeId: string]: string },
+    meta?: {
+        images: { [nodeId: string]: string },
+    },
+    status: number,
+};
+
 export type GetVersionsResult = {
     versions: Version[],
 };
@@ -118,6 +127,10 @@ export class Api {
     }): Promise<GetImageResult> =>  {
         const queryParams = toQueryParams(opts);
         return this.request<GetImageResult>(`${API_DOMAIN}/${API_VER}/images/${key}?${queryParams}`);
+    }
+
+    getImageFills = (fileKey: string): Promise<GetImageFillsResult> =>  {
+        return this.request<GetImageFillsResult>(`${API_DOMAIN}/${API_VER}/files/${fileKey}/images`);
     }
     
     getVersions = (key: string): Promise<GetVersionsResult> => {
