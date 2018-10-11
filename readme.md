@@ -8,8 +8,6 @@ Figma api's file fully typed with TypeScript.
 
 Both browser & nodejs supported.
 
-All api requests uses [go-result-js](https://github.com/Morglod/go-result-js) for smooth error solving (return tuple like [ error, result ]).
-
 Promises & ES6.
 
 ## Install

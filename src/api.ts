@@ -1,7 +1,6 @@
 import { API_DOMAIN, API_VER } from './config';
 import { Node, Style, Component, Version, Comment, Vector, FrameOffset } from './ast-types';
-import axios, { AxiosRequestConfig, AxiosPromise, AxiosResponse } from 'axios';
-import { ResultA, ResultOk, ResultErr, Result } from 'go-result-js';
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 
 export type GetFileResult = {
     name: string,
@@ -80,7 +79,7 @@ export class Api {
         if (this.oAuthToken) headers['Authorization'] =  `Bearer ${this.oAuthToken}`;
     };
 
-    request = <T>(url: string, opts?: { method: string, data: string }) => ResultA<T, ApiError>(async (resolve, reject) => {
+    request = async <T>(url: string, opts?: { method: string, data: string }) => {
         const headers = {};
         this.appendHeaders(headers);
         const axiosParams: AxiosRequestConfig = {
@@ -88,17 +87,17 @@ export class Api {
             ...opts,
             headers,
         };
-        const [ err, res ] = await ResultA(axios(axiosParams));
-        if (err || !res || res.status !== 200) reject(new ApiError(res!, err instanceof Error ? err.message : ''));
-        else resolve(res.data);
-    });
+        const res = await axios(axiosParams);
+        if (res.status !== 200) throw res.statusText;
+        return res.data;
+    };
 
     getFile = (key: string, opts?: {
         /** A specific version ID to get. Omitting this will get the current version of the file */
         version?: string,
         /** Set to "paths" to export vector data */
         geometry?: string,
-    }): ResultA<GetFileResult, ApiError> => {
+    }): Promise<GetFileResult> => {
         const queryParams = toQueryParams(opts);
         return this.request<GetFileResult>(`${API_DOMAIN}/${API_VER}/files/${key}?${queryParams}`);
     };
@@ -116,20 +115,20 @@ export class Api {
         svg_simplify_stroke?: boolean,
         /** A specific version ID to get. Omitting this will get the current version of the file */
         version?: string,
-    }): ResultA<GetImageResult, ApiError> =>  {
+    }): Promise<GetImageResult> =>  {
         const queryParams = toQueryParams(opts);
         return this.request<GetImageResult>(`${API_DOMAIN}/${API_VER}/images/${key}?${queryParams}`);
     }
     
-    getVersions = (key: string): ResultA<GetVersionsResult, ApiError> => {
+    getVersions = (key: string): Promise<GetVersionsResult> => {
         return this.request(`${API_DOMAIN}/${API_VER}/files/${key}/versions`);
     }
     
-    getComments = (key: string): ResultA<GetCommentsResult, ApiError> => {
+    getComments = (key: string): Promise<GetCommentsResult> => {
         return this.request(`${API_DOMAIN}/${API_VER}/files/${key}/comments`);
     }
     
-    postComment = (key: string, message: string, client_meta: Vector|FrameOffset): ResultA<PostCommentResult, ApiError> => {
+    postComment = (key: string, message: string, client_meta: Vector|FrameOffset): Promise<PostCommentResult> => {
         const body = {
             message,
             client_meta,
@@ -140,115 +139,115 @@ export class Api {
         });
     }
     
-    getTeamProjects = (team_id: string): ResultA<GetTeamProjectsResult, ApiError> => {
+    getTeamProjects = (team_id: string): Promise<GetTeamProjectsResult> => {
         return this.request(`${API_DOMAIN}/${API_VER}/teams/${team_id}/projects`);
     }
     
-    getProjectFiles = (project_id: string): ResultA<GetProjectFilesResult, ApiError> => {
+    getProjectFiles = (project_id: string): Promise<GetProjectFilesResult> => {
         return this.request(`${API_DOMAIN}/${API_VER}/projects/${project_id}/files`);
     }
 
-    _watchVersion = (
-        key: string,
-        onNewVersion: (newVersion: Version) => void|Promise<void>,
-        opts: {
-            /** in milliseconds */
-            timeout: number,
-            onError?: (error: ResultErr<ApiError>|undefined, dispose: Disposer) => void,
-            immediate?: boolean,
-        } = {
-            timeout: 6000,
-        },
-    ): Disposer => {
-        let currentPromise: ResultA<GetVersionsResult, ApiError>|null;
-        let lastVersionId: string;
+    // _watchVersion = (
+    //     key: string,
+    //     onNewVersion: (newVersion: Version) => void|Promise<void>,
+    //     opts: {
+    //         /** in milliseconds */
+    //         timeout: number,
+    //         onError?: (error: ApiError|undefined, dispose: Disposer) => void,
+    //         immediate?: boolean,
+    //     } = {
+    //         timeout: 6000,
+    //     },
+    // ): Disposer => {
+    //     let currentPromise: Promise<GetVersionsResult>|null;
+    //     let lastVersionId: string;
 
-        const interval = setInterval(async () => {
-            if (!currentPromise) {
-                currentPromise = this.getVersions(key);
-                const [ err, res ] = await currentPromise;
+    //     const interval = setInterval(async () => {
+    //         if (!currentPromise) {
+    //             currentPromise = this.getVersions(key);
+    //             const res = await currentPromise;
                 
-                if (err || !res) {
-                    if (opts.onError) {
-                        opts.onError(err, disposer);
-                    } else {
-                        console.error('Figma.watchVersion: Unhandled error', err);
-                    }
-                } else {
-                    if (res.versions.length === 0) {
-                        console.warn('Figma.watchVersion: Strange, versions === 0, skipping');
-                    } else {
-                        const lastVer = res.versions[res.versions.length - 1];
-                        if (!lastVersionId) {
-                            if (opts.immediate) {
-                                await onNewVersion(lastVer);
-                            }
-                        } else {
-                            await onNewVersion(lastVer);
-                        }
-                        lastVersionId = lastVer.id;
-                    }
-                }
-                currentPromise = null;
-            }
-        }, opts.timeout);
+    //             if (!res) {
+    //                 if (opts.onError) {
+    //                     opts.onError(err, disposer);
+    //                 } else {
+    //                     console.error('Figma.watchVersion: Unhandled error', err);
+    //                 }
+    //             } else {
+    //                 if (res.versions.length === 0) {
+    //                     console.warn('Figma.watchVersion: Strange, versions === 0, skipping');
+    //                 } else {
+    //                     const lastVer = res.versions[res.versions.length - 1];
+    //                     if (!lastVersionId) {
+    //                         if (opts.immediate) {
+    //                             await onNewVersion(lastVer);
+    //                         }
+    //                     } else {
+    //                         await onNewVersion(lastVer);
+    //                     }
+    //                     lastVersionId = lastVer.id;
+    //                 }
+    //             }
+    //             currentPromise = null;
+    //         }
+    //     }, opts.timeout);
 
-        const disposer = () => clearInterval(interval);
-        return disposer;
-    }
+    //     const disposer = () => clearInterval(interval);
+    //     return disposer;
+    // }
 
-    _watchComments = (
-        key: string,
-        onNewComments: (newComments: Comment[]) => void|Promise<void>,
-        opts: {
-            /** in milliseconds */
-            timeout: number,
-            onError?: (error: ResultErr<ApiError>|undefined, dispose: Disposer) => void,
-            immediate?: boolean,
-        } = {
-            timeout: 5000,
-        },
-    ): Disposer => {
-        let currentPromise: ResultA<GetCommentsResult, ApiError>|null;
-        let lastCommentId: string;
+    // _watchComments = (
+    //     key: string,
+    //     onNewComments: (newComments: Comment[]) => void|Promise<void>,
+    //     opts: {
+    //         /** in milliseconds */
+    //         timeout: number,
+    //         onError?: (error: ResultErr<ApiError>|undefined, dispose: Disposer) => void,
+    //         immediate?: boolean,
+    //     } = {
+    //         timeout: 5000,
+    //     },
+    // ): Disposer => {
+    //     let currentPromise: Promise<GetCommentsResult>|null;
+    //     let lastCommentId: string;
 
-        const interval = setInterval(async () => {
-            if (!currentPromise) {
-                currentPromise = this.getComments(key);
-                const [ err, res ] = await currentPromise;
+    //     const interval = setInterval(async () => {
+    //         if (!currentPromise) {
+    //             currentPromise = this.getComments(key);
+    //             const [ err, res ] = await currentPromise;
 
-                if (err || !res) {
-                    if (opts.onError) {
-                        opts.onError(err, disposer);
-                    } else {
-                        console.error('Figma.watchComments: Unhandled error', err);
-                    }
-                } else {
-                    if (res.comments.length !== 0) {
-                        const lastComment = res.comments[res.comments.length - 1];
-                        if (!lastCommentId) {
-                            if (opts.immediate) {
-                                await onNewComments(res.comments);
-                            }
-                        } else {
-                            // find new comments
-                            const lastCommentInd = res.comments.findIndex(x => x.id === lastCommentId);
-                            if (lastCommentInd === -1) await onNewComments(res.comments);
-                            else {
-                                const nextNewCommentInd = lastCommentInd + 1;
-                                await onNewComments(res.comments.slice(nextNewCommentInd));
-                            }
-                        }
-                        lastCommentId = lastComment.id;
-                    }
-                }
-                currentPromise = null;
-            }
-        }, opts.timeout);
+    //             if (err || !res) {
+    //                 if (opts.onError) {
+    //                     opts.onError(err, disposer);
+    //                 } else {
+    //                     console.error('Figma.watchComments: Unhandled error', err);
+    //                 }
+    //             } else {
+    //                 if (res.comments.length !== 0) {
+    //                     const lastComment = res.comments[res.comments.length - 1];
+    //                     if (!lastCommentId) {
+    //                         if (opts.immediate) {
+    //                             await onNewComments(res.comments);
+    //                         }
+    //                     } else {
+    //                         // find new comments
+    //                         const lastCommentInd = res.comments.findIndex(x => x.id === lastCommentId);
+    //                         if (lastCommentInd === -1) await onNewComments(res.comments);
+    //                         else {
+    //                             const nextNewCommentInd = lastCommentInd + 1;
+    //                             await onNewComments(res.comments.slice(nextNewCommentInd));
+    //                         }
+    //                     }
+    //                     lastCommentId = lastComment.id;
+    //                 }
+    //             }
+    //             currentPromise = null;
+    //         }
+    //     }, opts.timeout);
 
-        const disposer = () => clearInterval(interval);
-        return disposer;
-    }
+    //     const disposer = () => clearInterval(interval);
+    //     return disposer;
+    // }
 }
 
 export function oAuthLink(
@@ -268,16 +267,16 @@ export function oAuthLink(
     return `https://www.figma.com/oauth?${queryParams}`;
 }
 
-export function oAuthToken(
+export async function oAuthToken(
     client_id: string,
     client_secret: string,
     redirect_uri: string,
     code: string,
     grant_type: 'authorization_code',
-): ResultA<{
+): Promise<{
     access_token: string,
     expires_in: number,
-}, ApiError> {
+}> {
     const queryParams = toQueryParams({
         client_id,
         client_secret,
@@ -286,9 +285,7 @@ export function oAuthToken(
         grant_type,
     });
     const url = `https://www.figma.com/api/oauth/token?${queryParams}`;
-    return ResultA(async (resolve, reject) => {
-        const [ err, res ] = await ResultA(axios({ url, method: 'POST' }));
-        if (err || !res || res.status !== 200) resolve(new ApiError(res!, err instanceof Error ? err.message : ''));
-        else resolve(res.data);
-    });
+    const res = await axios({ url, method: 'POST' });
+    if (res.status !== 200) throw res.statusText;
+    return res.data;
 }

@@ -1,6 +1,5 @@
 import { Node, Style, Component, Version, Comment, Vector, FrameOffset } from './ast-types';
 import { AxiosResponse } from 'axios';
-import { ResultA, ResultErr } from 'go-result-js';
 export declare type GetFileResult = {
     name: string;
     document: Node<'DOCUMENT'>;
@@ -60,13 +59,13 @@ export declare class Api {
     request: <T>(url: string, opts?: {
         method: string;
         data: string;
-    } | undefined) => Promise<[ResultErr<ApiError>, T | undefined]>;
+    } | undefined) => Promise<any>;
     getFile: (key: string, opts?: {
         /** A specific version ID to get. Omitting this will get the current version of the file */
         version?: string | undefined;
         /** Set to "paths" to export vector data */
         geometry?: string | undefined;
-    } | undefined) => Promise<[ResultErr<ApiError>, GetFileResult | undefined]>;
+    } | undefined) => Promise<GetFileResult>;
     getImage: (key: string, opts: {
         /** A comma separated list of node IDs to render */
         ids: string;
@@ -80,27 +79,15 @@ export declare class Api {
         svg_simplify_stroke?: boolean | undefined;
         /** A specific version ID to get. Omitting this will get the current version of the file */
         version?: string | undefined;
-    }) => Promise<[ResultErr<ApiError>, GetImageResult | undefined]>;
-    getVersions: (key: string) => Promise<[ResultErr<ApiError>, GetVersionsResult | undefined]>;
-    getComments: (key: string) => Promise<[ResultErr<ApiError>, GetCommentsResult | undefined]>;
-    postComment: (key: string, message: string, client_meta: Vector | FrameOffset) => Promise<[ResultErr<ApiError>, Comment | undefined]>;
-    getTeamProjects: (team_id: string) => Promise<[ResultErr<ApiError>, GetTeamProjectsResult | undefined]>;
-    getProjectFiles: (project_id: string) => Promise<[ResultErr<ApiError>, GetProjectFilesResult | undefined]>;
-    _watchVersion: (key: string, onNewVersion: (newVersion: Version) => void | Promise<void>, opts?: {
-        /** in milliseconds */
-        timeout: number;
-        onError?: ((error: ResultErr<ApiError>, dispose: Disposer) => void) | undefined;
-        immediate?: boolean | undefined;
-    }) => Disposer;
-    _watchComments: (key: string, onNewComments: (newComments: Comment[]) => void | Promise<void>, opts?: {
-        /** in milliseconds */
-        timeout: number;
-        onError?: ((error: ResultErr<ApiError>, dispose: Disposer) => void) | undefined;
-        immediate?: boolean | undefined;
-    }) => Disposer;
+    }) => Promise<GetImageResult>;
+    getVersions: (key: string) => Promise<GetVersionsResult>;
+    getComments: (key: string) => Promise<GetCommentsResult>;
+    postComment: (key: string, message: string, client_meta: Vector | FrameOffset) => Promise<Comment>;
+    getTeamProjects: (team_id: string) => Promise<GetTeamProjectsResult>;
+    getProjectFiles: (project_id: string) => Promise<GetProjectFilesResult>;
 }
 export declare function oAuthLink(client_id: string, redirect_uri: string, scope: 'file_read', state: string, response_type: 'code'): string;
-export declare function oAuthToken(client_id: string, client_secret: string, redirect_uri: string, code: string, grant_type: 'authorization_code'): ResultA<{
+export declare function oAuthToken(client_id: string, client_secret: string, redirect_uri: string, code: string, grant_type: 'authorization_code'): Promise<{
     access_token: string;
     expires_in: number;
-}, ApiError>;
+}>;
