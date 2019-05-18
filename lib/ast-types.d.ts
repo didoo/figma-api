@@ -9,11 +9,64 @@ export declare type Color = {
     /** Alpha channel value, between 0 and 1 */
     a: number;
 };
+/** A string enum with value, describing the end caps of vector paths. */
+export declare enum StrokeCap {
+    NONE = "NONE",
+    ROUND = "ROUND",
+    SQUARE = "SQUARE",
+    LINE_ARROW = "LINE_ARROW",
+    TRIANGLE_ARROW = "TRIANGLE_ARROW"
+}
+/** Where stroke is drawn relative to the vector outline as a string enum */
+export declare enum StrokeAlign {
+    INSIDE = "INSIDE",
+    OUTSIDE = "OUTSIDE",
+    CENTER = "CENTER"
+}
+/** A string enum with value, describing how corners in vector paths are rendered. */
+export declare enum StrokeJoin {
+    MITER = "MITER",
+    BEVEL = "BEVEL",
+    ROUND = "ROUND"
+}
 export declare enum ImageType {
     JPG = "JPG",
     PNG = "PNG",
     SVG = "SVG"
 }
+/** A string enum with value, indicating the type of boolean operation applied */
+export declare enum BooleanOperationType {
+    UNION = "UNION",
+    INTERSECT = "INTERSECT",
+    SUBTRACT = "SUBTRACT",
+    EXCLUDE = "EXCLUDE"
+}
+/** Text casing applied to the node, default is the original casing */
+export declare enum TextCase {
+    ORIGINAL = "ORIGINAL",
+    UPPER = "UPPER",
+    LOWER = "LOWER",
+    TITLE = "TITLE"
+}
+/** Text decoration applied to the node */
+export declare enum TextDecoration {
+    NONE = "NONE",
+    STRIKETHROUGH = "STRIKETHROUGH",
+    UNDERLINE = "UNDERLINE"
+}
+/** The unit of the line height value specified by the user. */
+export declare enum LineHeightUnit {
+    PIXELS = "PIXELS",
+    'FONT_SIZE_%' = "FONT_SIZE_%",
+    'INTRINSIC_%' = "INTRINSIC_%"
+}
+/**
+ * Map<StyleType, String>
+ * A mapping of a StyleType to style ID (see Style) of styles present on this node. The style ID can be used to look up more information about the style in the top-level styles field.
+*/
+export declare type StylesMap = {
+    [styleType in StyleType]: string;
+};
 /** Format and size to export an asset at */
 export declare type ExportSetting = {
     /** File suffix to append to all filenames */
@@ -263,6 +316,10 @@ declare type PaintSolid_ = {
 };
 declare type PaintGradient_ = {
     /**
+     * How this node blends with nodes behind it in the scene (see blend mode section for more details)
+     */
+    blendMode: BlendMode;
+    /**
      * This field contains three vectors, each of which are a position in normalized object space (normalized object space is if the top left corner of the bounding box of the object is (0, 0) and the bottom right is (1,1)). The first position corresponds to the start of the gradient (value 0 for the purposes of calculating gradient stops), the second position is the end of the gradient (value 1), and the third handle position determines the width of the gradient (only relevant for non-linear gradients).
      */
     gradientHandlePositions: Vector[];
@@ -276,6 +333,10 @@ declare type PaintImage_ = {
     scaleMode: PaintSolidScaleMode;
     /** Image reference, get it with `Api.getImage` */
     imageRef: string;
+    /** Affine transform applied to the image, only present if scaleMode is STRETCH */
+    imageTransform?: Transform;
+    /** Amount image is scaled by in tiling, only present if scaleMode is TILE */
+    scalingFactor?: number;
 };
 export declare type PaintSolid = {
     type: PaintType.SOLID;
@@ -301,7 +362,7 @@ export declare type Vector = {
     y: number;
 };
 /** A 2x3 2D affine transformation matrix */
-export declare type Transform = number[][];
+export declare type Transform = [[number, number, number], [number, number, number]];
 export declare enum PathWindingRule {
     EVENODD = "EVENODD",
     NONZERO = "NONZERO"
@@ -333,12 +394,20 @@ export declare type TypeStyle = {
     fontFamily: string;
     /** PostScript font name */
     fontPostScriptName: string;
+    /** Space between paragraphs in px, 0 if not present */
+    paragraphSpacing?: number;
+    /** Paragraph indentation in px, 0 if not present */
+    paragraphIndent?: number;
     /** Is text italicized? */
     italic: boolean;
     /** Numeric font weight */
     fontWeight: number;
     /** Font size in px */
     fontSize: number;
+    /** Text casing applied to the node, default is the `ORIGINAL` casing */
+    textCase?: TextCase;
+    /** Text decoration applied to the node, default is `NONE` */
+    textDecoration?: TextDecoration;
     /** Horizontal text alignment as string enum */
     textAlignHorizontal: 'LEFT' | 'RIGHT' | 'CENTER' | 'JUSTIFIED';
     /** Vertical text alignment as string enum */
@@ -351,10 +420,36 @@ export declare type TypeStyle = {
     lineHeightPx: number;
     /** Line height as a percentage of normal line height */
     lineHeightPercent: number;
+    /** Line height as a percentage of the font size. Only returned when lineHeightPercent is not 100 */
+    lineHeightPercentFontSize?: number;
+    /** The unit of the line height value specified by the user. */
+    lineHeightUnit: LineHeightUnit;
 };
 export declare type StyleType = 'FILL' | 'TEXT' | 'EFFECT' | 'GRID';
-/** A description of a master component. Helps you identify which component instances are attached to */
+/** Data on the frame a component resides in */
+export interface FrameInfo {
+    /** Id of the frame node within the figma file */
+    node_id: string;
+    /** Name of the frame */
+    name: string;
+    /** Background color of the frame */
+    background_color: string;
+    /** Id of the frame's residing page */
+    page_id: string;
+    /** Name of the frame's residing page */
+    page_name: string;
+}
+/**
+ * NOT DOCUMENTED
+ *
+ * Data on component's containing page, if component resides in a multi-page file
+ */
+export interface PageInfo {
+}
+/** An arrangement of published UI elements that can be instantiated across figma files */
 export interface Component {
+    /** The key of the component */
+    key: string;
     /** The name of the component */
     name: string;
     /** The description of the component as entered in the editor */
@@ -362,50 +457,12 @@ export interface Component {
 }
 /** A set of properties that can be applied to nodes and published. Styles for a property can be created in the corresponding property's panel while editing a file */
 export interface Style {
+    /** The key of the style */
+    key: string;
     /** The name of the style */
     name: string;
+    /** The type of style */
     style_type: StyleType;
-}
-/** A comment or reply left by a user */
-export interface Comment {
-    /** Unique identifier for comment */
-    id: string;
-    /** The position of the comment. Either the absolute coordinates on the canvas or a relative offset within a frame */
-    client_meta: Vector | FrameOffset;
-    /** The file in which the comment lives */
-    file_key: string;
-    /** If present, the id of the comment to which this is the reply */
-    parent_id: string;
-    /** The user who left the comment */
-    user: User;
-    /** The UTC ISO 8601 time at which the comment was left */
-    created_at: string;
-    /** If set, the UTC ISO 8601 time the comment was resolved */
-    resolved_at: string;
-    /** Only set for top level comments. The number displayed with the comment in the UI */
-    order_id?: number;
-    /** Comment message */
-    message: string;
-}
-/** A description of a user */
-export interface User {
-    /** Name of the user */
-    handle: string;
-    /** URL link to the user's profile image */
-    img_url: string;
-}
-/** A version of a file */
-export interface Version {
-    /** Unique identifier for version */
-    id: string;
-    /** The UTC ISO 8601 time at which the version was created */
-    created_at: string;
-    /** The label given to the version in the editor */
-    label: string;
-    /** The description of the version as entered in the editor */
-    description: string;
-    /** The user that created the version */
-    user: User;
 }
 /** The root node */
 export interface DOCUMENT {
@@ -420,27 +477,31 @@ export interface CANVAS {
     backgroundColor: Color;
     /** default: [] An array of export settings representing images to export from the canvas */
     exportSettings: ExportSetting[];
+    /** Node ID that corresponds to the start frame for prototypes */
+    prototypeStartNodeID?: string | null;
 }
 /** A node of fixed size containing other nodes */
 export interface FRAME {
     /** An array of nodes that are direct children of this node */
     children: Node[];
-    /** Background color of the node */
-    backgroundColor: Color;
+    /** Background of the node */
+    background: Paint[];
+    /** Background color of the node. This is deprecated, as frames now support more than a solid color as a background. Please use the background field instead. */
+    backgroundColor?: Color;
     /** default: [] An array of export settings representing images to export from node */
     exportSettings: ExportSetting[];
     /** How this node blends with nodes behind it in the scene (see blend mode section for more details) */
     blendMode: BlendMode;
     /** default: false Keep height and width constrained to same ratio */
-    preserveRatio: Boolean;
+    preserveRatio: boolean;
     /** Horizontal and vertical layout constraints for node */
     constraints: LayoutConstraint;
     /** default: null Node ID of node to transition to in prototyping */
-    transitionNodeID?: string;
+    transitionNodeID?: string | null;
     /** default: null The duration of the prototyping transition on this node (in milliseconds). */
-    transitionDuration?: number;
+    transitionDuration?: number | null;
     /** default: null The easing curve used in the prototyping transition on this node. */
-    transitionEasing?: EasingType;
+    transitionEasing?: EasingType | null;
     /** default: 1 Opacity of the node */
     opacity: number;
     /** Bounding box of the node in absolute space coordinates */
@@ -450,13 +511,15 @@ export interface FRAME {
     /** The top two rows of a matrix that represents the 2D transform of this node relative to its parent. The bottom row of the matrix is implicitly always (0, 0, 1). Use to transform coordinates in geometry. Only present if geometry=paths is passed */
     relativeTransform?: Transform;
     /** Does this node clip content outside of its bounds? */
-    clipsContent: Boolean;
+    clipsContent: boolean;
     /** default: [] An array of layout grids attached to this node (see layout grids section for more details). GROUP nodes do not have this attribute */
     layoutGrids?: LayoutGrid[];
     /** default: [] An array of effects attached to this node (see effects section for more details) */
     effects: Effect[];
     /** default: false Does this node mask sibling nodes in front of it? */
-    isMask: Boolean;
+    isMask: boolean;
+    /** default: false Does this mask ignore fill style (like gradients) and effects? */
+    isMaskOutline: boolean;
 }
 /** A logical grouping of nodes */
 export declare type GROUP = FRAME;
@@ -467,7 +530,7 @@ export interface VECTOR {
     /** How this node blends with nodes behind it in the scene (see blend mode section for more details) */
     blendMode: BlendMode;
     /** default: false Keep height and width constrained to same ratio */
-    preserveRatio?: Boolean;
+    preserveRatio?: boolean;
     /** Horizontal and vertical layout constraints for node */
     constraints: LayoutConstraint;
     /** default: null Node ID of node to transition to in prototyping */
@@ -487,7 +550,7 @@ export interface VECTOR {
     /** default: [] An array of effects attached to this node (see effects section for more details) */
     effects?: Effect[];
     /** default: false Does this node mask sibling nodes in front of it? */
-    isMask?: Boolean;
+    isMask?: boolean;
     /** default: [] An array of fill paints applied to the node */
     fills: Paint[];
     /** Only specified if parameter geometry=paths is used. An array of paths representing the object fill */
@@ -496,22 +559,34 @@ export interface VECTOR {
     strokes: Paint[];
     /** The weight of strokes on the node */
     strokeWeight: number;
+    strokeCap?: StrokeCap;
     /** Only specified if parameter geometry=paths is used. An array of paths representing the object stroke */
     strokeGeometry?: Path[];
     /** Where stroke is drawn relative to the vector outline as a string enum
     "INSIDE": draw stroke inside the shape boundary
     "OUTSIDE": draw stroke outside the shape boundary
     "CENTER": draw stroke centered along the shape boundary */
-    strokeAlign: string;
+    strokeAlign: StrokeAlign;
+    /** A string enum with value of "MITER", "BEVEL", or "ROUND", describing how corners in vector paths are rendered. */
+    strokeJoin?: StrokeJoin;
+    /** An array of floating point numbers describing the pattern of dash length and gap lengths that the vector path follows. For example a value of [1, 2] indicates that the path has a dash of length 1 followed by a gap of length 2, repeated. */
+    strokeDashes?: number[];
+    /** Only valid if strokeJoin is "MITER". The corner angle, in degrees, below which strokeJoin will be set to "BEVEL" to avoid super sharp corners. By default this is 28.96 degrees. */
+    strokeMiterAngle?: number;
     /** A mapping of a StyleType to style ID (see Style) of styles present on this node. The style ID can be used to look up more information about the style in the top-level styles field. */
-    styles?: {
-        [styleType in StyleType]: string;
-    };
+    styles?: StylesMap;
 }
 /** A group that has a boolean operation applied to it */
 export declare type BOOLEAN = VECTOR & {
     /** An array of nodes that are being boolean operated on */
     children: Node[];
+};
+/** A group that has a boolean operation applied to it */
+export declare type BOOLEAN_OPERATION = VECTOR & {
+    /** An array of nodes that are being boolean operated on */
+    children: Node[];
+    /** A string enum with value of "UNION", "INTERSECT", "SUBTRACT", or "EXCLUDE" indicating the type of boolean operation applied */
+    booleanOperation: BooleanOperationType;
 };
 /** A regular star shape */
 export declare type STAR = VECTOR;
@@ -525,6 +600,8 @@ export declare type REGULAR_POLYGON = VECTOR;
 export declare type RECTANGLE = VECTOR & {
     /** Radius of each corner of the rectangle */
     cornerRadius: number;
+    /** Array of length 4 of the radius of each corner of the rectangle, starting in the top left and proceeding clockwise */
+    rectangleCornerRadii: [number, number, number, number];
 };
 /** A text box */
 export declare type TEXT = VECTOR & {
@@ -570,7 +647,7 @@ export declare type NodeTypes = {
     VECTOR: VECTOR;
     /** A group that has a boolean operation applied to it */
     BOOLEAN: BOOLEAN;
-    BOOLEAN_OPERATION: BOOLEAN;
+    BOOLEAN_OPERATION: BOOLEAN_OPERATION;
     /** A regular star shape */
     STAR: STAR;
     /** A straight line */

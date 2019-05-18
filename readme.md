@@ -31,10 +31,8 @@ export async function main() {
         personalAccessToken: 'my token',
     });
 
-    const [ err, file ] = await api.getFile('my file key');
-    if (file) {
-        // ... access file data ...
-    }
+    const file = await api.getFile('my file key');
+    // ... access file data ...
 }
 ```
 
@@ -43,10 +41,8 @@ or in browser:
 ```js
 const api = new Figma.Api({ personalAccessToken: 'my token' });
 
-api.getFile('my file key').then(([ err, file ]) => {
-    if (file) {
-        // access file data
-    }
+api.getFile('my file key').then((file) => {
+    // access file data
 });
 ```
 
@@ -57,7 +53,7 @@ Change API endpoint setting `Figma.API_DOMAIN` & `Figma.API_VER` variables.
 ### `new Api ({ personalAccessToken, oAuthToken })`
 
 Creates new Api object with specified `personal` or `oAuthToken`.  
-[Documentation on how to get tokens](https://www.figma.com/developers/docs#auth)
+[Documentation on how to get tokens](https://www.figma.com/developers/docs#authentication)
 
 <details>
 <summary>
@@ -67,18 +63,51 @@ Api.getFile
 ```ts
 Api.getFile(fileKey, opts?: { version?, geometry? })
 ```
-[Require file data](https://www.figma.com/developers/docs#files-endpoint) with specified version.  
+[Require file data](https://www.figma.com/developers/docs#get-files-endpoint) with specified version.  
 Set `geometry='paths'` to export vector data.
 
 Returns:  
 ```ts
-[ Error?, {
+{
     name: string,
+    lastModified: string,
+    thumbnailURL: string,
+    version: string,
     document: Node<'DOCUMENT'>,
     components: { [nodeId: string]: Component },
-    schemaVersion: number,
+    schemaVersion: 0,
     styles: { [styleName: string]: Style }
-} ]
+}
+```
+</details>
+
+<details>
+<summary>
+Api.getFileNodes
+</summary>
+
+```ts
+Api.getFileNodes(fileKey, ids, opts?: { version?, geometry? })
+```
+[Require file nodes data](https://www.figma.com/developers/docs#get-file-nodes-endpoint) with specified version.  
+Set `geometry='paths'` to export vector data.
+
+Returns:  
+```ts
+{
+    name: string,
+    lastModified: string,
+    thumbnailURL: string,
+    err: string,
+    nodes: {
+        id: {
+            document: Node<'DOCUMENT'>,
+            components: { [nodeId: string]: Component },
+            schemaVersion: 0,
+            styles: { [styleName: string]: Style }
+        }
+    }
+}
 ```
 </details>
 
@@ -103,35 +132,36 @@ Api.getImage(fileKey, opts?: {
     version?: string,
 })
 ```  
-[Renders images](https://www.figma.com/developers/docs#images-endpoint) from a file.
+[Renders images](https://www.figma.com/developers/docs#get-images-endpoint) from a file.
 
 Returns:
 ```ts
-[ Error?, {
+{
     err: string,
     images: { [nodeId: string]: string|null },
     status: number
-} ]
+}
 ```
-
 </details>
 
 <details>
 <summary>
-Api.getVersions
+Api.getImageFills
 </summary>
 
 ```ts
-Api.getVersions(fileKey)
-```
-A [list of the version](https://www.figma.com/developers/docs#get-file-versions-endpoint) history of a file. The version history consists of versions, manually-saved additions to the version history of a file.  
-If the account is not on a paid team, version history is limited to the past 30 days. Note that version history will not include autosaved versions.
+Api.getImageFills(fileKey)
+```  
+
+[Returns download links for all images present in image fills in a document.](https://www.figma.com/developers/docs#get-image-fills-endpoint)
 
 Returns:  
 ```ts
-[ Error?, {
-    versions: Version[]
-} ]
+{
+    images?: {
+        [imageRef: string]: imageUrl,
+    },
+}
 ```
 </details>
 
@@ -147,9 +177,9 @@ Api.getComments(fileKey)
 
 Returns:  
 ```ts
-[ Error?, {
+{
     comments: Comment[],
-} ]
+}
 ```
 </details>
 
@@ -165,7 +195,42 @@ Api.postComment(fileKey: string, message: string, client_meta: Vector|FrameOffse
 
 Returns:  
 ```ts
-[ Error?, Comment ]
+Comment
+```
+</details>
+
+<details>
+<summary>
+Api.getMe
+</summary>
+
+```ts
+Api.getMe()
+```
+[You can use the Users Endpoint](https://www.figma.com/developers/docs#users-endpoints) to access information regarding the currently authenticated User. When using OAuth 2, the User in question must be authenticated through the Figma API to access their information.
+
+Returns:  
+```ts
+User
+```
+</details>
+
+<details>
+<summary>
+Api.getVersions
+</summary>
+
+```ts
+Api.getVersions(fileKey)
+```
+A [list of the version](https://www.figma.com/developers/docs#get-file-versions-endpoint) history of a file. The version history consists of versions, manually-saved additions to the version history of a file.  
+If the account is not on a paid team, version history is limited to the past 30 days. Note that version history will not include autosaved versions.
+
+Returns:  
+```ts
+{
+    versions: Version[]
+}
 ```
 </details>
 
@@ -181,9 +246,9 @@ Api.getTeamProjects(team_id)
 
 Returns:  
 ```ts
-[ Error?, {
+{
     projects: { id: number, name: string }[],
-} ]
+}
 ```
 </details>
 
@@ -199,116 +264,151 @@ Api.getProjectFiles(project_id)
 
 Returns:  
 ```ts
-[ Error?, {
+{
     files: {
         key: string,
         name: string,
         thumbnail_url: string,
         last_modified: string,
     }[],
-} ]
+}
 ```
 
 </details>
 
 <details>
 <summary>
-Api.getImageFills
+Api.getTeamComponents
 </summary>
 
 ```ts
-Api.getImageFills(fileKey)
+Api.getTeamComponents(team_id, opts?: { page_size?, cursor? })
 ```
-[Download links for all images present in image fills](https://www.figma.com/developers/docs#get-image-fills-endpoint).
+
+[Get a paginated list](https://www.figma.com/developers/docs#get-team-components-endpoint) of published components within a team library.
 
 Returns:  
 ```ts
-[ Error?, {
-    meta?: {
-        images: {
-            [imageRef: string]: imageUrl,
+{
+    components: [
+        /* ComponentMetadata */ {
+            key: string,
+            file_key: string,
+            node_id: string,
+            thumbnail_url: string,
+            name: string,
+            description: string,
+            updated_at: string,
+            created_at: string,
+            user: User, 
+            containing_frame: FrameInfo, 
         },
-    }
-    images?: {
-        [imageRef: string]: imageUrl,
+    ],
+    cursor: { 
+        before: number,
+        after: number,
     },
-} ]
-```
-
-Because of great figma api docs, `meta?` & `images?` for now.
-
-</details>
-
-<!-- <details>
-<summary>
-Api.watchVersion
-</summary>
-
-Observe version changes.
-
-```ts
-Api.watchVersion = (
-    key: string,
-    onNewVersion: (newVersion: Version) => void|Promise<void>,
-    opts: {
-        /** in milliseconds */
-        timeout: number,
-        onError?: (error: ResultErr<ApiError>|undefined, dispose: Disposer) => void,
-        immediate?: boolean,
-    } = {
-        timeout: 6000,
-    },
-) => Disposer;
-```
-
-Example:
-
-```ts
-function onNewVersion(newVersion) {
-    console.log(`${newVersion.user.handle} just released new version!`);
 }
-
-api.watchVersion('my file key', onNewVersion, { timeout: 10000 });
 ```
 
 </details>
 
 <details>
 <summary>
-Api.watchComments
+Api.getComponent
 </summary>
 
-Observe new comments.
-
 ```ts
-Api.watchComments = (
+Api.getComponent(componentKey)
+```
+
+[Get metadata on a component by key.](https://www.figma.com/developers/docs#get-component-endpoint)
+
+Returns:  
+```ts
+/* ComponentMetadata */ {
     key: string,
-    onNewComments: (newComments: Comment[]) => void|Promise<void>,
-    opts: {
-        /** in milliseconds */
-        timeout: number,
-        onError?: (error: ResultErr<ApiError>|undefined, dispose: Disposer) => void,
-        immediate?: boolean,
-    } = {
-        timeout: 5000,
-    },
-) => Disposer;
+    file_key: string,
+    node_id: string,
+    thumbnail_url: string,
+    name: string,
+    description: string,
+    updated_at: string,
+    created_at: string,
+    user: User, 
+    containing_frame: FrameInfo, 
+},
 ```
 
-Example:
+</details>
+
+<details>
+<summary>
+Api.getTeamStyles
+</summary>
 
 ```ts
-function onNewComments(comments) {
-    console.log(`${comments.length} new comments!`);
-    for (const comment of comments) {
-        console.log(`${comment.user.handler}: ${comment.message}`);
-    }
-}
-
-api.watchComments('my file key', onNewComments, { timeout: 10000 });
+Api.getTeamStyles(team_id, opts?: { page_size?, cursor? })
 ```
 
-</details> -->
+[Get a paginated list](https://www.figma.com/developers/docs#get-team-styles-endpoint) of published styles within a team library.
+
+Returns:  
+```ts
+{
+    styles: [
+        {
+            key: string,
+            file_key: string,
+            node_id: string,
+            style_type: StyleType,
+            thumbnail_url: string,
+            name: string,
+            description: string,
+            updated_at: string,
+            created_at: string,
+            sort_position: string,
+            user: User, 
+        },
+    ],
+        cursor: { 
+        before: number,
+        after: number,
+    }, 
+}
+```
+
+</details>
+
+<details>
+<summary>
+Api.getStyle
+</summary>
+
+```ts
+Api.getStyle(styleKey)
+```
+
+[Get metadata on a style by key.](https://www.figma.com/developers/docs#get-style-endpoint)
+
+Returns:  
+```ts
+{
+    key: string,
+    file_key: string,
+    node_id: string,
+    style_type: StyleType,
+    thumbnail_url: string,
+    name: string,
+    description: string,
+    updated_at: string,
+    created_at: string,
+    sort_position: string,
+    user: User, 
+}
+```
+
+</details>
 
 <details>
 <summary>
@@ -318,7 +418,7 @@ Helpers
 `Api.appendHeaders(headers: {}): void`  
 Populate headers with auth.
 
-`Api.request<T>(url, opts): Promise<[ Error?, T]>`  
+`Api.request<T>(url, opts): Promise<T>`  
 Make request with auth headers.  
 </details>
 
@@ -346,10 +446,10 @@ function oAuthToken(
     redirect_uri: string,
     code: string,
     grant_type: 'authorization_code',
-): Promise<[ Error?, {
+): Promise<{
     access_token: string,
     expires_in: number,
-} ]>
+}>
 ```
 Returns `access token` info from oauth code (see `oAuthLink` method).
 
