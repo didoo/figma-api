@@ -1,11 +1,11 @@
 {
   "name": "figma-api",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "Figma js typed api",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "build": "tsc & npm run-script browserify & npm run-script uglify",
+    "build": "tsc && npm run-script browserify && npm run-script uglify",
     "browserify": "browserify lib/index.js --standalone Figma -o lib/figma-api.js",
     "uglify": "browserify -g [ uglifyify ] lib/index.js --standalone Figma -o lib/figma-api.min.js",
     "dev-test": "ts-node playground/test.ts"

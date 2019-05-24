@@ -439,7 +439,7 @@ export type Vector = {
 /** A 2x3 2D affine transformation matrix */
 export type Transform = [
     [ number, number, number ],
-    [ number, number, number ],
+    [ number, number, number ]
 ];
 
 export enum PathWindingRule {
