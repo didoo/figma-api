@@ -33,7 +33,7 @@ export class Api {
             headers,
         };
         const res = await axios(axiosParams);
-        if (res.status !== 200) throw res.statusText;
+        if (Math.floor(res.status / 100) !== 2) throw res.statusText;
         return res.data;
     };
 
