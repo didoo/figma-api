@@ -1,5 +1,5 @@
 import { getFileApi, getFileNodesApi, getImageApi, getImageFillsApi, getCommentsApi, postCommentsApi, getUserMeApi, getVersionsApi, getTeamProjectsApi, getProjectFilesApi, getTeamComponentsApi, getComponentApi, getTeamStylesApi, getStyleApi } from './api-funcs';
-import axios, { AxiosRequestConfig } from 'axios';
+import axios, { AxiosRequestConfig, Method as AxiosMethod } from 'axios';
 import { toQueryParams, ApiRequestMethod } from './utils';
 
 export class Api {
@@ -24,7 +24,7 @@ export class Api {
         if (this.oAuthToken) headers['Authorization'] =  `Bearer ${this.oAuthToken}`;
     };
 
-    request: ApiRequestMethod = async <T>(url: string, opts?: { method: string, data: string }) => {
+    request: ApiRequestMethod = async <T>(url: string, opts?: { method: AxiosMethod, data: string }) => {
         const headers = {};
         this.appendHeaders(headers);
         const axiosParams: AxiosRequestConfig = {
