@@ -38,7 +38,7 @@ export declare function getImageApi(this: ApiClass, fileKey: string, opts: {
     /** A number between 0.01 and 4, the image scaling factor */
     scale: number;
     /** A string enum for the image output format */
-    format: 'jpg' | 'png' | 'svg';
+    format: 'jpg' | 'png' | 'svg' | 'pdf';
     /** Whether to include id attributes for all SVG elements. `Default: false` */
     svg_include_id?: boolean;
     /** Whether to simplify inside/outside strokes and use stroke attribute if possible instead of <mask>. `Default: true` */
