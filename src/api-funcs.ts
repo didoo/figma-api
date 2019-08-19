@@ -18,11 +18,15 @@ export function getFileApi(this: ApiClass,
     opts?: {
         /** A specific version ID to get. Omitting this will get the current version of the file */
         version?: string,
+        /** If specified, only a subset of the document will be returned corresponding to the nodes listed, their children, and everything between the root node and the listed nodes */
+        ids?: string[],
+        /** Positive integer representing how deep into the document tree to traverse. For example, setting this to 1 returns only Pages, setting it to 2 returns Pages and all top level objects on each page. Not setting this parameter returns all nodes */
+        depth?: number,
         /** Set to "paths" to export vector data */
         geometry?: 'paths',
     }
 ): Promise<GetFileResult> {
-    const queryParams = toQueryParams(opts);
+    const queryParams = toQueryParams({ ...opts, ids: opts && opts.ids && opts.ids.join(',') });
     return this.request<GetFileResult>(`${API_DOMAIN}/${API_VER}/files/${fileKey}?${queryParams}`);
 }
 

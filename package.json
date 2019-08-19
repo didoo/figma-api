@@ -1,6 +1,6 @@
 {
   "name": "figma-api",
-  "version": "1.5.4",
+  "version": "1.5.5",
   "description": "Figma js typed api",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -29,7 +29,7 @@
     "browserify": "16.2.3",
     "ts-node": "8.1.0",
     "typescript": "3.4.5",
-    "uglifyify": "5.0.1"
+    "uglifyify": "^5.0.1"
   },
   "repository": {
     "type": "git",

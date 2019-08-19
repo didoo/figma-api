@@ -3,8 +3,8 @@ import { AxiosResponse, Method as AxiosMethod } from 'axios';
 export function toQueryParams(x: any): string {
     if (!x) return '';
     return Object.entries(x).map(([ k, v ]) => (
-        `${k}=${encodeURIComponent(v as any)}`
-    )).join('&')
+        k && v && `${k}=${encodeURIComponent(v as any)}`
+    )).filter(Boolean).join('&')
 }
 
 export type Disposer = () => void;
