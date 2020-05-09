@@ -1,6 +1,6 @@
 import { API_DOMAIN, API_VER } from "./config";
 import { Vector, FrameOffset } from "./ast-types";
-import { GetFileNodesResult, GetImageResult, GetImageFillsResult, GetFileResult, GetCommentsResult, PostCommentResult, GetUserMeResult, GetVersionsResult, GetTeamProjectsResult, GetProjectFilesResult, GetTeamComponentsResult, ComponentMetadata, GetTeamStylesResult, StyleMetadata, GetComponentResult, GetStyleResult } from "./api-types";
+import { GetFileNodesResult, GetImageResult, GetImageFillsResult, GetFileResult, GetCommentsResult, PostCommentResult, GetUserMeResult, GetVersionsResult, GetTeamProjectsResult, GetProjectFilesResult, GetTeamComponentsResult, ComponentMetadata, GetTeamStylesResult, StyleMetadata, GetComponentResult, GetStyleResult, GetFileComponentsResult } from "./api-types";
 import { ApiRequestMethod, toQueryParams } from "./utils";
 
 type ApiClass = {
@@ -126,6 +126,10 @@ export function getTeamComponentsApi(
 ): Promise<GetTeamComponentsResult> {
     const queryParams = toQueryParams(opts);
     return this.request(`${API_DOMAIN}/${API_VER}/teams/${team_id}/components?${queryParams}`);
+}
+
+export function getFileComponentsApi(this: ApiClass, project_id: string): Promise<GetFileComponentsResult> {
+    return this.request(`${API_DOMAIN}/${API_VER}/files/${project_id}/components`);
 }
 
 /** Get metadata on a component by key. */

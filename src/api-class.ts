@@ -1,4 +1,4 @@
-import { getFileApi, getFileNodesApi, getImageApi, getImageFillsApi, getCommentsApi, postCommentsApi, getUserMeApi, getVersionsApi, getTeamProjectsApi, getProjectFilesApi, getTeamComponentsApi, getComponentApi, getTeamStylesApi, getStyleApi } from './api-funcs';
+import { getFileApi, getFileNodesApi, getImageApi, getImageFillsApi, getCommentsApi, postCommentsApi, getUserMeApi, getVersionsApi, getTeamProjectsApi, getProjectFilesApi, getTeamComponentsApi, getComponentApi, getTeamStylesApi, getStyleApi, getFileComponentsApi } from './api-funcs';
 import axios, { AxiosRequestConfig, Method as AxiosMethod } from 'axios';
 import { toQueryParams, ApiRequestMethod } from './utils';
 
@@ -48,6 +48,7 @@ export class Api {
     getTeamProjects = getTeamProjectsApi;
     getProjectFiles = getProjectFilesApi;
     getTeamComponents = getTeamComponentsApi;
+    getFileComponents = getFileComponentsApi;
     getComponent = getComponentApi;
     getTeamStyles = getTeamStylesApi;
     getStyle = getStyleApi;

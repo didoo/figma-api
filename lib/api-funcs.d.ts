@@ -1,5 +1,5 @@
 import { Vector, FrameOffset } from "./ast-types";
-import { GetFileNodesResult, GetImageResult, GetImageFillsResult, GetFileResult, GetCommentsResult, PostCommentResult, GetUserMeResult, GetVersionsResult, GetTeamProjectsResult, GetProjectFilesResult, GetTeamComponentsResult, GetTeamStylesResult, GetComponentResult, GetStyleResult } from "./api-types";
+import { GetFileNodesResult, GetImageResult, GetImageFillsResult, GetFileResult, GetCommentsResult, PostCommentResult, GetUserMeResult, GetVersionsResult, GetTeamProjectsResult, GetProjectFilesResult, GetTeamComponentsResult, GetTeamStylesResult, GetComponentResult, GetStyleResult, GetFileComponentsResult } from "./api-types";
 import { ApiRequestMethod } from "./utils";
 declare type ApiClass = {
     request: ApiRequestMethod;
@@ -66,6 +66,7 @@ export declare function getTeamComponentsApi(this: ApiClass, team_id: string, op
         [x: string]: number;
     };
 }): Promise<GetTeamComponentsResult>;
+export declare function getFileComponentsApi(this: ApiClass, project_id: string): Promise<GetFileComponentsResult>;
 /** Get metadata on a component by key. */
 export declare function getComponentApi(this: ApiClass, componentKey: string): Promise<GetComponentResult>;
 export declare function getTeamStylesApi(this: ApiClass, team_id: string, opts?: {
