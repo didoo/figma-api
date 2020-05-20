@@ -170,6 +170,9 @@ export interface GetTeamComponentsResult {
         [x: string]: number;
     };
 }
+export interface GetFileComponentsResult {
+    components: ComponentMetadata[];
+}
 export interface GetTeamStylesResult {
     styles: StyleMetadata[];
     cursor: {

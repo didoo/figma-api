@@ -172,6 +172,10 @@ export interface GetTeamComponentsResult {
     cursor: { [x: string]: number },
 }
 
+export interface GetFileComponentsResult {
+    components: ComponentMetadata[],
+}
+
 export interface GetTeamStylesResult {
     styles: StyleMetadata[],
     cursor: { [x: string]: number },
