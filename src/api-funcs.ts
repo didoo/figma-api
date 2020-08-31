@@ -64,6 +64,8 @@ export function getImageApi(this: ApiClass,
         svg_include_id?: boolean,
         /** Whether to simplify inside/outside strokes and use stroke attribute if possible instead of <mask>. `Default: true` */
         svg_simplify_stroke?: boolean,
+        /** Use the full dimensions of the node regardless of whether or not it is cropped or the space around it is empty. Use this to export text nodes without cropping. `Default: false` */
+        use_absolute_bounds?: boolean,
         /** A specific version ID to get. Omitting this will get the current version of the file */
         version?: string,
     }
