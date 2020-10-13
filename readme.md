@@ -448,6 +448,7 @@ function oAuthToken(
     grant_type: 'authorization_code',
 ): Promise<{
     access_token: string,
+    refresh_token: string,
     expires_in: number,
 }>
 ```
