@@ -113,11 +113,15 @@ export function postCommentsApi(
     this: ApiClass,
     fileKey: string,
     message: string,
-    client_meta: Vector|FrameOffset
+    /** The position of where to place the comment. This can either be an absolute canvas position or the relative position within a frame. */
+    client_meta: Vector|FrameOffset,
+    /** (Optional) The comment to reply to, if any. This must be a root comment, that is, you cannot reply to a comment that is a reply itself (a reply has a parent_id). */
+    comment_id?: string,
 ): Promise<PostCommentResult> {
-    const body = {
+    const body: any = {
         message,
         client_meta,
+        comment_id,
     };
 
     return this.request<PostCommentResult>(`${API_DOMAIN}/${API_VER}/files/${fileKey}/comments`, {
