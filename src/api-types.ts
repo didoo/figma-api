@@ -65,7 +65,7 @@ export interface ProjectFile {
 
 /** An arrangement of published UI elements that can be instantiated across figma files */
 export interface ComponentMetadata {
-    /** The key of the component */
+    /** The unique identifier of the component */
     key: string,
     /** The unique identifier of the figma file which contains the component */
     file_key: string,
@@ -89,6 +89,32 @@ export interface ComponentMetadata {
     containing_page?: PageInfo,
 }
 
+/** A node containing a set of variants of a component */
+export interface ComponentSetMetadata {
+    /** The unique identifier of the component set */
+    key: string,
+    /** The unique identifier of the figma file which contains the component set */
+    file_key: string,
+    /** Id of the component set node within the figma file */
+    node_id: string,
+    /** URL link to the component set's thumbnail image */
+    thumbnail_url: string,
+    /** The name of the component set */
+    name: string,
+    /** The description of the component set as entered in the editor */
+    description: string,
+    /** The UTC ISO 8601 time at which the component set was created */
+    created_at: string,
+    /** The UTC ISO 8601 time at which the component set was updated */
+    updated_at: string,
+    /** The user who last updated the component set */
+    user: User,
+    /** Data on component set's containing frame, if component resides within a frame */
+    containing_frame?: FrameInfo,
+    /** Data on component set's containing page, if component resides in a multi-page file */
+    containing_page?: PageInfo,
+}
+
 export interface StyleMetadata {
     key: string,
     file_key: string,
@@ -100,16 +126,14 @@ export interface StyleMetadata {
     updated_at: string,
     created_at: string,
     sort_position: string,
-    user: User, 
+    user: User,
 }
 
 // -----------------------------------------------------------------
 
-export interface GetCommentsResult {
-    comments: Comment[]
-}
 
-export interface PostCommentResult extends Comment {}
+// FIGMA FILES
+// -----------------------------------------------------------------
 
 export interface GetFileResult {
     name: string,
@@ -154,10 +178,32 @@ export interface GetImageFillsResult {
     status?: number,
 };
 
+// COMMENTS
+// -----------------------------------------------------------------
+
+export interface GetCommentsResult {
+    comments: Comment[]
+}
+
+export interface PostCommentResult extends Comment {}
+
+// Nothing is returned from this endpoint (see: https://www.figma.com/developers/api#delete-comments-endpoint)
+export interface DeleteCommentsResult { }
+
+// USERS
+// -----------------------------------------------------------------
+
+export interface GetUserMeResult extends User { }
+
+// VERSION HISTORY
+// -----------------------------------------------------------------
 
 export interface GetVersionsResult {
     versions: Version[],
 };
+
+// PROJECTS
+// -----------------------------------------------------------------
 
 export interface GetTeamProjectsResult {
     projects: Project[],
@@ -166,6 +212,9 @@ export interface GetTeamProjectsResult {
 export interface GetProjectFilesResult {
     files: ProjectFile[],
 };
+
+// COMPONENTS AND STYLES
+// -----------------------------------------------------------------
 
 export interface GetTeamComponentsResult {
     components: ComponentMetadata[],
@@ -176,12 +225,26 @@ export interface GetFileComponentsResult {
     components: ComponentMetadata[],
 }
 
+export interface GetComponentResult extends ComponentMetadata { }
+
+export interface GetTeamComponentSetsResult {
+    component_sets: ComponentSetMetadata[],
+    cursor: { [x: string]: number },
+}
+
+export interface GetFileComponentSetsResult {
+    component_sets: ComponentSetMetadata[],
+}
+
+export interface GetComponentSetResult extends ComponentSetMetadata { }
+
 export interface GetTeamStylesResult {
     styles: StyleMetadata[],
     cursor: { [x: string]: number },
 }
 
-export interface GetUserMeResult extends User {}
+export interface GetFileStylesResult {
+    styles: StyleMetadata[],
+}
 
-export interface GetComponentResult extends ComponentMetadata {}
 export interface GetStyleResult extends StyleMetadata {}
