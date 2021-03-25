@@ -209,24 +209,6 @@ Comment
 
 <details>
 <summary>
-Api.getComments
-</summary>
-
-```ts
-Api.getComments(fileKey)
-```
-[List of comments](https://www.figma.com/developers/api#get-comments-endpoint) left on the file.
-
-Returns:
-```ts
-{
-    comments: Comment[],
-}
-```
-</details>
-
-<details>
-<summary>
 *Api.deleteComments*
 </summary>
 
