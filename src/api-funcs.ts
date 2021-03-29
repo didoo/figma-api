@@ -128,9 +128,7 @@ export function postCommentsApi(
      * (see `this.appendHeaders` in api-class.ts) will use the default 'application/x-www-form-urlencoded' content-type */
     return this.request<PostCommentResult>(`${API_DOMAIN}/${API_VER}/files/${fileKey}/comments`, {
         method: 'POST',
-        data: JSON.stringify(body),
-    }, {
-        'Content-Type': 'application/json'
+        data: body,
     });
 }
 

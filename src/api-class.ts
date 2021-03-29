@@ -45,10 +45,8 @@ export class Api {
         if (this.oAuthToken) headers['Authorization'] =  `Bearer ${this.oAuthToken}`;
     }
 
-    request: ApiRequestMethod = async <T>(url: string, opts?: { method: AxiosMethod, data: string }, headers?: { [x: string]: string }) => {
-
-        // prepare request header
-        headers = headers || {};
+    request: ApiRequestMethod = async <T>(url: string, opts?: { method: AxiosMethod, data: string }) => {
+        const headers = {};
         this.appendHeaders(headers);
 
         const axiosParams: AxiosRequestConfig = {
