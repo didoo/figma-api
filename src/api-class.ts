@@ -40,14 +40,16 @@ export class Api {
         }
     }
 
-    request: ApiRequestMethod = async <T>(url: string, opts?: { method: AxiosMethod, data: string }) => {
-
-        // prepare request header
-        const headers: { [x: string]: string } = {};
+    appendHeaders = (headers: { [x: string]: string }) => {
         if (this.personalAccessToken) headers['X-Figma-Token'] = this.personalAccessToken;
         if (this.oAuthToken) headers['Authorization'] =  `Bearer ${this.oAuthToken}`;
-        // TODO is there a better way to do it?
-        if (opts && opts.method === 'POST') headers['Content-Type'] = 'application/json';
+    }
+
+    request: ApiRequestMethod = async <T>(url: string, opts?: { method: AxiosMethod, data: string }, headers?: { [x: string]: string }) => {
+
+        // prepare request header
+        headers = headers || {};
+        this.appendHeaders(headers);
 
         const axiosParams: AxiosRequestConfig = {
             url,
