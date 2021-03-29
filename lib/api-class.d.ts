@@ -8,6 +8,9 @@ export declare class Api {
     } | {
         oAuthToken: string;
     });
+    appendHeaders: (headers: {
+        [x: string]: string;
+    }) => void;
     request: ApiRequestMethod;
     getFile: typeof getFileApi;
     getFileNodes: typeof getFileNodesApi;

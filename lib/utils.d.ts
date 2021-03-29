@@ -8,4 +8,6 @@ export declare class ApiError extends Error {
 export declare type ApiRequestMethod = <T>(url: string, opts?: {
     method: AxiosMethod;
     data: string;
+}, headers?: {
+    [x: string]: string;
 }) => Promise<T>;
