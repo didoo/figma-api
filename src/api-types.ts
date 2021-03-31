@@ -116,16 +116,27 @@ export interface ComponentSetMetadata {
 }
 
 export interface StyleMetadata {
+    /** The unique identifier of the style */
     key: string,
+    /** The unique identifier of the file which contains the style */
     file_key: string,
+    /** Id of the style node within the figma file */
     node_id: string,
+    /** The type of style */
     style_type: StyleType,
+    /** URL link to the style's thumbnail image */
     thumbnail_url: string,
+    /** Name of the style */
     name: string,
+    /** The description of the style as entered by the publisher */
     description: string,
-    updated_at: string,
+    /** The UTC ISO 8601 time at which the component set was created */
     created_at: string,
+    /** The UTC ISO 8601 time at which the style was updated */
+    updated_at: string,
+    /** The user who last updated the style */
     sort_position: string,
+    /** A user specified order number by which the style can be sorted */
     user: User,
 }
 
@@ -185,7 +196,8 @@ export interface GetCommentsResult {
     comments: Comment[]
 }
 
-export interface PostCommentResult extends Comment {}
+// This returns the Comment that was successfully posted (see: https://www.figma.com/developers/api#post-comments-endpoint)
+export interface PostCommentResult extends Comment { }
 
 // Nothing is returned from this endpoint (see: https://www.figma.com/developers/api#delete-comments-endpoint)
 export interface DeleteCommentsResult { }
@@ -217,15 +229,27 @@ export interface GetProjectFilesResult {
 // -----------------------------------------------------------------
 
 export interface GetTeamComponentsResult {
-    components: ComponentMetadata[],
-    cursor: { [x: string]: number },
+    status?: number,
+    error?: Boolean,
+    meta?: {
+        components: ComponentMetadata[],
+        cursor: { [x: string]: number },
+    },
 }
 
 export interface GetFileComponentsResult {
-    components: ComponentMetadata[],
+    status?: number,
+    error?: Boolean,
+    meta?: {
+        components: ComponentMetadata[],
+    },
 }
 
-export interface GetComponentResult extends ComponentMetadata { }
+export interface GetComponentResult {
+    status?: number,
+    error?: Boolean,
+    meta?: ComponentMetadata,
+}
 
 export interface GetTeamComponentSetsResult {
     component_sets: ComponentSetMetadata[],
@@ -233,18 +257,39 @@ export interface GetTeamComponentSetsResult {
 }
 
 export interface GetFileComponentSetsResult {
-    component_sets: ComponentSetMetadata[],
+    status?: number,
+    error?: Boolean,
+    meta?: {
+        component_sets: ComponentSetMetadata[],
+        cursor: { [x: string]: number },
+    },
 }
 
-export interface GetComponentSetResult extends ComponentSetMetadata { }
+export interface GetComponentSetResult {
+    status?: number,
+    error?: Boolean,
+    meta?: ComponentSetMetadata,
+}
 
 export interface GetTeamStylesResult {
-    styles: StyleMetadata[],
-    cursor: { [x: string]: number },
+    status?: number,
+    error?: Boolean,
+    meta?: {
+        styles: StyleMetadata[],
+        cursor: { [x: string]: number },
+    },
 }
 
 export interface GetFileStylesResult {
-    styles: StyleMetadata[],
+    status?: number,
+    error?: Boolean,
+    meta?: {
+        styles: StyleMetadata[],
+    },
 }
 
-export interface GetStyleResult extends StyleMetadata {}
+export interface GetStyleResult {
+    status?: number,
+    error?: Boolean,
+    meta?: StyleMetadata,
+}
