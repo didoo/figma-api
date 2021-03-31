@@ -484,6 +484,8 @@ export interface CANVAS {
 export interface FRAME {
     /** An array of nodes that are direct children of this node */
     children: Node[];
+    /** If true, layer is locked and cannot be edited, default `false` */
+    locked?: boolean;
     /** Background of the node */
     background: Paint[];
     /** Background color of the node. This is deprecated, as frames now support more than a solid color as a background. Please use the background field instead. */
@@ -527,6 +529,8 @@ export declare type GROUP = FRAME;
 export interface VECTOR {
     /** default: [] An array of export settings representing images to export from node */
     exportSettings: ExportSetting[];
+    /** If true, layer is locked and cannot be edited, default `false` */
+    locked?: boolean;
     /** How this node blends with nodes behind it in the scene (see blend mode section for more details) */
     blendMode: BlendMode;
     /** default: false Keep height and width constrained to same ratio */

@@ -439,7 +439,7 @@ export type Vector = {
 /** A 2x3 2D affine transformation matrix */
 export type Transform = [
     [ number, number, number ],
-    [ number, number, number ],
+    [ number, number, number ]
 ];
 
 export enum PathWindingRule {
@@ -576,6 +576,8 @@ export interface CANVAS {
 export interface FRAME {
     /** An array of nodes that are direct children of this node */
     children: Node[];
+    /** If true, layer is locked and cannot be edited, default `false` */
+    locked?: boolean,
     /** Background of the node */
     background: Paint[],
     /** Background color of the node. This is deprecated, as frames now support more than a solid color as a background. Please use the background field instead. */
@@ -626,6 +628,8 @@ export type GROUP = FRAME;
 export interface VECTOR {
     /** default: [] An array of export settings representing images to export from node */
     exportSettings: ExportSetting[];
+    /** If true, layer is locked and cannot be edited, default `false` */
+    locked?: boolean,
     /** How this node blends with nodes behind it in the scene (see blend mode section for more details) */
     blendMode: BlendMode;
     /** default: false Keep height and width constrained to same ratio */
@@ -789,52 +793,3 @@ export type Node<NType extends NodeType = NodeType> = {
 export function isNodeType<NType extends NodeType, R = Node<NType>>(node: Node<any>, type: NType): node is R {
     return node.type === type;
 }
-
-// ---------
-
-/*
-
-Earilier types parser from https://www.figma.com/developers/docs
-
-var ch = [ ...$0.children ]
-var types = {};
-
-ch.forEach(c => {
-	var typeName = c.querySelector('td > .developer_docs--literal--1pEvW').innerText;
-	var typeDesc = c.querySelector('td > .developer_docs--desc--1p4rP').innerText;
-	var typeFields = [ ...c.querySelectorAll('.developer_docs--tableProps--1_lpS > div') ];
-	
-	var typeFds = {};
-	types[typeName] = {
-		desc: typeDesc,
-		fields: typeFds,
-	};
-
-	typeFields.forEach(field => {
-		try {
-			var fieldName = field.querySelector('.developer_docs--literal--1pEvW').innerText;
-			var fieldType = field.querySelector('.developer_docs--type--3gJ4C').innerText;
-			var fieldDesc = field.children[1].innerText;
-			typeFds[fieldName] = {
-				type: fieldType,
-				desc: fieldDesc,
-			};
-		} catch {}
-	});
-});
-
-Object.entries(types).map(([ typeName, type ]) =>
-`/** ${type.desc} *
-export interface ${typeName} {
-    ${Object.entries(type.fields).map(([ fieldName, field ]) => (
-        `/** ${(field).desc} *\n${fieldName}: ${(field).type};`
-    )).join('\n')}
-}`
-).join('\n');
-
-Object.entries(types).map(([ typeName, type ]) =>
-`/** ${type.desc} *
-${typeName}: ${typeName},`
-).join('\n');
-
-*/

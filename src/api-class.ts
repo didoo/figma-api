@@ -1,5 +1,26 @@
-import { getFileApi, getFileNodesApi, getImageApi, getImageFillsApi, getCommentsApi, postCommentsApi, getUserMeApi, getVersionsApi, getTeamProjectsApi, getProjectFilesApi, getTeamComponentsApi, getComponentApi, getTeamStylesApi, getStyleApi } from './api-funcs';
-import axios, { AxiosRequestConfig } from 'axios';
+import {
+    getFileApi,
+    getFileNodesApi,
+    getImageApi,
+    getImageFillsApi,
+    getCommentsApi,
+    postCommentsApi,
+    deleteCommentsApi,
+    getUserMeApi,
+    getVersionsApi,
+    getTeamProjectsApi,
+    getProjectFilesApi,
+    getTeamComponentsApi,
+    getFileComponentsApi,
+    getComponentApi,
+    getTeamComponentSetsApi,
+    getFileComponentSetsApi,
+    getComponentSetApi,
+    getTeamStylesApi,
+    getFileStylesApi,
+    getStyleApi
+} from './api-funcs';
+import axios, { AxiosRequestConfig, Method as AxiosMethod } from 'axios';
 import { toQueryParams, ApiRequestMethod } from './utils';
 
 export class Api {
@@ -22,18 +43,20 @@ export class Api {
     appendHeaders = (headers: { [x: string]: string }) => {
         if (this.personalAccessToken) headers['X-Figma-Token'] = this.personalAccessToken;
         if (this.oAuthToken) headers['Authorization'] =  `Bearer ${this.oAuthToken}`;
-    };
+    }
 
-    request: ApiRequestMethod = async <T>(url: string, opts?: { method: string, data: string }) => {
+    request: ApiRequestMethod = async <T>(url: string, opts?: { method: AxiosMethod, data: string }) => {
         const headers = {};
         this.appendHeaders(headers);
+
         const axiosParams: AxiosRequestConfig = {
             url,
             ...opts,
             headers,
         };
+
         const res = await axios(axiosParams);
-        if (res.status !== 200) throw res.statusText;
+        if (Math.floor(res.status / 100) !== 2) throw res.statusText;
         return res.data;
     };
 
@@ -43,13 +66,19 @@ export class Api {
     getImageFills = getImageFillsApi;
     getComments = getCommentsApi;
     postComment = postCommentsApi;
+    deleteComments = deleteCommentsApi;
     getMe = getUserMeApi;
     getVersions = getVersionsApi;
     getTeamProjects = getTeamProjectsApi;
     getProjectFiles = getProjectFilesApi;
     getTeamComponents = getTeamComponentsApi;
+    getFileComponents = getFileComponentsApi;
     getComponent = getComponentApi;
+    getTeamComponentSets = getTeamComponentSetsApi;
+    getFileComponentSets = getFileComponentSetsApi;
+    getComponentSet = getComponentSetApi;
     getTeamStyles = getTeamStylesApi;
+    getFileStyles = getFileStylesApi;
     getStyle = getStyleApi;
 }
 

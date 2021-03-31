@@ -1,4 +1,4 @@
-import { getFileApi, getFileNodesApi, getImageApi, getImageFillsApi, getCommentsApi, postCommentsApi, getUserMeApi, getVersionsApi, getTeamProjectsApi, getProjectFilesApi, getTeamComponentsApi, getComponentApi, getTeamStylesApi, getStyleApi } from './api-funcs';
+import { getFileApi, getFileNodesApi, getImageApi, getImageFillsApi, getCommentsApi, postCommentsApi, deleteCommentsApi, getUserMeApi, getVersionsApi, getTeamProjectsApi, getProjectFilesApi, getTeamComponentsApi, getFileComponentsApi, getComponentApi, getTeamComponentSetsApi, getFileComponentSetsApi, getComponentSetApi, getTeamStylesApi, getFileStylesApi, getStyleApi } from './api-funcs';
 import { ApiRequestMethod } from './utils';
 export declare class Api {
     personalAccessToken?: string;
@@ -18,13 +18,19 @@ export declare class Api {
     getImageFills: typeof getImageFillsApi;
     getComments: typeof getCommentsApi;
     postComment: typeof postCommentsApi;
+    deleteComments: typeof deleteCommentsApi;
     getMe: typeof getUserMeApi;
     getVersions: typeof getVersionsApi;
     getTeamProjects: typeof getTeamProjectsApi;
     getProjectFiles: typeof getProjectFilesApi;
     getTeamComponents: typeof getTeamComponentsApi;
+    getFileComponents: typeof getFileComponentsApi;
     getComponent: typeof getComponentApi;
+    getTeamComponentSets: typeof getTeamComponentSetsApi;
+    getFileComponentSets: typeof getFileComponentSetsApi;
+    getComponentSet: typeof getComponentSetApi;
     getTeamStyles: typeof getTeamStylesApi;
+    getFileStyles: typeof getFileStylesApi;
     getStyle: typeof getStyleApi;
 }
 export declare function oAuthLink(client_id: string, redirect_uri: string, scope: 'file_read', state: string, response_type: 'code'): string;

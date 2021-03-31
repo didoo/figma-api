@@ -197,7 +197,7 @@ Api.postComment
 </summary>
 
 ```ts
-Api.postComment(fileKey: string, message: string, client_meta: Vector|FrameOffset)
+Api.postComment(fileKey: string, message: string, client_meta: Vector|FrameOffset, comment_id?: string)
 ```
 [Posts a new comment on the file](https://www.figma.com/developers/api#post-comments-endpoint) with specified location.
 
