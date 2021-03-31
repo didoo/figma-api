@@ -197,9 +197,9 @@ Api.postComment
 </summary>
 
 ```ts
-Api.postComment(fileKey: string, message: string, client_meta: Vector|FrameOffset, comment_id?: string)
+Api.postComment(fileKey, message, client_meta, comment_id?)
 ```
-[Posts a new comment on the file](https://www.figma.com/developers/api#post-comments-endpoint) with specified location.
+[Posts a new comment on the file](https://www.figma.com/developers/api#post-comments-endpoint).
 
 Returns:
 ```ts
@@ -209,10 +209,18 @@ Comment
 
 <details>
 <summary>
-*Api.deleteComments*
+Api.deleteComments
 </summary>
 
-*Not available yet.*
+```ts
+Api.deleteComment(fileKey, comment_id)
+```
+[Deletes a specific comment](https://www.figma.com/developers/api#delete-comments-endpoint). Only the person who made the comment is allowed to delete it.
+
+Returns:
+```
+Nothing is returned from this endpoint
+```
 </details>
 
 ### Users
@@ -309,7 +317,7 @@ Api.getTeamComponents
 Api.getTeamComponents(team_id, opts?: { page_size?, cursor? })
 ```
 
-[Get a paginated list](https://www.figma.com/developers/api#get-team-components-endpoint) of published components within a team library.
+[Get a paginated list of published components](https://www.figma.com/developers/api#get-team-components-endpoint) within a team library.
 
 Returns:
 ```ts
@@ -346,7 +354,7 @@ Api.getFileComponents
 Api.getFileComponents(fileKey)
 ```
 
-[Get metadata on a component by key.](https://www.figma.com/developers/api#get-file-components-endpoint)
+[Get a list of published components](https://www.figma.com/developers/api#get-file-components-endpoint) within a file library.
 
 Returns:
 ```ts
@@ -396,31 +404,112 @@ Returns:
     containing_frame: FrameInfo,
 },
 ```
-
 </details>
 
 <details>
 <summary>
-*Api.getTeamComponentSets*
+Api.getTeamComponentSets
 </summary>
 
-*Not available yet.*
+```ts
+Api.getTeamComponentSets(team_id, opts?: { page_size?, after?, before? })
+```
+
+[Get a paginated list of published component_sets](https://www.figma.com/developers/api#get-team-component-sets-endpoint) within a team library.
+
+Returns:
+```ts
+{
+    error: boolean,
+    meta: {
+        component_sets: [
+            /* ComponentSetMetadata */ {
+                key: string,
+                file_key: string,
+                node_id: string,
+                thumbnail_url: string,
+                name: string,
+                description: string,
+                updated_at: string,
+                created_at: string,
+                user: User,
+                containing_frame: FrameInfo,
+            },
+        ],
+    }
+    status: number
+}
+```
 </details>
 
 <details>
 <summary>
-*Api.getFileComponentSets*
+Api.getFileComponentSets
 </summary>
 
-*Not available yet.*
+```ts
+Api.getFileComponentSets(file_key)
+```
+
+[Get a list of published component_sets](https://www.figma.com/developers/api#get-file-component-sets-endpoint) within a file library.
+
+Returns:
+```ts
+{
+    error: boolean,
+    meta: {
+        component_sets: [
+            /* ComponentSetMetadata */ {
+                key: string,
+                file_key: string,
+                node_id: string,
+                thumbnail_url: string,
+                name: string,
+                description: string,
+                updated_at: string,
+                created_at: string,
+                user: User,
+                containing_frame: FrameInfo,
+            },
+        ],
+    }
+    status: number
+}
+```
 </details>
 
 <details>
 <summary>
-*Api.getComponentSet*
+Api.getComponentSet
 </summary>
 
-*Not available yet.*
+```ts
+Api.getComponentSet(componentsetKey)
+```
+
+[Get metadata on a component_set by key.](https://www.figma.com/developers/api#get-component-sets-endpoint)
+
+Returns:
+```ts
+{
+    error: boolean,
+    meta: {
+        /* ComponentSetMetadata */ {
+            key: string,
+            file_key: string,
+            node_id: string,
+            thumbnail_url: string,
+            name: string,
+            description: string,
+            updated_at: string,
+            created_at: string,
+            user: User,
+            containing_frame: FrameInfo,
+        }
+    }
+    status: number
+}
+```
 </details>
 
 <details>
@@ -432,7 +521,7 @@ Api.getTeamStyles
 Api.getTeamStyles(team_id, opts?: { page_size?, cursor? })
 ```
 
-[Get a paginated list](https://www.figma.com/developers/api#get-team-styles-endpoint) of published styles within a team library.
+[Get a paginated list of published styles](https://www.figma.com/developers/api#get-team-styles-endpoint) within a team library.
 
 Returns:
 ```ts
@@ -463,12 +552,40 @@ Returns:
 
 <details>
 <summary>
-*Api.getFileStyles*
+Api.getFileStyles
 </summary>
 
-*Not available yet.*
-</details>
+```ts
+Api.getFileStyles(file_key)
+```
 
+[Get a list of published styles](https://www.figma.com/developers/api#get-file-styles-endpoint) within a file library.
+
+Returns:
+```ts
+{
+    error: boolean,
+    meta: {
+        styles: [
+            {
+                key: string,
+                file_key: string,
+                node_id: string,
+                style_type: StyleType,
+                thumbnail_url: string,
+                name: string,
+                description: string,
+                updated_at: string,
+                created_at: string,
+                sort_position: string,
+                user: User,
+            },
+        ],
+    },
+    status: number,
+}
+```
+</details>
 
 <details>
 <summary>
