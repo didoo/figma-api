@@ -272,11 +272,12 @@ Api.getTeamProjects
 ```ts
 Api.getTeamProjects(team_id)
 ```
-[Lists the projects](https://www.figma.com/developers/api#get-team-projects-endpoint) for a specified team. Note that this will only return projects visible to the authenticated user or owner of the developer token.
+[Lists the projects](https://www.figma.com/developers/api#get-team-projects-endpoint) for a specified team. Note that this will only return projects visible to the authenticated user or owner of the developer token. Note: it is not currently possible to programmatically obtain the team id of a user just from a token. To obtain a team id, navigate to a team page of a team you are a part of. The team id will be present in the URL after the word team and before your team name.
 
 Returns:
 ```ts
 {
+    name: string,
     projects: { id: number, name: string }[],
 }
 ```
@@ -322,24 +323,28 @@ Api.getTeamComponents(team_id, opts?: { page_size?, cursor? })
 Returns:
 ```ts
 {
-    components: [
-        /* ComponentMetadata */ {
-            key: string,
-            file_key: string,
-            node_id: string,
-            thumbnail_url: string,
-            name: string,
-            description: string,
-            updated_at: string,
-            created_at: string,
-            user: User,
-            containing_frame: FrameInfo,
+    error: boolean,
+    meta: {
+        components: [
+            /* ComponentMetadata */ {
+                key: string,
+                file_key: string,
+                node_id: string,
+                thumbnail_url: string,
+                name: string,
+                description: string,
+                updated_at: string,
+                created_at: string,
+                user: User,
+                containing_frame: FrameInfo,
+            },
+        ],
+        cursor: {
+            before: number,
+            after: number,
         },
-    ],
-    cursor: {
-        before: number,
-        after: number,
     },
+    status: number
 }
 ```
 
@@ -359,20 +364,24 @@ Api.getFileComponents(fileKey)
 Returns:
 ```ts
 {
-    components: [
-        /* ComponentMetadata */ {
-            key: string,
-            file_key: string,
-            node_id: string,
-            thumbnail_url: string,
-            name: string,
-            description: string,
-            updated_at: string,
-            created_at: string,
-            user: User,
-            containing_frame: FrameInfo,
-        },
-    ]
+    error: boolean,
+    meta: {
+        components: [
+            /* ComponentMetadata */ {
+                key: string,
+                file_key: string,
+                node_id: string,
+                thumbnail_url: string,
+                name: string,
+                description: string,
+                updated_at: string,
+                created_at: string,
+                user: User,
+                containing_frame: FrameInfo,
+            },
+        ],
+    },
+    status: number
 }
 ```
 
@@ -391,18 +400,24 @@ Api.getComponent(componentKey)
 
 Returns:
 ```ts
-/* ComponentMetadata */ {
-    key: string,
-    file_key: string,
-    node_id: string,
-    thumbnail_url: string,
-    name: string,
-    description: string,
-    updated_at: string,
-    created_at: string,
-    user: User,
-    containing_frame: FrameInfo,
-},
+{
+    error: boolean,
+    meta: {
+        /* ComponentMetadata */ {
+            key: string,
+            file_key: string,
+            node_id: string,
+            thumbnail_url: string,
+            name: string,
+            description: string,
+            updated_at: string,
+            created_at: string,
+            user: User,
+            containing_frame: FrameInfo,
+        },
+    },
+    status: number
+}
 ```
 </details>
 
@@ -436,7 +451,11 @@ Returns:
                 containing_frame: FrameInfo,
             },
         ],
-    }
+        cursor: {
+            before: number,
+            after: number,
+        },
+    },
     status: number
 }
 ```
@@ -472,7 +491,7 @@ Returns:
                 containing_frame: FrameInfo,
             },
         ],
-    }
+    },
     status: number
 }
 ```
@@ -506,7 +525,7 @@ Returns:
             user: User,
             containing_frame: FrameInfo,
         }
-    }
+    },
     status: number
 }
 ```
@@ -526,25 +545,29 @@ Api.getTeamStyles(team_id, opts?: { page_size?, cursor? })
 Returns:
 ```ts
 {
-    styles: [
-        {
-            key: string,
-            file_key: string,
-            node_id: string,
-            style_type: StyleType,
-            thumbnail_url: string,
-            name: string,
-            description: string,
-            updated_at: string,
-            created_at: string,
-            sort_position: string,
-            user: User,
-        },
-    ],
+  error: boolean,
+  meta: {
+      styles: [
+          {
+              key: string,
+                file_key: string,
+                node_id: string,
+                style_type: StyleType,
+                thumbnail_url: string,
+                name: string,
+                description: string,
+                updated_at: string,
+                created_at: string,
+                sort_position: string,
+                user: User,
+            },
+        ],
         cursor: {
-        before: number,
-        after: number,
+            before: number,
+            after: number,
+        },
     },
+    status: number
 }
 ```
 
@@ -582,7 +605,7 @@ Returns:
             },
         ],
     },
-    status: number,
+    status: number
 }
 ```
 </details>
@@ -600,18 +623,23 @@ Api.getStyle(styleKey)
 
 Returns:
 ```ts
-{
-    key: string,
-    file_key: string,
-    node_id: string,
-    style_type: StyleType,
-    thumbnail_url: string,
-    name: string,
-    description: string,
-    updated_at: string,
-    created_at: string,
-    sort_position: string,
-    user: User,
+    error: boolean,
+    meta: {
+        {
+            key: string,
+            file_key: string,
+            node_id: string,
+            style_type: StyleType,
+            thumbnail_url: string,
+            name: string,
+            description: string,
+            updated_at: string,
+            created_at: string,
+            sort_position: string,
+            user: User,
+        },
+    },
+    status: number
 }
 ```
 
