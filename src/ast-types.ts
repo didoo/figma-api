@@ -741,6 +741,9 @@ export interface SLICE {
 /** A node that can have instances created of it that share the same properties */
 export type COMPONENT = FRAME;
 
+/** A node that can have instances created of it that share the same properties */
+export type COMPONENT_SET = FRAME;
+
 /** An instance of a component, changes to the component result in the same changes applied to the instance */
 export type INSTANCE<ComponentID = string> = FRAME & {
     /** ID of component that this instance came from, refers to components table (see endpoints section below) */
@@ -777,6 +780,8 @@ export type NodeTypes = {
     SLICE: SLICE,
     /** A node that can have instances created of it that share the same properties */
     COMPONENT: COMPONENT,
+    /** A node that can have instances created of it that share the same properties */
+    COMPONENT_SET: COMPONENT_SET,
     /** An instance of a component, changes to the component result in the same changes applied to the instance */
     INSTANCE: INSTANCE,
 };
