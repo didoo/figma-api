@@ -16,7 +16,7 @@ Promises & ES6.
 
 or browser version:
 
-`https://raw.githubusercontent.com/Morglod/figma-api/master/lib/figma-api.js`  
+`https://raw.githubusercontent.com/Morglod/figma-api/master/lib/figma-api.js`
 `https://raw.githubusercontent.com/Morglod/figma-api/master/lib/figma-api.min.js`
 
 All api in browser exported to global `Figma` object.
@@ -50,10 +50,16 @@ Change API endpoint setting `Figma.API_DOMAIN` & `Figma.API_VER` variables.
 
 ## Api
 
-### `new Api ({ personalAccessToken, oAuthToken })`
+We have followed the same organisation as the official [Figma API documentation](https://www.figma.com/developers/api) to describe our API methods, so it's easier to find the exact endpoint call you are looking for.
 
-Creates new Api object with specified `personal` or `oAuthToken`.  
-[Documentation on how to get tokens](https://www.figma.com/developers/docs#authentication)
+### Authentication
+
+#### `new Api ({ personalAccessToken, oAuthToken })`
+
+Creates new Api object with specified `personal` or `oAuthToken`.
+[Documentation on how to get tokens](https://www.figma.com/developers/api#authentication)
+
+### Figma files
 
 <details>
 <summary>
@@ -63,10 +69,10 @@ Api.getFile
 ```ts
 Api.getFile(fileKey, opts?: { version?, geometry? })
 ```
-[Require file data](https://www.figma.com/developers/docs#get-files-endpoint) with specified version.  
+[Require file data](https://www.figma.com/developers/api#get-files-endpoint) with specified version.
 Set `geometry='paths'` to export vector data.
 
-Returns:  
+Returns:
 ```ts
 {
     name: string,
@@ -89,10 +95,10 @@ Api.getFileNodes
 ```ts
 Api.getFileNodes(fileKey, ids, opts?: { version?, geometry? })
 ```
-[Require file nodes data](https://www.figma.com/developers/docs#get-file-nodes-endpoint) with specified version.  
+[Require file nodes data](https://www.figma.com/developers/api#get-file-nodes-endpoint) with specified version.
 Set `geometry='paths'` to export vector data.
 
-Returns:  
+Returns:
 ```ts
 {
     name: string,
@@ -131,8 +137,8 @@ Api.getImage(fileKey, opts?: {
     /** A specific version ID to get. Omitting this will get the current version of the file */
     version?: string,
 })
-```  
-[Renders images](https://www.figma.com/developers/docs#get-images-endpoint) from a file.
+```
+[Renders images](https://www.figma.com/developers/api#get-images-endpoint) from a file.
 
 Returns:
 ```ts
@@ -151,11 +157,11 @@ Api.getImageFills
 
 ```ts
 Api.getImageFills(fileKey)
-```  
+```
 
-[Returns download links for all images present in image fills in a document.](https://www.figma.com/developers/docs#get-image-fills-endpoint)
+[Returns download links for all images present in image fills in a document.](https://www.figma.com/developers/api#get-image-fills-endpoint)
 
-Returns:  
+Returns:
 ```ts
 {
     images?: {
@@ -165,6 +171,8 @@ Returns:
 ```
 </details>
 
+### Comments
+
 <details>
 <summary>
 Api.getComments
@@ -173,9 +181,9 @@ Api.getComments
 ```ts
 Api.getComments(fileKey)
 ```
-[List of comments](https://www.figma.com/developers/docs#get-comments-endpoint) left on the file.
+[List of comments](https://www.figma.com/developers/api#get-comments-endpoint) left on the file.
 
-Returns:  
+Returns:
 ```ts
 {
     comments: Comment[],
@@ -189,15 +197,33 @@ Api.postComment
 </summary>
 
 ```ts
-Api.postComment(fileKey: string, message: string, client_meta: Vector|FrameOffset, comment_id?: string)
+Api.postComment(fileKey, message, client_meta, comment_id?)
 ```
-[Posts a new comment on the file](https://www.figma.com/developers/docs#post-comments-endpoint) with specified location.
+[Posts a new comment on the file](https://www.figma.com/developers/api#post-comments-endpoint).
 
-Returns:  
+Returns:
 ```ts
 Comment
 ```
 </details>
+
+<details>
+<summary>
+Api.deleteComments
+</summary>
+
+```ts
+Api.deleteComment(fileKey, comment_id)
+```
+[Deletes a specific comment](https://www.figma.com/developers/api#delete-comments-endpoint). Only the person who made the comment is allowed to delete it.
+
+Returns:
+```
+Nothing is returned from this endpoint
+```
+</details>
+
+### Users
 
 <details>
 <summary>
@@ -207,13 +233,15 @@ Api.getMe
 ```ts
 Api.getMe()
 ```
-[You can use the Users Endpoint](https://www.figma.com/developers/docs#users-endpoints) to access information regarding the currently authenticated User. When using OAuth 2, the User in question must be authenticated through the Figma API to access their information.
+[You can use the Users Endpoint](https://www.figma.com/developers/api#users-endpoints) to access information regarding the currently authenticated User. When using OAuth 2, the User in question must be authenticated through the Figma API to access their information.
 
-Returns:  
+Returns:
 ```ts
 User
 ```
 </details>
+
+### Version history
 
 <details>
 <summary>
@@ -223,16 +251,18 @@ Api.getVersions
 ```ts
 Api.getVersions(fileKey)
 ```
-A [list of the version](https://www.figma.com/developers/docs#get-file-versions-endpoint) history of a file. The version history consists of versions, manually-saved additions to the version history of a file.  
+A [list of the version](https://www.figma.com/developers/api#get-file-versions-endpoint) history of a file. The version history consists of versions, manually-saved additions to the version history of a file.
 If the account is not on a paid team, version history is limited to the past 30 days. Note that version history will not include autosaved versions.
 
-Returns:  
+Returns:
 ```ts
 {
     versions: Version[]
 }
 ```
 </details>
+
+### Projects
 
 <details>
 <summary>
@@ -242,11 +272,12 @@ Api.getTeamProjects
 ```ts
 Api.getTeamProjects(team_id)
 ```
-[Lists the projects](https://www.figma.com/developers/docs#get-team-projects-endpoint) for a specified team. Note that this will only return projects visible to the authenticated user or owner of the developer token.
+[Lists the projects](https://www.figma.com/developers/api#get-team-projects-endpoint) for a specified team. Note that this will only return projects visible to the authenticated user or owner of the developer token. Note: it is not currently possible to programmatically obtain the team id of a user just from a token. To obtain a team id, navigate to a team page of a team you are a part of. The team id will be present in the URL after the word team and before your team name.
 
-Returns:  
+Returns:
 ```ts
 {
+    name: string,
     projects: { id: number, name: string }[],
 }
 ```
@@ -260,9 +291,9 @@ Api.getProjectFiles
 ```ts
 Api.getProjectFiles(project_id)
 ```
-[List the files](https://www.figma.com/developers/docs#get-project-files-endpoint) in a given project.
+[List the files](https://www.figma.com/developers/api#get-project-files-endpoint) in a given project.
 
-Returns:  
+Returns:
 ```ts
 {
     files: {
@@ -276,6 +307,8 @@ Returns:
 
 </details>
 
+### Components and styles
+
 <details>
 <summary>
 Api.getTeamComponents
@@ -285,29 +318,70 @@ Api.getTeamComponents
 Api.getTeamComponents(team_id, opts?: { page_size?, cursor? })
 ```
 
-[Get a paginated list](https://www.figma.com/developers/docs#get-team-components-endpoint) of published components within a team library.
+[Get a paginated list of published components](https://www.figma.com/developers/api#get-team-components-endpoint) within a team library.
 
-Returns:  
+Returns:
 ```ts
 {
-    components: [
-        /* ComponentMetadata */ {
-            key: string,
-            file_key: string,
-            node_id: string,
-            thumbnail_url: string,
-            name: string,
-            description: string,
-            updated_at: string,
-            created_at: string,
-            user: User, 
-            containing_frame: FrameInfo, 
+    error: boolean,
+    meta: {
+        components: [
+            /* ComponentMetadata */ {
+                key: string,
+                file_key: string,
+                node_id: string,
+                thumbnail_url: string,
+                name: string,
+                description: string,
+                updated_at: string,
+                created_at: string,
+                user: User,
+                containing_frame: FrameInfo,
+            },
+        ],
+        cursor: {
+            before: number,
+            after: number,
         },
-    ],
-    cursor: { 
-        before: number,
-        after: number,
     },
+    status: number
+}
+```
+
+</details>
+
+<details>
+<summary>
+Api.getFileComponents
+</summary>
+
+```ts
+Api.getFileComponents(fileKey)
+```
+
+[Get a list of published components](https://www.figma.com/developers/api#get-file-components-endpoint) within a file library.
+
+Returns:
+```ts
+{
+    error: boolean,
+    meta: {
+        components: [
+            /* ComponentMetadata */ {
+                key: string,
+                file_key: string,
+                node_id: string,
+                thumbnail_url: string,
+                name: string,
+                description: string,
+                updated_at: string,
+                created_at: string,
+                user: User,
+                containing_frame: FrameInfo,
+            },
+        ],
+    },
+    status: number
 }
 ```
 
@@ -322,24 +396,139 @@ Api.getComponent
 Api.getComponent(componentKey)
 ```
 
-[Get metadata on a component by key.](https://www.figma.com/developers/docs#get-component-endpoint)
+[Get metadata on a component by key.](https://www.figma.com/developers/api#get-component-endpoint)
 
-Returns:  
+Returns:
 ```ts
-/* ComponentMetadata */ {
-    key: string,
-    file_key: string,
-    node_id: string,
-    thumbnail_url: string,
-    name: string,
-    description: string,
-    updated_at: string,
-    created_at: string,
-    user: User, 
-    containing_frame: FrameInfo, 
-},
+{
+    error: boolean,
+    meta: {
+        /* ComponentMetadata */ {
+            key: string,
+            file_key: string,
+            node_id: string,
+            thumbnail_url: string,
+            name: string,
+            description: string,
+            updated_at: string,
+            created_at: string,
+            user: User,
+            containing_frame: FrameInfo,
+        },
+    },
+    status: number
+}
+```
+</details>
+
+<details>
+<summary>
+Api.getTeamComponentSets
+</summary>
+
+```ts
+Api.getTeamComponentSets(team_id, opts?: { page_size?, after?, before? })
 ```
 
+[Get a paginated list of published component_sets](https://www.figma.com/developers/api#get-team-component-sets-endpoint) within a team library.
+
+Returns:
+```ts
+{
+    error: boolean,
+    meta: {
+        component_sets: [
+            /* ComponentSetMetadata */ {
+                key: string,
+                file_key: string,
+                node_id: string,
+                thumbnail_url: string,
+                name: string,
+                description: string,
+                updated_at: string,
+                created_at: string,
+                user: User,
+                containing_frame: FrameInfo,
+            },
+        ],
+        cursor: {
+            before: number,
+            after: number,
+        },
+    },
+    status: number
+}
+```
+</details>
+
+<details>
+<summary>
+Api.getFileComponentSets
+</summary>
+
+```ts
+Api.getFileComponentSets(file_key)
+```
+
+[Get a list of published component_sets](https://www.figma.com/developers/api#get-file-component-sets-endpoint) within a file library.
+
+Returns:
+```ts
+{
+    error: boolean,
+    meta: {
+        component_sets: [
+            /* ComponentSetMetadata */ {
+                key: string,
+                file_key: string,
+                node_id: string,
+                thumbnail_url: string,
+                name: string,
+                description: string,
+                updated_at: string,
+                created_at: string,
+                user: User,
+                containing_frame: FrameInfo,
+            },
+        ],
+    },
+    status: number
+}
+```
+</details>
+
+<details>
+<summary>
+Api.getComponentSet
+</summary>
+
+```ts
+Api.getComponentSet(componentsetKey)
+```
+
+[Get metadata on a component_set by key.](https://www.figma.com/developers/api#get-component-sets-endpoint)
+
+Returns:
+```ts
+{
+    error: boolean,
+    meta: {
+        /* ComponentSetMetadata */ {
+            key: string,
+            file_key: string,
+            node_id: string,
+            thumbnail_url: string,
+            name: string,
+            description: string,
+            updated_at: string,
+            created_at: string,
+            user: User,
+            containing_frame: FrameInfo,
+        }
+    },
+    status: number
+}
+```
 </details>
 
 <details>
@@ -351,33 +540,74 @@ Api.getTeamStyles
 Api.getTeamStyles(team_id, opts?: { page_size?, cursor? })
 ```
 
-[Get a paginated list](https://www.figma.com/developers/docs#get-team-styles-endpoint) of published styles within a team library.
+[Get a paginated list of published styles](https://www.figma.com/developers/api#get-team-styles-endpoint) within a team library.
 
-Returns:  
+Returns:
 ```ts
 {
-    styles: [
-        {
-            key: string,
-            file_key: string,
-            node_id: string,
-            style_type: StyleType,
-            thumbnail_url: string,
-            name: string,
-            description: string,
-            updated_at: string,
-            created_at: string,
-            sort_position: string,
-            user: User, 
+  error: boolean,
+  meta: {
+      styles: [
+          {
+              key: string,
+                file_key: string,
+                node_id: string,
+                style_type: StyleType,
+                thumbnail_url: string,
+                name: string,
+                description: string,
+                updated_at: string,
+                created_at: string,
+                sort_position: string,
+                user: User,
+            },
+        ],
+        cursor: {
+            before: number,
+            after: number,
         },
-    ],
-        cursor: { 
-        before: number,
-        after: number,
-    }, 
+    },
+    status: number
 }
 ```
 
+</details>
+
+<details>
+<summary>
+Api.getFileStyles
+</summary>
+
+```ts
+Api.getFileStyles(file_key)
+```
+
+[Get a list of published styles](https://www.figma.com/developers/api#get-file-styles-endpoint) within a file library.
+
+Returns:
+```ts
+{
+    error: boolean,
+    meta: {
+        styles: [
+            {
+                key: string,
+                file_key: string,
+                node_id: string,
+                style_type: StyleType,
+                thumbnail_url: string,
+                name: string,
+                description: string,
+                updated_at: string,
+                created_at: string,
+                sort_position: string,
+                user: User,
+            },
+        ],
+    },
+    status: number
+}
+```
 </details>
 
 <details>
@@ -389,22 +619,27 @@ Api.getStyle
 Api.getStyle(styleKey)
 ```
 
-[Get metadata on a style by key.](https://www.figma.com/developers/docs#get-style-endpoint)
+[Get metadata on a style by key.](https://www.figma.com/developers/api#get-style-endpoint)
 
-Returns:  
+Returns:
 ```ts
-{
-    key: string,
-    file_key: string,
-    node_id: string,
-    style_type: StyleType,
-    thumbnail_url: string,
-    name: string,
-    description: string,
-    updated_at: string,
-    created_at: string,
-    sort_position: string,
-    user: User, 
+    error: boolean,
+    meta: {
+        {
+            key: string,
+            file_key: string,
+            node_id: string,
+            style_type: StyleType,
+            thumbnail_url: string,
+            name: string,
+            description: string,
+            updated_at: string,
+            created_at: string,
+            sort_position: string,
+            user: User,
+        },
+    },
+    status: number
 }
 ```
 
@@ -415,16 +650,16 @@ Returns:
 Helpers
 </summary>
 
-`Api.appendHeaders(headers: {}): void`  
+`Api.appendHeaders(headers: {}): void`
 Populate headers with auth.
 
-`Api.request<T>(url, opts): Promise<T>`  
-Make request with auth headers.  
+`Api.request<T>(url, opts): Promise<T>`
+Make request with auth headers.
 </details>
 
 ### Auth helpers
 
-[OAuth figma documentation](https://www.figma.com/developers/docs#auth-oauth).
+[OAuth figma documentation](https://www.figma.com/developers/api#auth-oauth).
 
 ```ts
 function oAuthLink(
@@ -435,8 +670,8 @@ function oAuthLink(
     response_type: 'code',
 ): string;
 ```
-Returns link for OAuth auth flow.  
-User should open this link, allow access and he will be redirected to `redirect_uri?code=<code>`.  
+Returns link for OAuth auth flow.
+User should open this link, allow access and he will be redirected to `redirect_uri?code=<code>`.
 Then you should use `oAuthToken` method to get `access token`.
 
 ```ts
