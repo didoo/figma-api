@@ -276,6 +276,8 @@ declare type EffectShadow_ = {
     blendMode: BlendMode;
     /** How far the shadow is projected in the x and y directions */
     offset: Vector;
+    /** How far the shadow spreads */
+    spread: Number;
 };
 export declare type EffectShadow = {
     type: EffectType.DROP_SHADOW | EffectType.INNER_SHADOW;
@@ -633,6 +635,8 @@ export interface SLICE {
 }
 /** A node that can have instances created of it that share the same properties */
 export declare type COMPONENT = FRAME;
+/** A node that can have instances created of it that share the same properties */
+export declare type COMPONENT_SET = FRAME;
 /** An instance of a component, changes to the component result in the same changes applied to the instance */
 export declare type INSTANCE<ComponentID = string> = FRAME & {
     /** ID of component that this instance came from, refers to components table (see endpoints section below) */
@@ -668,6 +672,8 @@ export declare type NodeTypes = {
     SLICE: SLICE;
     /** A node that can have instances created of it that share the same properties */
     COMPONENT: COMPONENT;
+    /** A node that can have instances created of it that share the same properties */
+    COMPONENT_SET: COMPONENT_SET;
     /** An instance of a component, changes to the component result in the same changes applied to the instance */
     INSTANCE: INSTANCE;
 };
