@@ -70,7 +70,7 @@ export enum LineHeightUnit {
 }
 
 /**
- * Map<StyleType, String>  
+ * Map<StyleType, String>
  * A mapping of a StyleType to style ID (see Style) of styles present on this node. The style ID can be used to look up more information about the style in the top-level styles field.
 */
 export type StylesMap = { [styleType in StyleType]: string };
@@ -97,9 +97,9 @@ export enum ConstrainType {
 /** Sizing constraint for exports */
 export type Constrain = {
     /**
-     * Type of constraint to apply; string enum with potential values below  
-     * "SCALE": Scale by value  
-     * "WIDTH": Scale proportionally and set width to value  
+     * Type of constraint to apply; string enum with potential values below
+     * "SCALE": Scale by value
+     * "WIDTH": Scale proportionally and set width to value
      * "HEIGHT": Scale proportionally and set height to value
      */
     type: ConstrainType,
@@ -120,79 +120,79 @@ export type Rectangle = {
 };
 
 /**
- * This type is a string enum with the following possible values  
- * Normal blends:  
- * "PASS_THROUGH" (Only applicable to objects with children)  
- * "NORMAL"  
- *   
- * Darken:  
- * "DARKEN"  
- * "MULTIPLY"  
- * "LINEAR_BURN"  
- * "COLOR_BURN"  
- *   
- * Lighten:  
- * "LIGHTEN"  
- * "SCREEN"  
- * "LINEAR_DODGE"  
- * "COLOR_DODGE"  
- *   
- * Contrast:  
- * "OVERLAY"  
- * "SOFT_LIGHT"  
- * "HARD_LIGHT"  
- *   
- * Inversion:  
- * "DIFFERENCE"  
- * "EXCLUSION"  
- *   
- * Component:  
- * "HUE"  
- * "SATURATION"  
- * "COLOR"  
- * "LUMINOSITY"  
+ * This type is a string enum with the following possible values
+ * Normal blends:
+ * "PASS_THROUGH" (Only applicable to objects with children)
+ * "NORMAL"
+ *
+ * Darken:
+ * "DARKEN"
+ * "MULTIPLY"
+ * "LINEAR_BURN"
+ * "COLOR_BURN"
+ *
+ * Lighten:
+ * "LIGHTEN"
+ * "SCREEN"
+ * "LINEAR_DODGE"
+ * "COLOR_DODGE"
+ *
+ * Contrast:
+ * "OVERLAY"
+ * "SOFT_LIGHT"
+ * "HARD_LIGHT"
+ *
+ * Inversion:
+ * "DIFFERENCE"
+ * "EXCLUSION"
+ *
+ * Component:
+ * "HUE"
+ * "SATURATION"
+ * "COLOR"
+ * "LUMINOSITY"
  */
 export enum BlendMode {
     // Normal blends:
     /** (Only applicable to objects with children) */
     PASS_THROUGH = "PASS_THROUGH",
     /** (Only applicable to objects with children) */
-    NORMAL = "NORMAL",  
-    
-    /** Darken */  
-    DARKEN = "DARKEN",  
-    MULTIPLY = "MULTIPLY",  
-    LINEAR_BURN = "LINEAR_BURN",  
-    COLOR_BURN = "COLOR_BURN",  
-    
+    NORMAL = "NORMAL",
+
+    /** Darken */
+    DARKEN = "DARKEN",
+    MULTIPLY = "MULTIPLY",
+    LINEAR_BURN = "LINEAR_BURN",
+    COLOR_BURN = "COLOR_BURN",
+
     /** Lighten */
-    LIGHTEN = "LIGHTEN",  
-    SCREEN = "SCREEN",  
-    LINEAR_DODGE = "LINEAR_DODGE",  
-    COLOR_DODGE = "COLOR_DODGE",  
-    
+    LIGHTEN = "LIGHTEN",
+    SCREEN = "SCREEN",
+    LINEAR_DODGE = "LINEAR_DODGE",
+    COLOR_DODGE = "COLOR_DODGE",
+
     /** Contrast */
-    OVERLAY = "OVERLAY",  
-    SOFT_LIGHT = "SOFT_LIGHT",  
-    HARD_LIGHT = "HARD_LIGHT",  
-    
+    OVERLAY = "OVERLAY",
+    SOFT_LIGHT = "SOFT_LIGHT",
+    HARD_LIGHT = "HARD_LIGHT",
+
     /** Inversion */
-    DIFFERENCE = "DIFFERENCE",  
-    EXCLUSION = "EXCLUSION",  
-    
-    /** Component */  
-    HUE = "HUE",  
-    SATURATION = "SATURATION",  
-    COLOR = "COLOR",  
-    LUMINOSITY = "LUMINOSITY",  
+    DIFFERENCE = "DIFFERENCE",
+    EXCLUSION = "EXCLUSION",
+
+    /** Component */
+    HUE = "HUE",
+    SATURATION = "SATURATION",
+    COLOR = "COLOR",
+    LUMINOSITY = "LUMINOSITY",
 }
 
 /**
- * Enum describing animation easing curves  
- * This type is a string enum with the following possible values  
- * "EASE_IN": Ease in with an animation curve similar to CSS ease-in.  
- * "EASE_OUT": Ease out with an animation curve similar to CSS ease-out.  
- * "EASE_IN_AND_OUT": Ease in and then out with an animation curve similar to CSS ease-in-out.  
+ * Enum describing animation easing curves
+ * This type is a string enum with the following possible values
+ * "EASE_IN": Ease in with an animation curve similar to CSS ease-in.
+ * "EASE_OUT": Ease out with an animation curve similar to CSS ease-out.
+ * "EASE_IN_AND_OUT": Ease in and then out with an animation curve similar to CSS ease-in-out.
  */
 export enum EasingType {
     /** Ease in with an animation curve similar to CSS ease-in. */
@@ -222,21 +222,21 @@ export enum LayoutConstraintHorizontal {
 /** Layout constraint relative to containing Frame */
 export type LayoutConstraint = {
     /**
-     * Vertical constraint as an enum  
-     * "TOP": Node is laid out relative to top of the containing frame  
-     * "BOTTOM": Node is laid out relative to bottom of the containing frame  
-     * "CENTER": Node is vertically centered relative to containing frame  
-     * "TOP_BOTTOM": Both top and bottom of node are constrained relative to containing frame (node stretches with frame)  
-     * "SCALE": Node scales vertically with containing frame  
+     * Vertical constraint as an enum
+     * "TOP": Node is laid out relative to top of the containing frame
+     * "BOTTOM": Node is laid out relative to bottom of the containing frame
+     * "CENTER": Node is vertically centered relative to containing frame
+     * "TOP_BOTTOM": Both top and bottom of node are constrained relative to containing frame (node stretches with frame)
+     * "SCALE": Node scales vertically with containing frame
      */
     vertical: LayoutConstraintVertical,
     /**
-     * Horizontal constraint as an enum  
-     * "LEFT": Node is laid out relative to left of the containing frame  
-     * "RIGHT": Node is laid out relative to right of the containing frame  
-     * "CENTER": Node is horizontally centered relative to containing frame  
-     * "LEFT_RIGHT": Both left and right of node are constrained relative to containing frame (node stretches with frame)  
-     * "SCALE": Node scales horizontally with containing frame  
+     * Horizontal constraint as an enum
+     * "LEFT": Node is laid out relative to left of the containing frame
+     * "RIGHT": Node is laid out relative to right of the containing frame
+     * "CENTER": Node is horizontally centered relative to containing frame
+     * "LEFT_RIGHT": Both left and right of node are constrained relative to containing frame (node stretches with frame)
+     * "SCALE": Node scales horizontally with containing frame
      */
     horizontal: LayoutConstraintHorizontal,
 };
@@ -256,10 +256,10 @@ export enum LayoutGridAligment {
 /** Guides to align and place objects within a frame */
 export type LayoutGrid = {
     /**
-     * Orientation of the grid as a string enum  
-     * "COLUMNS": Vertical grid  
-     * "ROWS": Horizontal grid  
-     * "GRID": Square grid  
+     * Orientation of the grid as a string enum
+     * "COLUMNS": Vertical grid
+     * "ROWS": Horizontal grid
+     * "GRID": Square grid
      */
     pattern: LayoutGridPattern,
 
@@ -275,10 +275,10 @@ export type LayoutGrid = {
     // The following properties are only meaningful for directional grids (COLUMNS or ROWS)
 
     /**
-     * Positioning of grid as a string enum  
-     * "MIN": Grid starts at the left or top of the frame  
-     * "MAX": Grid starts at the right or bottom of the frame  
-     * "CENTER": Grid is center aligned  
+     * Positioning of grid as a string enum
+     * "MIN": Grid starts at the left or top of the frame
+     * "MAX": Grid starts at the right or bottom of the frame
+     * "CENTER": Grid is center aligned
      */
     alignment: LayoutGridAligment,
 
@@ -316,6 +316,9 @@ type EffectShadow_ = {
 
     /** How far the shadow is projected in the x and y directions */
     offset: Vector,
+
+    /** How far the shadow spreads */
+    spread: Number,
 };
 
 export type EffectShadow = {
@@ -525,9 +528,9 @@ export interface FrameInfo {
     page_name: string,
 }
 
-/** 
+/**
  * NOT DOCUMENTED
- * 
+ *
  * Data on component's containing page, if component resides in a multi-page file
  */
 export interface PageInfo {
