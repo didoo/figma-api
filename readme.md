@@ -727,7 +727,7 @@ Check if node is type of specified node.
 ```
 git clone https://github.com/Morglod/figma-api.git
 cd figma-api
-git checkout dev
+git checkout main
 npm i
 npm run build
 ```
