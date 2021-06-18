@@ -7,8 +7,7 @@
   "scripts": {
     "build": "tsc && npm run-script browserify && npm run-script uglify",
     "browserify": "browserify lib/index.js --standalone Figma -o lib/figma-api.js",
-    "uglify": "browserify -g [ uglifyify ] lib/index.js --standalone Figma -o lib/figma-api.min.js",
-    "dev-test": "ts-node playground/test.ts"
+    "uglify": "browserify -g [ uglifyify ] lib/index.js --standalone Figma -o lib/figma-api.min.js"
   },
   "keywords": [
     "figma",
