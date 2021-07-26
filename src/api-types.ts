@@ -149,7 +149,7 @@ export interface StyleMetadata {
 export interface GetFileResult {
     name: string,
     lastModified: string,
-    thumbnailURL: string,
+    thumbnailUrl: string,
     version: string,
     document: Node<'DOCUMENT'>,
     components: { [nodeId: string]: Component },
@@ -157,11 +157,11 @@ export interface GetFileResult {
     styles: { [styleName: string]: Style },
 }
 
-/** The `name`, `lastModified`, `thumbnailURL`, and `version` attributes are all metadata of the specified file. */
+/** The `name`, `lastModified`, `thumbnailUrl`, and `version` attributes are all metadata of the specified file. */
 export interface GetFileNodesResult {
     name: string,
     lastModified: string,
-    thumbnailURL: string,
+    thumbnailUrl: string,
     version: string,
     err?: string,
     nodes: {
