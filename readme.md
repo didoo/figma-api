@@ -731,3 +731,12 @@ git checkout main
 npm i
 npm run build
 ```
+
+## Release
+
+```
+npm version [<newversion> | major | minor | patch]
+#if not yet logged in
+npm login
+npm publish
+```
