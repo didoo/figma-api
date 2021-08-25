@@ -77,7 +77,7 @@ Returns:
 {
     name: string,
     lastModified: string,
-    thumbnailURL: string,
+    thumbnailUrl: string,
     version: string,
     document: Node<'DOCUMENT'>,
     components: { [nodeId: string]: Component },
@@ -103,7 +103,7 @@ Returns:
 {
     name: string,
     lastModified: string,
-    thumbnailURL: string,
+    thumbnailUrl: string,
     err: string,
     nodes: {
         id: {
