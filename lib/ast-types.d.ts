@@ -431,15 +431,15 @@ export declare type StyleType = 'FILL' | 'TEXT' | 'EFFECT' | 'GRID';
 /** Data on the frame a component resides in */
 export interface FrameInfo {
     /** Id of the frame node within the figma file */
-    node_id: string;
+    nodeId: string;
     /** Name of the frame */
     name: string;
     /** Background color of the frame */
-    background_color: string;
+    backgroundColor: string;
     /** Id of the frame's residing page */
-    page_id: string;
+    pageId: string;
     /** Name of the frame's residing page */
-    page_name: string;
+    pageName: string;
 }
 /**
  * NOT DOCUMENTED
