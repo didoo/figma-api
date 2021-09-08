@@ -1,4 +1,4 @@
-import { Vector, FrameOffset, Component, Style, Node, FrameInfo, PageInfo, StyleType } from "./ast-types";
+import { Vector, FrameOffset, Component, Style, Node, FrameInfo, PageInfo, ContainingStateGroup, StyleType } from "./ast-types";
 /** A comment or reply left by a user */
 export interface Comment {
     /** Unique identifier for comment */
@@ -77,8 +77,10 @@ export interface ComponentMetadata {
     updated_at: string;
     /** The user who last updated the component */
     user: User;
-    /** Data on component's containing frame, if component resides within a frame */
-    containing_frame?: FrameInfo;
+    /** Data on component's containing frame, if component resides within a frame, plus the optional "containingStateGroup" if is a variant of a component_set */
+    containing_frame?: FrameInfo & {
+        containingStateGroup?: ContainingStateGroup;
+    };
     /** Data on component's containing page, if component resides in a multi-page file */
     containing_page?: PageInfo;
 }

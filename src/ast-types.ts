@@ -528,6 +528,19 @@ export interface FrameInfo {
     pageName: string,
 }
 
+/** Data on the "containingStateGroup" a component resides in */
+/** Notice: at the moment is not documented in the REST API documentation. I have raised the issue
+ *  (https://forum.figma.com/t/missing-containingstategroup-parameter-in-documentation-for-frameinfo/2558)
+ *  and filed a bug with the support, but no one replied. From what I understand, this extra parameters are
+ *  added when a component is a variant within a component_set (the name/nodeId are of the parent component_set)
+*/
+export interface ContainingStateGroup {
+    /** Name of the element's residing "state group" (likely, a component_set) */
+    name: string,
+    /** Id of the element's residing "state group" (likely, a component_set) */
+    nodeId: string,
+}
+
 /**
  * NOT DOCUMENTED
  *
