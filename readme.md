@@ -336,7 +336,7 @@ Returns:
                 updated_at: string,
                 created_at: string,
                 user: User,
-                containing_frame: FrameInfo,
+                containing_frame: FrameInfo (plus optional containingStateGroup),
             },
         ],
         cursor: {
@@ -377,7 +377,7 @@ Returns:
                 updated_at: string,
                 created_at: string,
                 user: User,
-                containing_frame: FrameInfo,
+                containing_frame: FrameInfo (plus optional containingStateGroup),
             },
         ],
     },
@@ -413,7 +413,7 @@ Returns:
             updated_at: string,
             created_at: string,
             user: User,
-            containing_frame: FrameInfo,
+            containing_frame: FrameInfo (plus optional containingStateGroup),
         },
     },
     status: number
