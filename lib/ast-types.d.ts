@@ -476,7 +476,7 @@ export interface Style {
     /** The name of the style */
     name: string;
     /** The type of style */
-    style_type: StyleType;
+    styleType: StyleType;
 }
 /** The root node */
 export interface DOCUMENT {
