@@ -60,7 +60,9 @@ export declare function getImageApi(this: ApiClass, fileKey: string, opts: {
 }): Promise<GetImageResult>;
 export declare function getImageFillsApi(this: ApiClass, fileKey: string): Promise<GetImageFillsResult>;
 export declare function getCommentsApi(this: ApiClass, fileKey: string): Promise<GetCommentsResult>;
-export declare function postCommentsApi(this: ApiClass, fileKey: string, message: string, 
+export declare function postCommentsApi(this: ApiClass, fileKey: string, 
+/** The text contents of the comment to post */
+message: string, 
 /** The position of where to place the comment. This can either be an absolute canvas position or the relative position within a frame. */
 client_meta: Vector | FrameOffset, 
 /** (Optional) The comment to reply to, if any. This must be a root comment, that is, you cannot reply to a comment that is a reply itself (a reply has a parent_id). */
@@ -81,9 +83,11 @@ team_id: string, opts?: {
     /** Cursor indicating which id before which to start retrieving components for. Exclusive with after. The cursor value is an internally tracked integer that doesn't correspond to any Ids */
     before?: number;
 }): Promise<GetTeamComponentsResult>;
-export declare function getFileComponentsApi(this: ApiClass, project_id: string): Promise<GetFileComponentsResult>;
+export declare function getFileComponentsApi(this: ApiClass, fileKey: string): Promise<GetFileComponentsResult>;
 /** Get metadata on a component by key. */
-export declare function getComponentApi(this: ApiClass, componentKey: string): Promise<GetComponentResult>;
+export declare function getComponentApi(this: ApiClass, 
+/** The unique identifier of the component. */
+key: string): Promise<GetComponentResult>;
 export declare function getTeamComponentSetsApi(this: ApiClass, 
 /** Id of the team to list component_sets from */
 team_id: string, opts?: {
@@ -95,7 +99,9 @@ team_id: string, opts?: {
     before?: number;
 }): Promise<GetTeamComponentSetsResult>;
 export declare function getFileComponentSetsApi(this: ApiClass, file_key: string): Promise<GetFileComponentSetsResult>;
-export declare function getComponentSetApi(this: ApiClass, componentsetKey: string): Promise<GetComponentSetResult>;
+export declare function getComponentSetApi(this: ApiClass, 
+/** The unique identifier of the component_set */
+key: string): Promise<GetComponentSetResult>;
 export declare function getTeamStylesApi(this: ApiClass, team_id: string, opts?: {
     /** Number of items in a paged list of results. Defaults to 30. */
     page_size?: number;
@@ -107,5 +113,5 @@ export declare function getTeamStylesApi(this: ApiClass, team_id: string, opts?:
 export declare function getFileStylesApi(this: ApiClass, file_key: string): Promise<GetFileStylesResult>;
 export declare function getStyleApi(this: ApiClass, 
 /** The unique identifier of the style */
-styleKey: string): Promise<GetStyleResult>;
+key: string): Promise<GetStyleResult>;
 export {};
