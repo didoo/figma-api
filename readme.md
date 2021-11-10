@@ -67,18 +67,7 @@ Api.getFile
 </summary>
 
 ```ts
-Api.getFile(fileKey, opts?: {
-    /** A specific version ID to get. Omitting this will get the current version of the file */
-    version?,
-    /** If specified, only a subset of the document will be returned corresponding to the nodes listed, their children, and everything between the root node and the listed nodes */
-    ids?,
-    /** Positive integer representing how deep into the document tree to traverse. For example, setting this to 1 returns only Pages, setting it to 2 returns Pages and all top level objects on each page. Not setting this parameter returns all nodes */
-    depth?,
-    /** Set to "paths" to export vector data */
-    geometry?,
-    /** A comma separated list of plugin IDs and/or the string "shared". Any data present in the document written by those plugins will be included in the result in the `pluginData` and `sharedPluginData` properties. */
-    plugin_data?: string,
-})
+Api.getFile(fileKey, opts?: { version?, ids?, depth?, geometry?, plugin_data?: string })
 ```
 [Require file data](https://www.figma.com/developers/api#get-files-endpoint) with specified version.
 </details>
@@ -89,16 +78,7 @@ Api.getFileNodes
 </summary>
 
 ```ts
-Api.getFileNodes(fileKey, ids, opts?: {
-    /** A specific version ID to get. Omitting this will get the current version of the file */
-    version?,
-    /** Positive integer representing how deep into the document tree to traverse. For example, setting this to 1 returns only Pages, setting it to 2 returns Pages and all top level objects on each page. Not setting this parameter returns all nodes */
-    depth?,
-    /** Set to "paths" to export vector data */
-    geometry?,
-    /** A comma separated list of plugin IDs and/or the string "shared". Any data present in the document written by those plugins will be included in the result in the `pluginData` and `sharedPluginData` properties. */
-    plugin_data?,
-})
+Api.getFileNodes(fileKey, ids, opts?: { version?, depth?, geometry?, plugin_data? })
 ```
 [Require file nodes data](https://www.figma.com/developers/api#get-file-nodes-endpoint) with specified version.
 </details>
@@ -109,22 +89,7 @@ Api.getImage
 </summary>
 
 ```ts
-Api.getImage(fileKey, opts?: {
-    /** A comma separated list of node IDs to render */
-    ids: string,
-    /** A number between 0.01 and 4, the image scaling factor */
-    scale: number,
-    /** Image output format */
-    format: 'jpg'|'png'|'svg'|'pdf',
-    /** Whether to include id attributes for all SVG elements. `Default: false` */
-    svg_include_id?: boolean,
-    /** Whether to simplify inside/outside strokes and use stroke attribute if possible instead of <mask>. `Default: true` */
-    svg_simplify_stroke?: boolean,
-    /** Use the full dimensions of the node regardless of whether or not it is cropped or the space around it is empty. Use this to export text nodes without cropping. `Default: false` */
-    use_absolute_bounds?,
-    /** A specific version ID to get. Omitting this will get the current version of the file */
-    version?: string,
-})
+Api.getImage(fileKey, opts?: { ids, scale, format, svg_include_id?, svg_simplify_stroke?, use_absolute_bounds?, version?: string })
 ```
 [Renders images](https://www.figma.com/developers/api#get-images-endpoint) from a file.
 </details>
