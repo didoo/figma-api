@@ -53,6 +53,8 @@ export enum TextCase {
     UPPER='UPPER',
     LOWER='LOWER',
     TITLE='TITLE',
+    SMALL_CAPS='SMALL_CAPS',
+    SMALL_CAPS_FORCED='SMALL_CAPS_FORCED',
 }
 
 /** Text decoration applied to the node */
@@ -60,6 +62,13 @@ export enum TextDecoration {
     NONE='NONE',
     STRIKETHROUGH='STRIKETHROUGH',
     UNDERLINE='UNDERLINE',
+}
+
+/** Dimensions along which text will auto resize, default is that the text does not auto-resize. */
+export enum TextAutoResize {
+    NONE='NONE',
+    HEIGHT='HEIGHT',
+    WIDTH_AND_HEIGHT='WIDTH_AND_HEIGHT',
 }
 
 /** The unit of the line height value specified by the user. */
@@ -193,6 +202,7 @@ export enum BlendMode {
  * "EASE_IN": Ease in with an animation curve similar to CSS ease-in.
  * "EASE_OUT": Ease out with an animation curve similar to CSS ease-out.
  * "EASE_IN_AND_OUT": Ease in and then out with an animation curve similar to CSS ease-in-out.
+ * "LINEAR": No easing, similar to CSS linear.
  */
 export enum EasingType {
     /** Ease in with an animation curve similar to CSS ease-in. */
@@ -201,6 +211,8 @@ export enum EasingType {
     EASE_OUT = 'EASE_OUT',
     /** Ease in and then out with an animation curve similar to CSS ease-in-out. */
     EASE_IN_AND_OUT = 'EASE_IN_AND_OUT',
+    /** No easing, similar to CSS linear. */
+    LINEAR = 'LINEAR',
 }
 
 export enum LayoutConstraintVertical {
@@ -241,13 +253,23 @@ export type LayoutConstraint = {
     horizontal: LayoutConstraintHorizontal,
 };
 
+export enum LayoutAlign {
+    /** Determines if the layer should stretch along the parent’s counter axis. This property is only provided for direct children of auto-layout frames. */
+    INHERIT='INHERIT',
+    STRETCH='STRETCH',
+    /** In horizontal auto-layout frames, "MIN" and "MAX" correspond to "TOP" and "BOTTOM". In vertical auto-layout frames, "MIN" and "MAX" correspond to "LEFT" and "RIGHT". */
+    MIN='MIN',
+    CENTER='CENTER',
+    MAX='MAX',
+}
+
 export enum LayoutGridPattern {
     COLUMNS = 'COLUMNS',
     ROWS = 'ROWS',
     GRID = 'GRID',
 }
 
-export enum LayoutGridAligment {
+export enum LayoutGridAlignment {
     MIN = 'MIN',
     MAX = 'MAX',
     CENTER = 'CENTER',
@@ -280,7 +302,7 @@ export type LayoutGrid = {
      * "MAX": Grid starts at the right or bottom of the frame
      * "CENTER": Grid is center aligned
      */
-    alignment: LayoutGridAligment,
+    alignment: LayoutGridAlignment,
 
     /** Spacing in between columns and rows */
     gutterSize: number,
@@ -291,6 +313,11 @@ export type LayoutGrid = {
     /** Number of columns or rows */
     count: number,
 };
+
+export enum AxisSizingMode {
+    FIXED='FIXED',
+    AUTO='AUTO',
+}
 
 export enum EffectType {
     INNER_SHADOW = 'INNER_SHADOW',
@@ -338,6 +365,17 @@ export function isEffectShadow(effect: Effect): effect is EffectShadow {
 
 export function isEffectBlur(effect: Effect): effect is EffectBlur {
     return (effect.type === EffectType.BACKGROUND_BLUR || effect.type === EffectType.LAYER_BLUR);
+}
+
+export type Hyperlink = {
+    /** Type of hyperlink */
+    type: 'URL'|'NODE',
+
+    /** URL being linked to, if URL type */
+    url: string;
+
+    /** ID of frame hyperlink points to, if NODE type */
+    nodeID: string;
 }
 
 export enum PaintType {
@@ -397,6 +435,10 @@ type PaintImage_ = {
     imageTransform?: Transform,
     /** Amount image is scaled by in tiling, only present if scaleMode is TILE */
     scalingFactor?: number,
+    /** Image rotation, in degrees. */
+    rotation: number,
+    /** A reference to the GIF embedded in this node, if the image is a GIF. To download the image using this reference, use the GET file images endpoint to retrieve the mapping from image references to image URLs */
+    gifRef: string,
 };
 
 export type PaintSolid = {
@@ -494,6 +536,8 @@ export type TypeStyle = {
     textCase?: TextCase,
     /** Text decoration applied to the node, default is `NONE` */
     textDecoration?: TextDecoration,
+    /** Dimensions along which text will auto resize, default is that the text does not auto-resize. Default is `NONE` */
+    textAutoResize?: 'NONE'|'HEIGHT'|'WIDTH_AND_HEIGHT',
     /** Horizontal text alignment as string enum */
     textAlignHorizontal: 'LEFT'|'RIGHT'|'CENTER'|'JUSTIFIED',
     /** Vertical text alignment as string enum */
@@ -502,10 +546,14 @@ export type TypeStyle = {
     letterSpacing: number,
     /** Paints applied to characters */
     fills: Paint[],
+    /** Link to a URL or frame */
+    hyperlink: Hyperlink,
+    /** A map of OpenType feature flags to 1 or 0, 1 if it is enabled and 0 if it is disabled. Note that some flags aren't reflected here. For example, SMCP (small caps) is still represented by the textCase field. */
+    opentypeFlags: { [flag: string]: number },
     /** Line height in px */
     lineHeightPx: number,
-    /** Line height as a percentage of normal line height */
-    lineHeightPercent: number,
+    /** @deprecated Line height as a percentage of normal line height. This is deprecated; in a future version of the API only lineHeightPx and lineHeightPercentFontSize will be returned. */
+    lineHeightPercent?: number,
     /** Line height as a percentage of the font size. Only returned when lineHeightPercent is not 100 */
     lineHeightPercentFontSize?: number,
     /** The unit of the line height value specified by the user. */
@@ -543,7 +591,7 @@ export interface ContainingStateGroup {
 
 /**
  * NOT DOCUMENTED
- *
+ * 
  * Data on component's containing page, if component resides in a multi-page file
  */
 export interface PageInfo {
@@ -566,6 +614,8 @@ export interface Style {
     key: string,
     /** The name of the style */
     name: string,
+    /** The description of the style */
+    description: string,
     /** The type of style */
     styleType: StyleType;
 }
@@ -593,11 +643,23 @@ export interface FRAME {
     /** An array of nodes that are direct children of this node */
     children: Node[];
     /** If true, layer is locked and cannot be edited, default `false` */
-    locked?: boolean,
-    /** Background of the node */
-    background: Paint[],
-    /** Background color of the node. This is deprecated, as frames now support more than a solid color as a background. Please use the background field instead. */
+    locked?: boolean;
+    /** @deprecated Background of the node. This is deprecated, as backgrounds for frames are now in the fills field. */
+    background: Paint[];
+    /** @deprecated Background color of the node. This is deprecated, as frames now support more than a solid color as a background. Please use the background field instead. */
     backgroundColor?: Color;
+    /** An array of fill paints applied to the node */
+    fills: Paint[];
+    /** An array of stroke paints applied to the node */
+    strokes: Paint[];
+    /** The weight of strokes on the node */
+    strokeWeight: number;
+    /** Position of stroke relative to vector outline, as a string enum */
+    strokeAlign: StrokeAlign;
+    /** Radius of each corner of the frame if a single radius is set for all corners */
+    cornerRadius: number;
+    /** Array of length 4 of the radius of each corner of the rectangle, starting in the top left and proceeding clockwise */
+    rectangleCornerRadii: [ number, number, number, number ];
     /** default: [] An array of export settings representing images to export from node */
     exportSettings: ExportSetting[];
     /** How this node blends with nodes behind it in the scene (see blend mode section for more details) */
@@ -606,6 +668,10 @@ export interface FRAME {
     preserveRatio: boolean;
     /** Horizontal and vertical layout constraints for node */
     constraints: LayoutConstraint;
+    /** Determines if the layer should stretch along the parent’s counter axis. This property is only provided for direct children of auto-layout frames. */
+    layoutAlign: LayoutAlign;
+    /** default: 0. This property is applicable only for direct children of auto-layout frames, ignored otherwise. Determines whether a layer should stretch along the parent’s primary axis. A 0 corresponds to a fixed size and 1 corresponds to stretch. */
+    layoutGrow?: number;
     /** default: null Node ID of node to transition to in prototyping */
     transitionNodeID?: string|null;
     /** default: null The duration of the prototyping transition on this node (in milliseconds). */
@@ -622,6 +688,32 @@ export interface FRAME {
     relativeTransform?: Transform;
     /** Does this node clip content outside of its bounds? */
     clipsContent: boolean;
+    /** Whether this layer uses auto-layout to position its children. default NONE */
+    layoutMode: 'NONE'|'HORIZONTAL'|'VERTICAL';
+    /** Whether the primary axis has a fixed length (determined by the user) or an automatic length (determined by the layout engine). This property is only applicable for auto-layout frames. Default AUTO */
+    primaryAxisSizingMode: AxisSizingMode;
+    /** Whether the counter axis has a fixed length (determined by the user) or an automatic length (determined by the layout engine). This property is only applicable for auto-layout frames. Default AUTO */
+    counterAxisSizingMode: AxisSizingMode;
+    /** Determines how the auto-layout frame’s children should be aligned in the primary axis direction. This property is only applicable for auto-layout frames. Default MIN */
+    primaryAxisAlignItems: 'MIN'|'CENTER'|'MAX'|'SPACE_BETWEEN';
+    /** Determines how the auto-layout frame’s children should be aligned in the counter axis direction. This property is only applicable for auto-layout frames. Default MIN */
+    counterAxisAlignItems: 'MIN'|'CENTER'|'MAX';
+    /** default: 0. The padding between the left border of the frame and its children. This property is only applicable for auto-layout frames. */
+    paddingLeft: number;
+    /** default: 0. The padding between the right border of the frame and its children. This property is only applicable for auto-layout frames. */
+    paddingRight: number;
+    /** default: 0. The padding between the top border of the frame and its children. This property is only applicable for auto-layout frames. */
+    paddingTop: number;
+    /** default: 0. The padding between the bottom border of the frame and its children. This property is only applicable for auto-layout frames. */
+    paddingBottom: number;
+    /** @deprecated default: 0. The horizontal padding between the borders of the frame and its children. This property is only applicable for auto-layout frames. Deprecated in favor of setting individual paddings. */
+    horizontalPadding: number;
+    /** @deprecated default: 0. The vertical padding between the borders of the frame and its children. This property is only applicable for auto-layout frames. Deprecated in favor of setting individual paddings. */
+    verticalPadding: number;
+    /** default: 0. The distance between children of the frame. This property is only applicable for auto-layout frames. */
+    itemSpacing: number;
+    /** Defines the scrolling behavior of the frame, if there exist contents outside of the frame boundaries. The frame can either scroll vertically, horizontally, or in both directions to the extents of the content contained within it. This behavior can be observed in a prototype. Default NONE */
+    overflowDirection: 'NONE'|'HORIZONTAL_SCROLLING'|'VERTICAL_SCROLLING'|'HORIZONTAL_AND_VERTICAL_SCROLLING';
     /** default: [] An array of layout grids attached to this node (see layout grids section for more details). GROUP nodes do not have this attribute */
     layoutGrids?: LayoutGrid[];
     /** default: [] An array of effects attached to this node (see effects section for more details) */
@@ -650,6 +742,10 @@ export interface VECTOR {
     blendMode: BlendMode;
     /** default: false Keep height and width constrained to same ratio */
     preserveRatio?: boolean;
+    /** Determines if the layer should stretch along the parent’s counter axis. This property is only provided for direct children of auto-layout frames. */
+    layoutAlign: LayoutAlign;
+    /** default: 0. This property is applicable only for direct children of auto-layout frames, ignored otherwise. Determines whether a layer should stretch along the parent’s primary axis. A 0 corresponds to a fixed size and 1 corresponds to stretch. */
+    layoutGrow?: number;
     /** Horizontal and vertical layout constraints for node */
     constraints: LayoutConstraint;
     /** default: null Node ID of node to transition to in prototyping */
@@ -678,6 +774,7 @@ export interface VECTOR {
     strokes: Paint[];
     /** The weight of strokes on the node */
     strokeWeight: number;
+    /** default: NONE. A string enum with value of "NONE", "ROUND", "SQUARE", "LINE_ARROW", or "TRIANGLE_ARROW", describing the end caps of vector paths. */
     strokeCap?: StrokeCap,
     /** Only specified if parameter geometry=paths is used. An array of paths representing the object stroke */
     strokeGeometry?: Path[];
@@ -736,7 +833,7 @@ export type TEXT = VECTOR & {
     characters: string;
     /** Style of text including font family and weight (see type style section for more information) */
     style: TypeStyle;
-    /** Array with same number of elements as characeters in text box, each element is a reference to the styleOverrideTable defined below and maps to the corresponding character in the characters field. Elements with value 0 have the default type style */
+    /** Array with same number of elements as characters in text box, each element is a reference to the styleOverrideTable defined below and maps to the corresponding character in the characters field. Elements with value 0 have the default type style */
     characterStyleOverrides: number[];
     /** Map from ID to TypeStyle for looking up style overrides */
     styleOverrideTable: { [mapId: number]: TypeStyle };
@@ -809,6 +906,8 @@ export type Node<NType extends NodeType = NodeType> = {
     name: string;
     visible: boolean;
     type: NType;
+    pluginData: any;
+    sharedPluginData: any;
 } & NodeTypes[NType];
 
 export function isNodeType<NType extends NodeType, R = Node<NType>>(node: Node<any>, type: NType): node is R {

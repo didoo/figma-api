@@ -20,6 +20,8 @@ fileKey: string, opts?: {
     depth?: number;
     /** Set to "paths" to export vector data */
     geometry?: 'paths';
+    /** A comma separated list of plugin IDs and/or the string "shared". Any data present in the document written by those plugins will be included in the result in the `pluginData` and `sharedPluginData` properties. */
+    plugin_data?: string;
 }): Promise<GetFileResult>;
 export declare function getFileNodesApi(this: ApiClass, 
 /**
@@ -33,8 +35,12 @@ fileKey: string,
 ids: string[], opts?: {
     /** A specific version ID to get. Omitting this will get the current version of the file */
     version?: string;
+    /** Positive integer representing how deep into the document tree to traverse. For example, setting this to 1 returns only Pages, setting it to 2 returns Pages and all top level objects on each page. Not setting this parameter returns all nodes */
+    depth?: number;
     /** Set to "paths" to export vector data */
     geometry?: 'paths';
+    /** A comma separated list of plugin IDs and/or the string "shared". Any data present in the document written by those plugins will be included in the result in the `pluginData` and `sharedPluginData` properties. */
+    plugin_data?: string;
 }): Promise<GetFileNodesResult>;
 export declare function getImageApi(this: ApiClass, fileKey: string, opts: {
     /** A comma separated list of node IDs to render */
@@ -47,6 +53,8 @@ export declare function getImageApi(this: ApiClass, fileKey: string, opts: {
     svg_include_id?: boolean;
     /** Whether to simplify inside/outside strokes and use stroke attribute if possible instead of <mask>. `Default: true` */
     svg_simplify_stroke?: boolean;
+    /** Use the full dimensions of the node regardless of whether or not it is cropped or the space around it is empty. Use this to export text nodes without cropping. `Default: false` */
+    use_absolute_bounds?: boolean;
     /** A specific version ID to get. Omitting this will get the current version of the file */
     version?: string;
 }): Promise<GetImageResult>;
@@ -63,18 +71,22 @@ export declare function getVersionsApi(this: ApiClass, fileKey: string): Promise
 export declare function getTeamProjectsApi(this: ApiClass, team_id: string): Promise<GetTeamProjectsResult>;
 export declare function getProjectFilesApi(this: ApiClass, project_id: string): Promise<GetProjectFilesResult>;
 /** Get a paginated list of published components within a team library */
-export declare function getTeamComponentsApi(this: ApiClass, team_id: string, opts?: {
+export declare function getTeamComponentsApi(this: ApiClass, 
+/** Id of the team to list components from */
+team_id: string, opts?: {
     /** Number of items in a paged list of results. Defaults to 30. */
     page_size?: number;
-    /** A map that indicates the starting/ending point from which objects are returned. The cursor value is an internally tracked integer that doesn't correspond to any Ids */
-    cursor?: {
-        [x: string]: number;
-    };
+    /** Cursor indicating which id after which to start retrieving components for. Exclusive with before. The cursor value is an internally tracked integer that doesn't correspond to any Ids */
+    after?: number;
+    /** Cursor indicating which id before which to start retrieving components for. Exclusive with after. The cursor value is an internally tracked integer that doesn't correspond to any Ids */
+    before?: number;
 }): Promise<GetTeamComponentsResult>;
 export declare function getFileComponentsApi(this: ApiClass, project_id: string): Promise<GetFileComponentsResult>;
 /** Get metadata on a component by key. */
 export declare function getComponentApi(this: ApiClass, componentKey: string): Promise<GetComponentResult>;
-export declare function getTeamComponentSetsApi(this: ApiClass, team_id: string, opts?: {
+export declare function getTeamComponentSetsApi(this: ApiClass, 
+/** Id of the team to list component_sets from */
+team_id: string, opts?: {
     /** Number of items in a paged list of results. Defaults to 30. */
     page_size?: number;
     /** Cursor indicating which id after which to start retrieving components for. Exclusive with before. The cursor value is an internally tracked integer that doesn't correspond to any Ids */
@@ -87,10 +99,10 @@ export declare function getComponentSetApi(this: ApiClass, componentsetKey: stri
 export declare function getTeamStylesApi(this: ApiClass, team_id: string, opts?: {
     /** Number of items in a paged list of results. Defaults to 30. */
     page_size?: number;
-    /** A map that indicates the starting/ending point from which objects are returned. The cursor value is an internally tracked integer that doesn't correspond to any Ids */
-    cursor?: {
-        [x: string]: number;
-    };
+    /** Cursor indicating which id after which to start retrieving components for. Exclusive with before. The cursor value is an internally tracked integer that doesn't correspond to any Ids */
+    after?: number;
+    /** Cursor indicating which id before which to start retrieving components for. Exclusive with after. The cursor value is an internally tracked integer that doesn't correspond to any Ids */
+    before?: number;
 }): Promise<GetTeamStylesResult>;
 export declare function getFileStylesApi(this: ApiClass, file_key: string): Promise<GetFileStylesResult>;
 export declare function getStyleApi(this: ApiClass, 

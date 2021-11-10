@@ -50,6 +50,8 @@ export function getFileApi(this: ApiClass,
         depth?: number,
         /** Set to "paths" to export vector data */
         geometry?: 'paths',
+        /** A comma separated list of plugin IDs and/or the string "shared". Any data present in the document written by those plugins will be included in the result in the `pluginData` and `sharedPluginData` properties. */
+        plugin_data?: string,
     }
 ): Promise<GetFileResult> {
     const queryParams = toQueryParams({ ...opts, ids: opts && opts.ids && opts.ids.join(',') });
@@ -69,8 +71,12 @@ export function getFileNodesApi(this: ApiClass,
     opts?: {
         /** A specific version ID to get. Omitting this will get the current version of the file */
         version?: string,
+        /** Positive integer representing how deep into the document tree to traverse. For example, setting this to 1 returns only Pages, setting it to 2 returns Pages and all top level objects on each page. Not setting this parameter returns all nodes */
+        depth?: number,
         /** Set to "paths" to export vector data */
         geometry?: 'paths',
+        /** A comma separated list of plugin IDs and/or the string "shared". Any data present in the document written by those plugins will be included in the result in the `pluginData` and `sharedPluginData` properties. */
+        plugin_data?: string,
     }
 ): Promise<GetFileNodesResult> {
     const queryParams = toQueryParams({ ...opts, ids: ids.join(',') });
@@ -90,6 +96,8 @@ export function getImageApi(this: ApiClass,
         svg_include_id?: boolean,
         /** Whether to simplify inside/outside strokes and use stroke attribute if possible instead of <mask>. `Default: true` */
         svg_simplify_stroke?: boolean,
+        /** Use the full dimensions of the node regardless of whether or not it is cropped or the space around it is empty. Use this to export text nodes without cropping. `Default: false` */
+        use_absolute_bounds?: boolean,
         /** A specific version ID to get. Omitting this will get the current version of the file */
         version?: string,
     }
@@ -118,11 +126,7 @@ export function postCommentsApi(
     /** (Optional) The comment to reply to, if any. This must be a root comment, that is, you cannot reply to a comment that is a reply itself (a reply has a parent_id). */
     comment_id?: string,
 ): Promise<PostCommentResult> {
-    const body: any = {
-        message,
-        client_meta,
-        comment_id,
-    };
+    const body: any = comment_id ? { message, client_meta, comment_id } : { message, client_meta };
 
     /** Notice: we need to pass a custom 'Content-Type' header (as 'application-json') or the current implementation
      * (see `this.appendHeaders` in api-class.ts) will use the default 'application/x-www-form-urlencoded' content-type */
@@ -170,12 +174,15 @@ export function getProjectFilesApi(this: ApiClass, project_id: string): Promise<
 /** Get a paginated list of published components within a team library */
 export function getTeamComponentsApi(
     this: ApiClass,
+    /** Id of the team to list components from */
     team_id: string,
     opts: {
         /** Number of items in a paged list of results. Defaults to 30. */
         page_size?: number,
-        /** A map that indicates the starting/ending point from which objects are returned. The cursor value is an internally tracked integer that doesn't correspond to any Ids */
-        cursor?: { [x: string]: number },
+        /** Cursor indicating which id after which to start retrieving components for. Exclusive with before. The cursor value is an internally tracked integer that doesn't correspond to any Ids */
+        after?: number,
+        /** Cursor indicating which id before which to start retrieving components for. Exclusive with after. The cursor value is an internally tracked integer that doesn't correspond to any Ids */
+        before?: number,
     } = {}
 ): Promise<GetTeamComponentsResult> {
     const queryParams = toQueryParams(opts);
@@ -193,6 +200,7 @@ export function getComponentApi(this: ApiClass, componentKey: string): Promise<G
 
 export function getTeamComponentSetsApi(
     this: ApiClass,
+    /** Id of the team to list component_sets from */
     team_id: string,
     opts: {
         /** Number of items in a paged list of results. Defaults to 30. */
@@ -221,8 +229,10 @@ export function getTeamStylesApi(
     opts: {
         /** Number of items in a paged list of results. Defaults to 30. */
         page_size?: number,
-        /** A map that indicates the starting/ending point from which objects are returned. The cursor value is an internally tracked integer that doesn't correspond to any Ids */
-        cursor?: { [x: string]: number },
+        /** Cursor indicating which id after which to start retrieving components for. Exclusive with before. The cursor value is an internally tracked integer that doesn't correspond to any Ids */
+        after?: number,
+        /** Cursor indicating which id before which to start retrieving components for. Exclusive with after. The cursor value is an internally tracked integer that doesn't correspond to any Ids */
+        before?: number,
     } = {}
 ): Promise<GetTeamStylesResult> {
     const queryParams = toQueryParams(opts);
