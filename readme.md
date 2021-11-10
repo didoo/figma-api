@@ -52,12 +52,59 @@ Change API endpoint setting `Figma.API_DOMAIN` & `Figma.API_VER` variables.
 
 We have followed the same organisation as the official [Figma API documentation](https://www.figma.com/developers/api) to describe our API methods, so it's easier to find the exact endpoint call you are looking for.
 
+<details>
+<summary>
+Helpers
+</summary>
+
+`Api.appendHeaders(headers: {}): void`
+Populate headers with auth.
+
+`Api.request<T>(url, opts): Promise<T>`
+Make request with auth headers.
+</details>
+
 ### Authentication
 
 #### `new Api ({ personalAccessToken, oAuthToken })`
 
 Creates new Api object with specified `personal` or `oAuthToken`.
 [Documentation on how to get tokens](https://www.figma.com/developers/api#authentication)
+
+<details>
+<summary>
+Helpers
+</summary>
+
+```ts
+function oAuthLink(
+    client_id: string,
+    redirect_uri: string,
+    scope: 'file_read',
+    state: string,
+    response_type: 'code',
+): string;
+```
+Returns link for OAuth auth flow.
+User should open this link, allow access and he will be redirected to `redirect_uri?code=<code>`.
+Then you should use `oAuthToken` method to get `access token`.
+
+```ts
+function oAuthToken(
+    client_id: string,
+    client_secret: string,
+    redirect_uri: string,
+    code: string,
+    grant_type: 'authorization_code',
+): Promise<{
+    access_token: string,
+    refresh_token: string,
+    expires_in: number,
+}>
+```
+Returns `access token` info from oauth code (see `oAuthLink` method).
+</details>
+
 
 ### Figma files
 
@@ -302,50 +349,6 @@ Api.getStyle(key)
 [Get metadata on a style by key.](https://www.figma.com/developers/api#get-style-endpoint)
 
 </details>
-
-<details>
-<summary>
-Helpers
-</summary>
-
-`Api.appendHeaders(headers: {}): void`
-Populate headers with auth.
-
-`Api.request<T>(url, opts): Promise<T>`
-Make request with auth headers.
-</details>
-
-### Auth helpers
-
-[OAuth figma documentation](https://www.figma.com/developers/api#auth-oauth).
-
-```ts
-function oAuthLink(
-    client_id: string,
-    redirect_uri: string,
-    scope: 'file_read',
-    state: string,
-    response_type: 'code',
-): string;
-```
-Returns link for OAuth auth flow.
-User should open this link, allow access and he will be redirected to `redirect_uri?code=<code>`.
-Then you should use `oAuthToken` method to get `access token`.
-
-```ts
-function oAuthToken(
-    client_id: string,
-    client_secret: string,
-    redirect_uri: string,
-    code: string,
-    grant_type: 'authorization_code',
-): Promise<{
-    access_token: string,
-    refresh_token: string,
-    expires_in: number,
-}>
-```
-Returns `access token` info from oauth code (see `oAuthLink` method).
 
 ## File types
 
