@@ -120,6 +120,7 @@ export function getCommentsApi(this: ApiClass, fileKey: string): Promise<GetComm
 export function postCommentsApi(
     this: ApiClass,
     fileKey: string,
+    /** The text contents of the comment to post */
     message: string,
     /** The position of where to place the comment. This can either be an absolute canvas position or the relative position within a frame. */
     client_meta: Vector|FrameOffset,
@@ -189,13 +190,17 @@ export function getTeamComponentsApi(
     return this.request(`${API_DOMAIN}/${API_VER}/teams/${team_id}/components?${queryParams}`);
 }
 
-export function getFileComponentsApi(this: ApiClass, project_id: string): Promise<GetFileComponentsResult> {
-    return this.request(`${API_DOMAIN}/${API_VER}/files/${project_id}/components`);
+export function getFileComponentsApi(this: ApiClass, fileKey: string): Promise<GetFileComponentsResult> {
+    return this.request(`${API_DOMAIN}/${API_VER}/files/${fileKey}/components`);
 }
 
 /** Get metadata on a component by key. */
-export function getComponentApi(this: ApiClass, componentKey: string): Promise<GetComponentResult> {
-    return this.request(`${API_DOMAIN}/${API_VER}/components/${componentKey}`);
+export function getComponentApi(
+    this: ApiClass,
+    /** The unique identifier of the component. */
+    key: string
+): Promise<GetComponentResult> {
+    return this.request(`${API_DOMAIN}/${API_VER}/components/${key}`);
 }
 
 export function getTeamComponentSetsApi(
@@ -219,8 +224,12 @@ export function getFileComponentSetsApi(this: ApiClass, file_key: string): Promi
     return this.request(`${API_DOMAIN}/${API_VER}/files/${file_key}/component_sets`);
 }
 
-export function getComponentSetApi(this: ApiClass, componentsetKey: string): Promise<GetComponentSetResult> {
-    return this.request(`${API_DOMAIN}/${API_VER}/component_sets/${componentsetKey}`);
+export function getComponentSetApi(
+    this: ApiClass,
+    /** The unique identifier of the component_set */
+    key: string,
+): Promise<GetComponentSetResult> {
+    return this.request(`${API_DOMAIN}/${API_VER}/component_sets/${key}`);
 }
 
 export function getTeamStylesApi(
@@ -246,7 +255,7 @@ export function getFileStylesApi(this: ApiClass, file_key: string): Promise<GetF
 export function getStyleApi(
     this: ApiClass,
     /** The unique identifier of the style */
-    styleKey: string,
+    key: string,
 ): Promise<GetStyleResult> {
-    return this.request(`${API_DOMAIN}/${API_VER}/styles/${styleKey}`);
+    return this.request(`${API_DOMAIN}/${API_VER}/styles/${key}`);
 }
