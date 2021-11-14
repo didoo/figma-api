@@ -345,7 +345,7 @@ type EffectShadow_ = {
     offset: Vector,
 
     /** How far the shadow spreads */
-    spread: Number,
+    spread: number,
 };
 
 export type EffectShadow = {

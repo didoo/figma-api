@@ -301,7 +301,7 @@ declare type EffectShadow_ = {
     /** How far the shadow is projected in the x and y directions */
     offset: Vector;
     /** How far the shadow spreads */
-    spread: Number;
+    spread: number;
 };
 export declare type EffectShadow = {
     type: EffectType.DROP_SHADOW | EffectType.INNER_SHADOW;
