@@ -114,7 +114,7 @@ Api.getFile
 </summary>
 
 ```ts
-Api.getFile(fileKey, opts?: { version?, ids?, depth?, geometry?, plugin_data?: string })
+Api.getFile(fileKey, opts?: { version?, ids?, depth?, geometry?, plugin_data?: string, branch_data?: boolean })
 ```
 [Require file data](https://www.figma.com/developers/api#get-files-endpoint) with specified version.
 </details>
@@ -234,7 +234,7 @@ Api.getProjectFiles
 </summary>
 
 ```ts
-Api.getProjectFiles(project_id)
+Api.getProjectFiles(project_id, opts?: { branch_data?: boolean })
 ```
 [List the files](https://www.figma.com/developers/api#get-project-files-endpoint) in a given project.
 </details>

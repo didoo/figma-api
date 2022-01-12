@@ -52,6 +52,8 @@ export function getFileApi(this: ApiClass,
         geometry?: 'paths',
         /** A comma separated list of plugin IDs and/or the string "shared". Any data present in the document written by those plugins will be included in the result in the `pluginData` and `sharedPluginData` properties. */
         plugin_data?: string,
+        /** Set to returns branch metadata for the requested file */
+        branch_data?: boolean,
     }
 ): Promise<GetFileResult> {
     const queryParams = toQueryParams({ ...opts, ids: opts && opts.ids && opts.ids.join(',') });
@@ -165,8 +167,12 @@ export function getTeamProjectsApi(this: ApiClass, team_id: string): Promise<Get
     return this.request(`${API_DOMAIN}/${API_VER}/teams/${team_id}/projects`);
 }
 
-export function getProjectFilesApi(this: ApiClass, project_id: string): Promise<GetProjectFilesResult> {
-    return this.request(`${API_DOMAIN}/${API_VER}/projects/${project_id}/files`);
+export function getProjectFilesApi(this: ApiClass, project_id: string, opts?: {
+    /** Set to returns branch metadata for the requested file */
+    branch_data?: boolean,
+}): Promise<GetProjectFilesResult> {
+    const queryParams = toQueryParams(opts);
+    return this.request(`${API_DOMAIN}/${API_VER}/projects/${project_id}/files?${queryParams}`);
 }
 
 // COMPONENTS AND STYLES
