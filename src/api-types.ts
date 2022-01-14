@@ -56,11 +56,15 @@ export interface Project {
     name: string,
 }
 
-export interface ProjectFile {
+export interface BaseFile {
     key: string,
     name: string,
     thumbnail_url: string,
     last_modified: string,
+}
+
+export interface ProjectFile extends BaseFile {
+    branches?: BaseFile[];
 }
 
 /** An arrangement of published UI elements that can be instantiated across figma files */
@@ -155,6 +159,8 @@ export interface GetFileResult {
     components: { [nodeId: string]: Component },
     schemaVersion: number,
     styles: { [styleName: string]: Style },
+    mainFileKey?: string;
+    branches?: ProjectFile[]
 }
 
 /** The `name`, `lastModified`, `thumbnailUrl`, and `version` attributes are all metadata of the specified file. */
