@@ -22,6 +22,8 @@ fileKey: string, opts?: {
     geometry?: 'paths';
     /** A comma separated list of plugin IDs and/or the string "shared". Any data present in the document written by those plugins will be included in the result in the `pluginData` and `sharedPluginData` properties. */
     plugin_data?: string;
+    /** Set to returns branch metadata for the requested file */
+    branch_data?: boolean;
 }): Promise<GetFileResult>;
 export declare function getFileNodesApi(this: ApiClass, 
 /**
@@ -71,7 +73,10 @@ export declare function deleteCommentsApi(this: ApiClass, fileKey: string, comme
 export declare function getUserMeApi(this: ApiClass): Promise<GetUserMeResult>;
 export declare function getVersionsApi(this: ApiClass, fileKey: string): Promise<GetVersionsResult>;
 export declare function getTeamProjectsApi(this: ApiClass, team_id: string): Promise<GetTeamProjectsResult>;
-export declare function getProjectFilesApi(this: ApiClass, project_id: string): Promise<GetProjectFilesResult>;
+export declare function getProjectFilesApi(this: ApiClass, project_id: string, opts?: {
+    /** Set to returns branch metadata for the requested file */
+    branch_data?: boolean;
+}): Promise<GetProjectFilesResult>;
 /** Get a paginated list of published components within a team library */
 export declare function getTeamComponentsApi(this: ApiClass, 
 /** Id of the team to list components from */
