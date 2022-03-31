@@ -1,0 +1,17 @@
+{
+  "name": "figma-api-playground",
+  "version": "0.0.0",
+  "main": "index.ts",
+  "license": "MIT",
+  "scripts": {
+    "play": "ts-node --transpile-only main.ts",
+    "play:debug": "TS_NODE_PROJECT=tsconfig.json TS_NODE_FILES=true npx devtool-next -r ts-node/register main.ts"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.168",
+    "figma-api": "^1.6.0",
+    "lodash": "^4.17.21",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.1.2"
+  }
+}
