@@ -800,6 +800,7 @@ export declare type Node<NType extends NodeType = NodeType> = {
     type: NType;
     pluginData: any;
     sharedPluginData: any;
+    isFixed?: boolean;
 } & NodeTypes[NType];
 export declare function isNodeType<NType extends NodeType, R = Node<NType>>(node: Node<any>, type: NType): node is R;
 export {};
