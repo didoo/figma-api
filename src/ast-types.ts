@@ -920,6 +920,7 @@ export type Node<NType extends NodeType = NodeType> = {
     type: NType;
     pluginData: any;
     sharedPluginData: any;
+    isFixed?: boolean;
 } & NodeTypes[NType];
 
 export function isNodeType<NType extends NodeType, R = Node<NType>>(node: Node<any>, type: NType): node is R {
