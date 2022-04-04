@@ -21,8 +21,6 @@ import {
     GetTeamStylesResult,
     GetFileStylesResult,
     GetStyleResult,
-    StyleMetadata,
-    ComponentMetadata,
 } from "./api-types";
 import { ApiRequestMethod, toQueryParams } from "./utils";
 
