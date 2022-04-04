@@ -846,7 +846,7 @@ export type TEXT = VECTOR & {
     /** Map from ID to TypeStyle for looking up style overrides */
     styleOverrideTable: { [mapId: number]: TypeStyle };
     /** An array with the same number of elements as lines in the text node, where lines are delimited by newline or paragraph separator characters. Each element in the array corresponds to the indentation level of a specific line. */
-    lineIndentationsNumber: number[];
+    lineIndentation: number[];
     /** An array with the same number of elements as lines in the text node, where lines are delimited by newline or paragraph separator characters. Each element in the array corresponds to the list type of a specific line. */
     lineTypes: LineTypes[];
 }
