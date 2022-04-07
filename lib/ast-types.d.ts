@@ -735,7 +735,7 @@ export declare type TEXT = VECTOR & {
     /** An array with the same number of elements as lines in the text node, where lines are delimited by newline or paragraph separator characters. Each element in the array corresponds to the list type of a specific line. */
     lineTypes: LineTypes[];
     /** An array with the same number of elements as lines in the text node, where lines are delimited by newline or paragraph separator characters. Each element in the array corresponds to the indentation level of a specific line. */
-    lineIndentation: number[];
+    lineIndentations: number[];
 };
 /** A rectangular region of the canvas that can be exported */
 export interface SLICE {
