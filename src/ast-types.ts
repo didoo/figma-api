@@ -69,6 +69,7 @@ export enum TextAutoResize {
     NONE='NONE',
     HEIGHT='HEIGHT',
     WIDTH_AND_HEIGHT='WIDTH_AND_HEIGHT',
+    TRUNCATE='TRUNCATE',
 }
 
 /** The unit of the line height value specified by the user. */
@@ -537,7 +538,7 @@ export type TypeStyle = {
     /** Text decoration applied to the node, default is `NONE` */
     textDecoration?: TextDecoration,
     /** Dimensions along which text will auto resize, default is that the text does not auto-resize. Default is `NONE` */
-    textAutoResize?: 'NONE'|'HEIGHT'|'WIDTH_AND_HEIGHT',
+    textAutoResize?: TextAutoResize,
     /** Horizontal text alignment as string enum */
     textAlignHorizontal: 'LEFT'|'RIGHT'|'CENTER'|'JUSTIFIED',
     /** Vertical text alignment as string enum */
@@ -697,7 +698,7 @@ export interface FRAME {
     /** Determines how the auto-layout frame’s children should be aligned in the primary axis direction. This property is only applicable for auto-layout frames. Default MIN */
     primaryAxisAlignItems: 'MIN'|'CENTER'|'MAX'|'SPACE_BETWEEN';
     /** Determines how the auto-layout frame’s children should be aligned in the counter axis direction. This property is only applicable for auto-layout frames. Default MIN */
-    counterAxisAlignItems: 'MIN'|'CENTER'|'MAX';
+    counterAxisAlignItems: 'MIN'|'CENTER'|'MAX'|'BASELINE';
     /** default: 0. The padding between the left border of the frame and its children. This property is only applicable for auto-layout frames. */
     paddingLeft: number;
     /** default: 0. The padding between the right border of the frame and its children. This property is only applicable for auto-layout frames. */
@@ -712,6 +713,10 @@ export interface FRAME {
     verticalPadding: number;
     /** default: 0. The distance between children of the frame. This property is only applicable for auto-layout frames. */
     itemSpacing: number;
+    /**default: false. Applicable only if layoutMode != "NONE". */
+    itemReverseZIndex: boolean;
+    /**default: false. Applicable only if layoutMode != "NONE". */
+    strokesIncludedInLayout: boolean;
     /** Defines the scrolling behavior of the frame, if there exist contents outside of the frame boundaries. The frame can either scroll vertically, horizontally, or in both directions to the extents of the content contained within it. This behavior can be observed in a prototype. Default NONE */
     overflowDirection: 'NONE'|'HORIZONTAL_SCROLLING'|'VERTICAL_SCROLLING'|'HORIZONTAL_AND_VERTICAL_SCROLLING';
     /** default: [] An array of layout grids attached to this node (see layout grids section for more details). GROUP nodes do not have this attribute */
@@ -722,6 +727,8 @@ export interface FRAME {
     isMask: boolean;
     /** default: false Does this mask ignore fill style (like gradients) and effects? */
     isMaskOutline: boolean;
+    /** default: AUTO */
+    layoutPositioning: 'AUTO'|'ABSOLUTE';
 }
 
 /** A logical grouping of nodes */
@@ -791,6 +798,8 @@ export interface VECTOR {
     strokeMiterAngle?: number;
     /** A mapping of a StyleType to style ID (see Style) of styles present on this node. The style ID can be used to look up more information about the style in the top-level styles field. */
     styles?: StylesMap;
+    /** default: AUTO */
+    layoutPositioning: 'AUTO'|'ABSOLUTE';
 }
 
 /** A group that has a boolean operation applied to it */
