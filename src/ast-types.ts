@@ -655,6 +655,8 @@ export interface FRAME {
     strokes: Paint[];
     /** The weight of strokes on the node */
     strokeWeight: number;
+    /** The weight of strokes on different side of the node */
+    individualStrokeWeights?: { top: number, right: number, left: number, bottom: number }
     /** Position of stroke relative to vector outline, as a string enum */
     strokeAlign: StrokeAlign;
     /** Radius of each corner of the frame if a single radius is set for all corners */
@@ -781,6 +783,8 @@ export interface VECTOR {
     strokes: Paint[];
     /** The weight of strokes on the node */
     strokeWeight: number;
+    /** The weight of strokes on different side of the node */
+    individualStrokeWeights?: { top: number, right: number, left: number, bottom: number }
     /** default: NONE. A string enum with value of "NONE", "ROUND", "SQUARE", "LINE_ARROW", or "TRIANGLE_ARROW", describing the end caps of vector paths. */
     strokeCap?: StrokeCap,
     /** Only specified if parameter geometry=paths is used. An array of paths representing the object stroke */
