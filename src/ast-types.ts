@@ -37,6 +37,7 @@ export enum ImageType {
     JPG='JPG',
     PNG='PNG',
     SVG='SVG',
+    PDF='PDF',
 }
 
 /** A string enum with value, indicating the type of boolean operation applied */
@@ -89,7 +90,7 @@ export type StylesMap = { [styleType in StyleType]: string };
 export type ExportSetting = {
     /** File suffix to append to all filenames */
     suffix: string,
-    /** Image type, string enum that supports values "JPG", "PNG", and "SVG" */
+    /** Image type, string enum that supports values "JPG", "PNG", "SVG" and "PDF" */
     format: ImageType,
     /** Constraint that determines sizing of exported asset */
     constraint: Constrain,
