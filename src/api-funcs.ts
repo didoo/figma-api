@@ -1,5 +1,5 @@
 import { API_DOMAIN, API_VER } from "./config";
-import { Vector, FrameOffset } from "./ast-types";
+import { Vector, FrameOffset, NodeType } from "./ast-types";
 import {
     GetFileResult,
     GetFileNodesResult,
@@ -58,7 +58,7 @@ export function getFileApi(this: ApiClass,
     return this.request<GetFileResult>(`${API_DOMAIN}/${API_VER}/files/${fileKey}?${queryParams}`);
 }
 
-export function getFileNodesApi(this: ApiClass,
+export function getFileNodesApi<T extends NodeType = 'DOCUMENT'>(this: ApiClass,
     /**
      * File to export JSON from
      *
@@ -80,7 +80,7 @@ export function getFileNodesApi(this: ApiClass,
     }
 ): Promise<GetFileNodesResult> {
     const queryParams = toQueryParams({ ...opts, ids: ids.join(',') });
-    return this.request<GetFileNodesResult>(`${API_DOMAIN}/${API_VER}/files/${fileKey}/nodes?${queryParams}`);
+    return this.request<GetFileNodesResult<T>>(`${API_DOMAIN}/${API_VER}/files/${fileKey}/nodes?${queryParams}`);
 }
 
 export function getImageApi(this: ApiClass,

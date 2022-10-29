@@ -1,4 +1,4 @@
-import { Vector, FrameOffset, Component, Style, Node, FrameInfo, PageInfo, ContainingStateGroup, StyleType } from "./ast-types";
+import { Vector, FrameOffset, Component, Style, Node, FrameInfo, PageInfo, ContainingStateGroup, StyleType, NodeType } from "./ast-types";
 
 /** A comment or reply left by a user */
 export interface Comment {
@@ -164,7 +164,7 @@ export interface GetFileResult {
 }
 
 /** The `name`, `lastModified`, `thumbnailUrl`, and `version` attributes are all metadata of the specified file. */
-export interface GetFileNodesResult {
+export interface GetFileNodesResult<NType extends NodeType = NodeType> {
     name: string,
     lastModified: string,
     thumbnailUrl: string,
@@ -172,7 +172,7 @@ export interface GetFileNodesResult {
     err?: string,
     nodes: {
         [nodeId: string]: {
-            document: Node<'DOCUMENT'>,
+            document: Node<NType>,
             components: { [nodeId: string]: Component },
             schemaVersion: number,
             styles: { [styleName: string]: Style },
