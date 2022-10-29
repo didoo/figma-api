@@ -1,4 +1,4 @@
-import { Vector, FrameOffset } from "./ast-types";
+import { Vector, FrameOffset, NodeType } from "./ast-types";
 import { GetFileResult, GetFileNodesResult, GetImageResult, GetImageFillsResult, GetCommentsResult, PostCommentResult, DeleteCommentsResult, GetUserMeResult, GetVersionsResult, GetTeamProjectsResult, GetProjectFilesResult, GetTeamComponentsResult, GetFileComponentsResult, GetComponentResult, GetTeamComponentSetsResult, GetFileComponentSetsResult, GetComponentSetResult, GetTeamStylesResult, GetFileStylesResult, GetStyleResult } from "./api-types";
 import { ApiRequestMethod } from "./utils";
 declare type ApiClass = {
@@ -25,7 +25,7 @@ fileKey: string, opts?: {
     /** Set to returns branch metadata for the requested file */
     branch_data?: boolean;
 }): Promise<GetFileResult>;
-export declare function getFileNodesApi(this: ApiClass, 
+export declare function getFileNodesApi<T extends NodeType = 'DOCUMENT'>(this: ApiClass, 
 /**
  * File to export JSON from
  *
