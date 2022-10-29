@@ -608,6 +608,16 @@ export interface Component {
     name: string,
     /** The description of the component as entered in the editor */
     description: string,
+    /** The ID of the component set if the component belongs to one  */
+    componentSetId: string|null,
+    /** The documentation links for this component */
+    documentationLinks: DocumentationLinks[],
+}
+
+/** Represents a link to documentation for a component. */
+export interface DocumentationLinks {
+    /** Should be a valid URI (e.g. https://www.figma.com). */
+    uri: string,
 }
 
 /** A set of properties that can be applied to nodes and published. Styles for a property can be created in the corresponding property's panel while editing a file */
