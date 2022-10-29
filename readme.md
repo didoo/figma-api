@@ -401,3 +401,5 @@ npm version [<newversion> | major | minor | patch]
 npm login
 npm publish
 ```
+
+(notice: tags are created automatically after a few minutes from the publishing)
