@@ -555,7 +555,7 @@ export type FrameOffset = {
 
 /** Position of a region comment on the canvas **/
 export type Region = {
-    /** X coordinate of the position **/ 
+    /** X coordinate of the position **/
     x: number,
     /** Y coordinate of the position **/
     y: number,
@@ -747,6 +747,14 @@ export type ComponentProperty = {
     value: boolean | string;
     /** List of user-defined preferred values for this property. Only exists on INSTANCE_SWAP properties **/
     preferredValues?: InstanceSwapPreferredValue[];
+}
+
+/** Fields directly overridden on an instance. Inherited overrides are not included. **/
+export type Overrides = {
+    /** A unique ID for a node **/
+    id: string;
+    /** An array of properties **/
+    overriddenFields: string[]
 }
 
 /** The root node */
@@ -1029,6 +1037,8 @@ export type INSTANCE<ComponentID = string> = FRAME & {
     exposedInstances: string[];
     /** default: {} A mapping of name to ComponentProperty for all component properties on this instance. Each property has a type, value, and other optional values (see properties type section below) **/
     componentProperties: Map<string, ComponentProperty>;
+    /** default: []. An array of all of the fields directly overridden on this instance. Inherited overrides are not included. **/
+    overrides: Overrides[];
 }
 
 export type NodeTypes = {
