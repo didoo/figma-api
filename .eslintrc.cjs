@@ -4,5 +4,7 @@ module.exports = {
   extends: ['@knapsack/eslint-config-starter'],
   parserOptions: { tsconfigRootDir: __dirname },
   ignorePatterns: [],
-  rules: {},
+  rules: {
+    '@typescript-eslint/no-empty-interface': 'off',
+  },
 };
