@@ -12,7 +12,8 @@
   },
   "scripts": {
     "build": "tsc",
-    "lint": "eslint ./"
+    "lint": "eslint ./",
+    "start": "tsc --watch"
   },
   "keywords": [
     "figma",
