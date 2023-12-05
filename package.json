@@ -1,13 +1,18 @@
 {
-  "name": "figma-api",
+  "name": "@knapsack/figma-api",
   "version": "1.11.0",
   "description": "Figma js typed api",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "scripts": {
-    "build": "tsc && npm run-script browserify && npm run-script uglify",
-    "browserify": "browserify lib/index.js --standalone Figma -o lib/figma-api.js",
-    "uglify": "browserify -g [ uglifyify ] lib/index.js --standalone Figma -o lib/figma-api.min.js"
+    "build": "tsc",
+    "lint": "eslint ./"
   },
   "keywords": [
     "figma",
@@ -18,20 +23,22 @@
     "ast",
     "typed"
   ],
-  "author": "morglod",
   "license": "MIT",
   "dependencies": {
-    "@types/node": "12.0.2",
     "axios": "^0.21.1"
   },
   "devDependencies": {
-    "browserify": "16.2.3",
-    "ts-node": "8.1.0",
-    "typescript": "3.9.10",
-    "uglifyify": "^5.0.1"
+    "@knapsack/eslint-config-starter": "4.37.1",
+    "@knapsack/prettier-config": "4.37.1",
+    "@knapsack/typescript-config-starter": "4.37.1",
+    "@rushstack/eslint-patch": "^1.6.0",
+    "@types/node": "12.0.2",
+    "eslint": "^8.38.0",
+    "prettier": "^2.1.0",
+    "typescript": "^5.0.4"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/didoo/figma-api"
+    "url": "https://github.com/knapsack-cloud/figma-api"
   }
 }
