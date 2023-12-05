@@ -27,7 +27,7 @@
   "devDependencies": {
     "browserify": "16.2.3",
     "ts-node": "8.1.0",
-    "typescript": "3.4.5",
+    "typescript": "3.9.10",
     "uglifyify": "^5.0.1"
   },
   "repository": {
