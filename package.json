@@ -33,6 +33,7 @@
     "@knapsack/typescript-config-starter": "4.37.1",
     "@rushstack/eslint-patch": "^1.6.0",
     "@types/node": "12.0.2",
+    "auto": "^11.0.4",
     "eslint": "^8.38.0",
     "prettier": "^2.1.0",
     "typescript": "^5.0.4"
@@ -40,5 +41,6 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/knapsack-cloud/figma-api"
-  }
+  },
+  "author": "KnapsackBot <53622700+KnapsackBot@users.noreply.github.com>"
 }
