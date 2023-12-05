@@ -28,5 +28,5 @@ jobs:
       - name: Publish
         run: auto shipit
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
+          GITHUB_TOKEN: ${{ secrets.KS_BOT_GITHUB_TOKEN_NEW }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
