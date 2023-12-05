@@ -12,7 +12,7 @@ Promises & ES6.
 
 ## Install
 
-`npm i figma-api`
+`npm i @knapsack-labs/figma-api`
 
 or browser version:
 
@@ -24,7 +24,7 @@ All api in browser exported to global `Figma` object.
 ## Usage
 
 ```ts
-import * as Figma from 'figma-api';
+import * as Figma from '@knapsack-labs/figma-api';
 
 export async function main() {
     const api = new Figma.Api({

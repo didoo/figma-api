@@ -1,5 +1,5 @@
 {
-  "name": "@knapsack/figma-api",
+  "name": "@knapsack-labs/figma-api",
   "version": "1.12.0",
   "description": "Figma js typed api",
   "main": "dist/index.js",
@@ -42,5 +42,8 @@
     "type": "git",
     "url": "https://github.com/knapsack-cloud/figma-api"
   },
-  "author": "KnapsackBot <53622700+KnapsackBot@users.noreply.github.com>"
+  "author": "KnapsackBot <53622700+KnapsackBot@users.noreply.github.com>",
+  "publishConfig": {
+    "access": "public"
+  }
 }
