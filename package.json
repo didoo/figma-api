@@ -1,6 +1,6 @@
 {
   "name": "@knapsack-labs/figma-api",
-  "version": "1.13.0",
+  "version": "1.13.1",
   "description": "Figma js typed api",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
