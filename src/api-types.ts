@@ -170,6 +170,9 @@ export interface GetFileResult {
   version: string;
   document: Node<'DOCUMENT'>;
   components: { [nodeId: string]: Component };
+  componentSets: {
+    [nodeId: string]: ComponentSet;
+  };
   schemaVersion: number;
   styles: { [styleName: string]: Style };
   mainFileKey?: string;
