@@ -8,7 +8,6 @@ import {
   PageInfo,
   ContainingStateGroup,
   StyleType,
-  NodeType,
   ComponentSet,
 } from './ast-types';
 
@@ -180,7 +179,7 @@ export interface GetFileResult {
 }
 
 /** The `name`, `lastModified`, `thumbnailUrl`, and `version` attributes are all metadata of the specified file. */
-export interface GetFileNodesResult<NType extends NodeType = NodeType> {
+export interface GetFileNodesResult {
   name: string;
   lastModified: string;
   thumbnailUrl: string;
@@ -188,7 +187,7 @@ export interface GetFileNodesResult<NType extends NodeType = NodeType> {
   err?: string;
   nodes: {
     [nodeId: string]: {
-      document: Node<NType>;
+      document: Node<'DOCUMENT'>;
       components: { [nodeId: string]: Component };
       componentSets: {
         [nodeId: string]: ComponentSet;

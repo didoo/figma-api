@@ -1124,7 +1124,7 @@ export type NodeTypes = {
 
 export type NodeType = keyof NodeTypes;
 
-export type Node<NType extends NodeType = NodeType> = {
+export type NodeBase<NType extends NodeType = NodeType> = {
   /** A string uniquely identifying this node within the document. * */
   id: string;
   /** The name given to the node by the user in the tool. * */
@@ -1143,9 +1143,31 @@ export type Node<NType extends NodeType = NodeType> = {
   componentPropertyReferences: Map<string, string>;
 } & NodeTypes[NType];
 
-export function isNodeType<NType extends NodeType, R = Node<NType>>(
+type NodeUnionBase = {
+  [NType in NodeType]: NodeBase<NType>;
+}[NodeType];
+
+/**
+ * Makes a node union type from all node type {@link NodeTypes}
+ * Allows the use of `switch(node.type)` instead of {@link isNodeType} for TypeScript type narrowing
+ * Equivalent to roughly this (but includes all node types):
+ * ```ts
+ * type NodeUnion = Node<'COMPONENT'> | Node<'COMPONENT_SET'> | Node<'INSTANCE'>;
+ * ```
+ * Can pass in a union of node types to narrow down the type further
+ * ```ts
+ * type NodeComponent = Node<'COMPONENT'>;
+ * type NodeComponentAndSet = Node<'COMPONENT' | 'COMPONENT_SET'>;
+ * ```
+ */
+export type Node<NType extends NodeType = NodeType> = Extract<
+  NodeUnionBase,
+  { type: NType }
+>;
+
+export function isNodeType<NType extends NodeType>(
   node: Node<any>,
   type: NType,
-): node is R {
+): node is Node<NType> {
   return node.type === type;
 }
