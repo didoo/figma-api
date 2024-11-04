@@ -614,6 +614,17 @@ export interface Component {
     documentationLinks: DocumentationLinks[],
 }
 
+export interface ComponentSet {
+    /** The key of the component */
+    key: string,
+    /** The name of the component */
+    name: string,
+    /** The description of the component as entered in the editor */
+    description: string,
+    /** The documentation links for this component */
+    documentationLinks: DocumentationLinks[],
+}
+
 /** Represents a link to documentation for a component. */
 export interface DocumentationLinks {
     /** Should be a valid URI (e.g. https://www.figma.com). */
@@ -630,6 +641,57 @@ export interface Style {
     description: string,
     /** The type of style */
     styleType: StyleType;
+}
+
+/** Component property definition */
+export interface ComponentPropertyDefinition {
+    /** Type of this component property */
+    type: ComponentPropertyType,
+    /** Initial value of this property for instances */
+    defaultValue: boolean | string,
+    /** All possible values for this property. Only exists on VARIANT properties */
+    variantOptions?: string[],
+    /** List of user-defined preferred values for this property. Only exists on INSTANCE_SWAP properties */
+    preferredValues?: InstanceSwapPreferredValue[],
+}
+
+/** Component property */
+export interface ComponentProperty {
+    /** Type of this component property */
+    type: ComponentPropertyType,
+    /** Value of this property set on this instance */
+    value: boolean | string,
+    /** List of user-defined preferred values for this property. Only exists on INSTANCE_SWAP properties */
+    preferredValues?: InstanceSwapPreferredValue[],
+    /** A mapping of field to the VariableAlias of the bound variable. */
+    boundVariables?: Map<String, VariableAlias | VariableAlias[]>
+}
+
+/** Component Property Type */
+export type ComponentPropertyType = 'BOOLEAN' | 'TEXT' | 'INSTANCE_SWAP' | 'VARIANT';
+
+/** Instance swap preferred value */
+export interface InstanceSwapPreferredValue {
+    /** Type of node for this preferred value */
+    type: 'COMPONENT' | 'COMPONENT_SET',
+    /** Key of this component or component set */
+    key: string,
+}
+
+/** Contains a variable alias. */
+export interface VariableAlias {
+    /** Value is always VARIABLE_ALIAS. */
+    type: 'VARIABLE_ALIAS',
+    /** The id of the variable that the current variable is aliased to. This variable can be a local or remote variable, and both can be retrieved via the GET /v1/files/:file_key/variables/local endpoint. */
+    id: string;
+}
+
+/** Fields directly overridden on an instance. Inherited overrides are not included. */
+export interface Overrides {
+    /** A unique ID for a node */
+    id: string;
+    /** An array of properties */
+    overriddenFields: string[];
 }
 
 /** The root node */
@@ -888,15 +950,29 @@ export interface SLICE {
 }
 
 /** A node that can have instances created of it that share the same properties */
-export type COMPONENT = FRAME;
+export type COMPONENT = FRAME & {
+    /** A mapping of name to ComponentPropertyDefinition for every component property on this component. Each property has a type, defaultValue, and other optional values (see property types section below) */
+    componentPropertyDefinitions: Map<String, ComponentPropertyDefinition>
+};
 
 /** A node that can have instances created of it that share the same properties */
-export type COMPONENT_SET = FRAME;
+export type COMPONENT_SET = FRAME & {
+    /** A mapping of name to ComponentPropertyDefinition for every component property on this component. Each property has a type, defaultValue, and other optional values (see property types section below) */
+    componentPropertyDefinitions: Map<String, ComponentPropertyDefinition>
+};
 
 /** An instance of a component, changes to the component result in the same changes applied to the instance */
 export type INSTANCE<ComponentID = string> = FRAME & {
     /** ID of component that this instance came from, refers to components table (see endpoints section below) */
     componentId: ComponentID;
+    /** If true, this node has been marked as exposed to its containing component or component set */
+    isExposedInstance?: boolean;
+    /** IDs of instances that have been exposed to this node's level */
+    exposedInstances?: string[];
+    /** A mapping of name to ComponentProperty for all component properties on this instance. Each property has a type, value, and other optional values (see properties type section below) */
+    componentProperties: Map<String, ComponentProperty>;
+    /** An array of all of the fields directly overridden on this instance. Inherited overrides are not included. */
+    overrides: Overrides[];
 }
 
 export type SECTION = {
@@ -951,6 +1027,8 @@ export type Node<NType extends NodeType = NodeType> = {
     pluginData: any;
     sharedPluginData: any;
     isFixed?: boolean;
+    componentPropertyReferences?: Map<String, String>
+    boundVariables?: Map<String, VariableAlias | VariableAlias[]>
 } & NodeTypes[NType];
 
 export function isNodeType<NType extends NodeType, R = Node<NType>>(node: Node<any>, type: NType): node is R {
