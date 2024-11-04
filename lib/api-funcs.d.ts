@@ -1,7 +1,7 @@
 import { Vector, FrameOffset, NodeType } from "./ast-types";
 import { GetFileResult, GetFileNodesResult, GetImageResult, GetImageFillsResult, GetCommentsResult, PostCommentResult, DeleteCommentsResult, GetUserMeResult, GetVersionsResult, GetTeamProjectsResult, GetProjectFilesResult, GetTeamComponentsResult, GetFileComponentsResult, GetComponentResult, GetTeamComponentSetsResult, GetFileComponentSetsResult, GetComponentSetResult, GetTeamStylesResult, GetFileStylesResult, GetStyleResult } from "./api-types";
 import { ApiRequestMethod } from "./utils";
-declare type ApiClass = {
+type ApiClass = {
     request: ApiRequestMethod;
 };
 export declare function getFileApi(this: ApiClass, 

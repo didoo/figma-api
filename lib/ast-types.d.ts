@@ -1,5 +1,5 @@
 /** An RGBA color */
-export declare type Color = {
+export type Color = {
     /** Red channel value, between 0 and 1 */
     r: number;
     /** Green channel value, between 0 and 1 */
@@ -74,11 +74,11 @@ export declare enum LineHeightUnit {
  * Map<StyleType, String>
  * A mapping of a StyleType to style ID (see Style) of styles present on this node. The style ID can be used to look up more information about the style in the top-level styles field.
 */
-export declare type StylesMap = {
+export type StylesMap = {
     [styleType in StyleType]: string;
 };
 /** Format and size to export an asset at */
-export declare type ExportSetting = {
+export type ExportSetting = {
     /** File suffix to append to all filenames */
     suffix: string;
     /** Image type, string enum that supports values "JPG", "PNG", "SVG" and "PDF" */
@@ -95,7 +95,7 @@ export declare enum ConstrainType {
     HEIGHT = "HEIGHT"
 }
 /** Sizing constraint for exports */
-export declare type Constrain = {
+export type Constrain = {
     /**
      * Type of constraint to apply; string enum with potential values below
      * "SCALE": Scale by value
@@ -107,7 +107,7 @@ export declare type Constrain = {
     value: number;
 };
 /** A rectangle that expresses a bounding box in absolute coordinates */
-export declare type Rectangle = {
+export type Rectangle = {
     /** X coordinate of top left corner of the rectangle */
     x: number;
     /** Y coordinate of top left corner of the rectangle */
@@ -211,7 +211,7 @@ export declare enum LayoutConstraintHorizontal {
     SCALE = "SCALE"
 }
 /** Layout constraint relative to containing Frame */
-export declare type LayoutConstraint = {
+export type LayoutConstraint = {
     /**
      * Vertical constraint as an enum
      * "TOP": Node is laid out relative to top of the containing frame
@@ -251,7 +251,7 @@ export declare enum LayoutGridAlignment {
     CENTER = "CENTER"
 }
 /** Guides to align and place objects within a frame */
-export declare type LayoutGrid = {
+export type LayoutGrid = {
     /**
      * Orientation of the grid as a string enum
      * "COLUMNS": Vertical grid
@@ -289,13 +289,13 @@ export declare enum EffectType {
     LAYER_BLUR = "LAYER_BLUR",
     BACKGROUND_BLUR = "BACKGROUND_BLUR"
 }
-declare type Effect_ = {
+type Effect_ = {
     /** Is the effect active? */
     visible: boolean;
     /** Radius of the blur effect (applies to shadows as well) */
     radius: number;
 };
-declare type EffectShadow_ = {
+type EffectShadow_ = {
     /** The color of the shadow */
     color: Color;
     /** Blend mode of the shadow */
@@ -305,19 +305,19 @@ declare type EffectShadow_ = {
     /** How far the shadow spreads */
     spread: number;
 };
-export declare type EffectShadow = {
+export type EffectShadow = {
     type: EffectType.DROP_SHADOW | EffectType.INNER_SHADOW;
 } & Effect_ & EffectShadow_;
-export declare type EffectBlur = {
+export type EffectBlur = {
     type: EffectType.BACKGROUND_BLUR | EffectType.LAYER_BLUR;
 } & Effect_;
 /** A visual effect such as a shadow or blur */
-export declare type Effect = {
+export type Effect = {
     type: EffectType;
 } & Effect_ & Partial<EffectShadow_>;
 export declare function isEffectShadow(effect: Effect): effect is EffectShadow;
 export declare function isEffectBlur(effect: Effect): effect is EffectBlur;
-export declare type Hyperlink = {
+export type Hyperlink = {
     /** Type of hyperlink */
     type: 'URL' | 'NODE';
     /** URL being linked to, if URL type */
@@ -340,17 +340,17 @@ export declare enum PaintSolidScaleMode {
     TILE = "TILE",
     STRETCH = "STRETCH"
 }
-export declare type Paint_ = {
+export type Paint_ = {
     /** `default: true` Is the paint enabled? */
     visible?: boolean;
     /** `default: 1` Overall opacity of paint (colors within the paint can also have opacity values which would blend with this) */
     opacity?: number;
 };
-declare type PaintSolid_ = {
+type PaintSolid_ = {
     /** Solid color of the paint */
     color: Color;
 };
-declare type PaintGradient_ = {
+type PaintGradient_ = {
     /**
      * How this node blends with nodes behind it in the scene (see blend mode section for more details)
      */
@@ -364,7 +364,7 @@ declare type PaintGradient_ = {
      */
     gradientStops: ColorStop[];
 };
-declare type PaintImage_ = {
+type PaintImage_ = {
     /** Image scaling mode */
     scaleMode: PaintSolidScaleMode;
     /** Image reference, get it with `Api.getImage` */
@@ -378,58 +378,69 @@ declare type PaintImage_ = {
     /** A reference to the GIF embedded in this node, if the image is a GIF. To download the image using this reference, use the GET file images endpoint to retrieve the mapping from image references to image URLs */
     gifRef: string;
 };
-export declare type PaintSolid = {
+export type PaintSolid = {
     type: PaintType.SOLID;
 } & PaintSolid_ & Paint_;
-export declare type PaintGradient = {
+export type PaintGradient = {
     type: PaintType.GRADIENT_ANGULAR | PaintType.GRADIENT_DIAMOND | PaintType.GRADIENT_LINEAR | PaintType.GRADIENT_RADIAL;
 } & PaintGradient_ & Paint_;
-export declare type PaintImage = {
+export type PaintImage = {
     type: PaintType.IMAGE;
 } & PaintImage_ & Paint_;
 /** A solid color, gradient, or image texture that can be applied as fills or strokes */
-export declare type Paint = {
+export type Paint = {
     type: PaintType;
 } & Paint_ & Partial<PaintSolid_> & Partial<PaintGradient_> & Partial<PaintImage_>;
 export declare function isPaintSolid(paint: Paint): paint is PaintSolid;
 export declare function isPaintGradient(paint: Paint): paint is PaintGradient;
 export declare function isPaintImage(paint: Paint): paint is PaintImage;
 /** A 2d vector */
-export declare type Vector = {
+export type Vector = {
     /** X coordinate of the vector */
     x: number;
     /** Y coordinate of the vector */
     y: number;
 };
 /** A 2x3 2D affine transformation matrix */
-export declare type Transform = [[number, number, number], [number, number, number]];
+export type Transform = [
+    [
+        number,
+        number,
+        number
+    ],
+    [
+        number,
+        number,
+        number
+    ]
+];
 export declare enum PathWindingRule {
     EVENODD = "EVENODD",
     NONZERO = "NONZERO"
 }
 /** A vector svg path */
-export declare type Path = {
+export type Path = {
     /** A sequence of path commands in SVG notation */
     path: string;
     /** Winding rule for the path, either "EVENODD" or "NONZERO" */
     windingRule: PathWindingRule;
 };
 /** A relative offset within a frame */
-export declare type FrameOffset = {
+export type FrameOffset = {
     /** Unique id specifying the frame */
     node_id: string;
     /** 2d vector offset within the frame */
     node_offset: Vector;
 };
 /** A position color pair representing a gradient stop */
-export declare type ColorStop = {
+export type ColorStop = {
     /** Value between 0 and 1 representing position along gradient axis */
     position: number;
     /** Color attached to corresponding position */
     color: Color;
 };
 /** Metadata for character formatting */
-export declare type TypeStyle = {
+export type TypeStyle = {
     /** Font family of text (standard name) */
     fontFamily: string;
     /** PostScript font name */
@@ -473,7 +484,7 @@ export declare type TypeStyle = {
     /** The unit of the line height value specified by the user. */
     lineHeightUnit: LineHeightUnit;
 };
-export declare type StyleType = 'FILL' | 'TEXT' | 'EFFECT' | 'GRID';
+export type StyleType = 'FILL' | 'TEXT' | 'EFFECT' | 'GRID';
 /** Data on the frame a component resides in */
 export interface FrameInfo {
     /** Id of the frame node within the figma file */
@@ -568,7 +579,7 @@ export interface ComponentProperty {
     boundVariables?: Map<String, VariableAlias | VariableAlias[]>;
 }
 /** Component Property Type */
-export declare type ComponentPropertyType = 'BOOLEAN' | 'TEXT' | 'INSTANCE_SWAP' | 'VARIANT';
+export type ComponentPropertyType = 'BOOLEAN' | 'TEXT' | 'INSTANCE_SWAP' | 'VARIANT';
 /** Instance swap preferred value */
 export interface InstanceSwapPreferredValue {
     /** Type of node for this preferred value */
@@ -705,7 +716,7 @@ export interface FRAME {
     layoutPositioning: 'AUTO' | 'ABSOLUTE';
 }
 /** A logical grouping of nodes */
-export declare type GROUP = FRAME;
+export type GROUP = FRAME;
 /** A vector network, consisting of vertices and edges */
 export interface VECTOR {
     /** default: [] An array of export settings representing images to export from node */
@@ -776,27 +787,27 @@ export interface VECTOR {
     layoutPositioning: 'AUTO' | 'ABSOLUTE';
 }
 /** A group that has a boolean operation applied to it */
-export declare type BOOLEAN = VECTOR & {
+export type BOOLEAN = VECTOR & {
     /** An array of nodes that are being boolean operated on */
     children: Node[];
 };
 /** A group that has a boolean operation applied to it */
-export declare type BOOLEAN_OPERATION = VECTOR & {
+export type BOOLEAN_OPERATION = VECTOR & {
     /** An array of nodes that are being boolean operated on */
     children: Node[];
     /** A string enum with value of "UNION", "INTERSECT", "SUBTRACT", or "EXCLUDE" indicating the type of boolean operation applied */
     booleanOperation: BooleanOperationType;
 };
 /** A regular star shape */
-export declare type STAR = VECTOR;
+export type STAR = VECTOR;
 /** A straight line */
-export declare type LINE = VECTOR;
+export type LINE = VECTOR;
 /** An ellipse */
-export declare type ELLIPSE = VECTOR;
+export type ELLIPSE = VECTOR;
 /** A regular n-sided polygon */
-export declare type REGULAR_POLYGON = VECTOR;
+export type REGULAR_POLYGON = VECTOR;
 /** A rectangle */
-export declare type RECTANGLE = VECTOR & {
+export type RECTANGLE = VECTOR & {
     /** Radius of each corner of the rectangle */
     cornerRadius: number;
     /** Array of length 4 of the radius of each corner of the rectangle, starting in the top left and proceeding clockwise */
@@ -809,7 +820,7 @@ export declare enum LineTypes {
     NONE = "NONE"
 }
 /** A text box */
-export declare type TEXT = VECTOR & {
+export type TEXT = VECTOR & {
     /** Text contained within text box */
     characters: string;
     /** Style of text including font family and weight (see type style section for more information) */
@@ -837,17 +848,17 @@ export interface SLICE {
     relativeTransform?: Transform;
 }
 /** A node that can have instances created of it that share the same properties */
-export declare type COMPONENT = FRAME & {
+export type COMPONENT = FRAME & {
     /** A mapping of name to ComponentPropertyDefinition for every component property on this component. Each property has a type, defaultValue, and other optional values (see property types section below) */
     componentPropertyDefinitions: Map<String, ComponentPropertyDefinition>;
 };
 /** A node that can have instances created of it that share the same properties */
-export declare type COMPONENT_SET = FRAME & {
+export type COMPONENT_SET = FRAME & {
     /** A mapping of name to ComponentPropertyDefinition for every component property on this component. Each property has a type, defaultValue, and other optional values (see property types section below) */
     componentPropertyDefinitions: Map<String, ComponentPropertyDefinition>;
 };
 /** An instance of a component, changes to the component result in the same changes applied to the instance */
-export declare type INSTANCE<ComponentID = string> = FRAME & {
+export type INSTANCE<ComponentID = string> = FRAME & {
     /** ID of component that this instance came from, refers to components table (see endpoints section below) */
     componentId: ComponentID;
     /** If true, this node has been marked as exposed to its containing component or component set */
@@ -859,11 +870,11 @@ export declare type INSTANCE<ComponentID = string> = FRAME & {
     /** An array of all of the fields directly overridden on this instance. Inherited overrides are not included. */
     overrides: Overrides[];
 };
-export declare type SECTION = {
+export type SECTION = {
     /** An array of top level layers on the section */
     children: Node[];
 } & Pick<VECTOR, "fills" | "fillGeometry" | "strokes" | "strokeWeight" | "strokeAlign" | "strokeGeometry">;
-export declare type NodeTypes = {
+export type NodeTypes = {
     /** The root node */
     DOCUMENT: DOCUMENT;
     /** Represents a single page */
@@ -899,8 +910,8 @@ export declare type NodeTypes = {
     INSTANCE: INSTANCE;
     SECTION: SECTION;
 };
-export declare type NodeType = keyof NodeTypes;
-export declare type Node<NType extends NodeType = NodeType> = {
+export type NodeType = keyof NodeTypes;
+export type Node<NType extends NodeType = NodeType> = {
     id: string;
     name: string;
     visible: boolean;
