@@ -790,6 +790,10 @@ export declare type INSTANCE<ComponentID = string> = FRAME & {
     /** ID of component that this instance came from, refers to components table (see endpoints section below) */
     componentId: ComponentID;
 };
+export declare type SECTION = {
+    /** An array of top level layers on the section */
+    children: Node[];
+} & Pick<VECTOR, "fills" | "fillGeometry" | "strokes" | "strokeWeight" | "strokeAlign" | "strokeGeometry">;
 export declare type NodeTypes = {
     /** The root node */
     DOCUMENT: DOCUMENT;
@@ -824,6 +828,7 @@ export declare type NodeTypes = {
     COMPONENT_SET: COMPONENT_SET;
     /** An instance of a component, changes to the component result in the same changes applied to the instance */
     INSTANCE: INSTANCE;
+    SECTION: SECTION;
 };
 export declare type NodeType = keyof NodeTypes;
 export declare type Node<NType extends NodeType = NodeType> = {
