@@ -1,4 +1,4 @@
-import { Vector, FrameOffset, Component, Style, Node, FrameInfo, PageInfo, ContainingStateGroup, StyleType, NodeType } from "./ast-types";
+import { Vector, FrameOffset, Component, Style, Node, FrameInfo, PageInfo, ContainingStateGroup, StyleType, NodeType, ComponentSet } from "./ast-types";
 /** A comment or reply left by a user */
 export interface Comment {
     /** Unique identifier for comment */
@@ -167,6 +167,9 @@ export interface GetFileNodesResult<NType extends NodeType = NodeType> {
             document: Node<NType>;
             components: {
                 [nodeId: string]: Component;
+            };
+            componentSets: {
+                [nodeId: string]: ComponentSet;
             };
             schemaVersion: number;
             styles: {
