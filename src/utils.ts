@@ -1,4 +1,4 @@
-import { AxiosResponse, Method as AxiosMethod } from 'axios';
+import { AxiosResponse, Method as AxiosMethod, AxiosRequestConfig } from 'axios';
 
 export function toQueryParams(x: any): string {
     if (!x) return '';
@@ -18,4 +18,4 @@ export class ApiError extends Error {
     }
 }
 
-export type ApiRequestMethod = <T>(url: string, opts?: { method: AxiosMethod, data: string }) => Promise<T>;
+export type ApiRequestMethod = <T>(url: string, opts?: { method: AxiosMethod, data: AxiosRequestConfig["data"] }) => Promise<T>;
