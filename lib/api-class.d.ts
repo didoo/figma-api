@@ -35,6 +35,7 @@ export declare class Api {
 }
 export declare function oAuthLink(client_id: string, redirect_uri: string, scope: 'file_read', state: string, response_type: 'code'): string;
 export declare function oAuthToken(client_id: string, client_secret: string, redirect_uri: string, code: string, grant_type: 'authorization_code'): Promise<{
+    user_id: string;
     access_token: string;
     refresh_token: string;
     expires_in: number;

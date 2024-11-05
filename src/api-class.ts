@@ -82,6 +82,7 @@ export class Api {
     getStyle = getStyleApi;
 }
 
+// see: https://www.figma.com/developers/api#auth-oauth2
 export function oAuthLink(
     client_id: string,
     redirect_uri: string,
@@ -106,19 +107,22 @@ export async function oAuthToken(
     code: string,
     grant_type: 'authorization_code',
 ): Promise<{
+    user_id: string,
     access_token: string,
     refresh_token: string,
     expires_in: number,
 }> {
+    // see: https://www.figma.com/developers/api#update-oauth-credentials-handling
+    const headers = {
+        'Authorization': `Basic ${Buffer.from(`${client_id}:${client_secret}`).toString('base64')}`,
+    };
     const queryParams = toQueryParams({
-        client_id,
-        client_secret,
         redirect_uri,
         code,
         grant_type,
     });
-    const url = `https://www.figma.com/api/oauth/token?${queryParams}`;
-    const res = await axios({ url, method: 'POST' });
+    const url = `https://api.figma.com/v1/oauth/token?${queryParams}`;
+    const res = await axios({ url, method: 'POST', headers });
     if (res.status !== 200) throw res.statusText;
     return res.data;
 }
