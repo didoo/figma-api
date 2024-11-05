@@ -1,27 +1,7 @@
-import {
-    getFileApi,
-    getFileNodesApi,
-    getImageApi,
-    getImageFillsApi,
-    getCommentsApi,
-    postCommentsApi,
-    deleteCommentsApi,
-    getUserMeApi,
-    getVersionsApi,
-    getTeamProjectsApi,
-    getProjectFilesApi,
-    getTeamComponentsApi,
-    getFileComponentsApi,
-    getComponentApi,
-    getTeamComponentSetsApi,
-    getFileComponentSetsApi,
-    getComponentSetApi,
-    getTeamStylesApi,
-    getFileStylesApi,
-    getStyleApi
-} from './api-funcs';
+import * as ApiEndpoints from './api-endpoints';
+import { ApiRequestMethod, toQueryParams } from './utils';
+
 import axios, { AxiosRequestConfig, Method as AxiosMethod } from 'axios';
-import { toQueryParams, ApiRequestMethod } from './utils';
 
 export class Api {
     personalAccessToken?: string;
@@ -45,7 +25,7 @@ export class Api {
         if (this.oAuthToken) headers['Authorization'] =  `Bearer ${this.oAuthToken}`;
     }
 
-    request: ApiRequestMethod = async <T>(url: string, opts?: { method: AxiosMethod, data: string }) => {
+    request: ApiRequestMethod = async <T>(url: string, opts?: { method: AxiosMethod, data: AxiosRequestConfig["data"] }) => {
         const headers = {};
         this.appendHeaders(headers);
 
@@ -60,26 +40,26 @@ export class Api {
         return res.data;
     };
 
-    getFile = getFileApi;
-    getFileNodes = getFileNodesApi;
-    getImage = getImageApi;
-    getImageFills = getImageFillsApi;
-    getComments = getCommentsApi;
-    postComment = postCommentsApi;
-    deleteComments = deleteCommentsApi;
-    getMe = getUserMeApi;
-    getVersions = getVersionsApi;
-    getTeamProjects = getTeamProjectsApi;
-    getProjectFiles = getProjectFilesApi;
-    getTeamComponents = getTeamComponentsApi;
-    getFileComponents = getFileComponentsApi;
-    getComponent = getComponentApi;
-    getTeamComponentSets = getTeamComponentSetsApi;
-    getFileComponentSets = getFileComponentSetsApi;
-    getComponentSet = getComponentSetApi;
-    getTeamStyles = getTeamStylesApi;
-    getFileStyles = getFileStylesApi;
-    getStyle = getStyleApi;
+    getFile = ApiEndpoints.getFileApi;
+    getFileNodes = ApiEndpoints.getFileNodesApi;
+    getImage = ApiEndpoints.getImagesApi;
+    getImageFills = ApiEndpoints.getImageFillsApi;
+    getComments = ApiEndpoints.getCommentsApi;
+    postComment = ApiEndpoints.postCommentApi;
+    deleteComments = ApiEndpoints.deleteCommentApi;
+    getMe = ApiEndpoints.getUserMeApi;
+    getVersions = ApiEndpoints.getFileVersionsApi;
+    getTeamProjects = ApiEndpoints.getTeamProjectsApi;
+    getProjectFiles = ApiEndpoints.getProjectFilesApi;
+    getTeamComponents = ApiEndpoints.getTeamComponentsApi;
+    getFileComponents = ApiEndpoints.getFileComponentsApi;
+    getComponent = ApiEndpoints.getComponentApi;
+    getTeamComponentSets = ApiEndpoints.getTeamComponentSetsApi;
+    getFileComponentSets = ApiEndpoints.getFileComponentSetsApi;
+    getComponentSet = ApiEndpoints.getComponentSetApi;
+    getTeamStyles = ApiEndpoints.getTeamStylesApi;
+    getFileStyles = ApiEndpoints.getFileStylesApi;
+    getStyle = ApiEndpoints.getStyleApi;
 }
 
 // see: https://www.figma.com/developers/api#auth-oauth2
