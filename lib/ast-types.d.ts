@@ -117,6 +117,15 @@ export type Rectangle = {
     /** Height of the rectangle */
     height: number;
 };
+/** Information about the arc properties of an ellipse. 0° is the x axis and increasing angles rotate clockwise **/
+export type ArcData = {
+    /** Start of the sweep in radians **/
+    startingAngle: number;
+    /** End of the sweep in radians **/
+    endingAngle: number;
+    /** Inner radius value between 0 and 1 **/
+    innerRadius: number;
+};
 /**
  * This type is a string enum with the following possible values
  * Normal blends:
@@ -194,7 +203,9 @@ export declare enum EasingType {
     /** Ease in and then out with an animation curve similar to CSS ease-in-out. */
     EASE_IN_AND_OUT = "EASE_IN_AND_OUT",
     /** No easing, similar to CSS linear. */
-    LINEAR = "LINEAR"
+    LINEAR = "LINEAR",
+    /** Gentle spring animation similar to react-spring. **/
+    GENTLE_SPRING = "GENTLE_SPRING"
 }
 export declare enum LayoutConstraintVertical {
     TOP = "TOP",
@@ -203,6 +214,13 @@ export declare enum LayoutConstraintVertical {
     TOP_BOTTOM = "TOP_BOTTOM",
     SCALE = "SCALE"
 }
+/** A flow starting point used when launching a prototype to enter Presentation view. **/
+export type FlowStartingPoint = {
+    /** Unique identifier specifying the frame **/
+    nodeId: string;
+    /** Name of flow **/
+    name: string;
+};
 export declare enum LayoutConstraintHorizontal {
     LEFT = "LEFT",
     RIGHT = "RIGHT",
@@ -377,6 +395,8 @@ type PaintImage_ = {
     rotation: number;
     /** A reference to the GIF embedded in this node, if the image is a GIF. To download the image using this reference, use the GET file images endpoint to retrieve the mapping from image references to image URLs */
     gifRef: string;
+    /** default: {}. Defines what image filters have been applied to this paint, if any. If this property is not defined, no filters have been applied. **/
+    filters: ImageFilters;
 };
 export type PaintSolid = {
     type: PaintType.SOLID;
@@ -425,6 +445,23 @@ export type Path = {
     /** Winding rule for the path, either "EVENODD" or "NONZERO" */
     windingRule: PathWindingRule;
 };
+/** Defines the image filters applied to an image paint. All values are from -1 to 1. **/
+export type ImageFilters = {
+    /** default: 0 **/
+    exposure: number;
+    /** default: 0 **/
+    contrast: number;
+    /** default: 0 **/
+    saturation: number;
+    /** default: 0 **/
+    temperature: number;
+    /** default: 0 **/
+    tint: number;
+    /** default: 0 **/
+    highlights: number;
+    /** default: 0 **/
+    shadows: number;
+};
 /** A relative offset within a frame */
 export type FrameOffset = {
     /** Unique id specifying the frame */
@@ -432,12 +469,45 @@ export type FrameOffset = {
     /** 2d vector offset within the frame */
     node_offset: Vector;
 };
+/** Position of a region comment on the canvas **/
+export type Region = {
+    /** X coordinate of the position **/
+    x: number;
+    /** Y coordinate of the position **/
+    y: number;
+    /** The height of the comment region. Must be greater than 0 **/
+    region_height: number;
+    /** The width of the comment region. Must be greater than 0 **/
+    region_width: number;
+    /** default: bottom-right, The corner of the comment region to pin to the node's corner as a string enum **/
+    comment_pin_corner: 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left';
+};
+/** A relative offset region within a frame **/
+export type FrameOffsetRegion = {
+    /** Unique id specifying the frame. **/
+    node_id: string;
+    /** 2D vector offset within the frame. **/
+    node_offset: Vector;
+    /** The height of the comment region **/
+    region_height: number;
+    /** The width of the comment region **/
+    region_width: number;
+    /** default: bottom-right, The corner of the comment region to pin to the node's corner as a string enum **/
+    comment_pin_corner: 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left';
+};
 /** A position color pair representing a gradient stop */
 export type ColorStop = {
     /** Value between 0 and 1 representing position along gradient axis */
     position: number;
     /** Color attached to corresponding position */
     color: Color;
+};
+/** Paint metadata to override default paints **/
+export type PaintOverride = {
+    /** Paints applied to characters **/
+    fills: Paint[];
+    /**  ID of style node, if any, that this inherits fill data from **/
+    inheritFillStyleId: string;
 };
 /** Metadata for character formatting */
 export type TypeStyle = {
@@ -449,6 +519,8 @@ export type TypeStyle = {
     paragraphSpacing?: number;
     /** Paragraph indentation in px, 0 if not present */
     paragraphIndent?: number;
+    /** default: 0 Space between list items in px, 0 if not present **/
+    listSpacing: number;
     /** Is text italicized? */
     italic: boolean;
     /** Numeric font weight */
@@ -553,6 +625,8 @@ export interface Style {
     name: string;
     /** The description of the style */
     description: string;
+    /** Whether this style is a remote style that doesn't live in this file **/
+    remote: boolean;
     /** The type of style */
     styleType: StyleType;
 }
@@ -612,6 +686,8 @@ export interface CANVAS {
     children: Node[];
     /** Background color of the canvas */
     backgroundColor: Color;
+    /** A array of flow starting points sorted by its position in the prototype settings panel. **/
+    flowStartingPoints: FlowStartingPoint[];
     /** default: [] An array of export settings representing images to export from the canvas */
     exportSettings: ExportSetting[];
     /** Node ID that corresponds to the start frame for prototypes */
@@ -755,6 +831,8 @@ export interface VECTOR {
     fills: Paint[];
     /** Only specified if parameter geometry=paths is used. An array of paths representing the object fill */
     fillGeometry?: Path[];
+    /** Map from ID to PaintOverride for looking up fill overrides. To see which regions are overriden, you must use the geometry=paths option. Each path returned may have an overrideId which maps to this table. **/
+    fillOverrideTable: Map<Number, PaintOverride>;
     /** default: [] An array of stroke paints applied to the node */
     strokes: Paint[];
     /** The weight of strokes on the node */
@@ -803,7 +881,10 @@ export type STAR = VECTOR;
 /** A straight line */
 export type LINE = VECTOR;
 /** An ellipse */
-export type ELLIPSE = VECTOR;
+export type ELLIPSE = {
+    /** Start and end angles of the ellipse measured clockwise from the x axis, plus the inner radius for donuts **/
+    arcData: ArcData;
+} & VECTOR;
 /** A regular n-sided polygon */
 export type REGULAR_POLYGON = VECTOR;
 /** A rectangle */
@@ -820,7 +901,7 @@ export declare enum LineTypes {
     NONE = "NONE"
 }
 /** A text box */
-export type TEXT = VECTOR & {
+export type TEXT = Omit<VECTOR, "fillOverrideTable"> & {
     /** Text contained within text box */
     characters: string;
     /** Style of text including font family and weight (see type style section for more information) */
@@ -842,21 +923,23 @@ export interface SLICE {
     exportSettings: ExportSetting[];
     /** Bounding box of the node in absolute space coordinates */
     absoluteBoundingBox: Rectangle;
+    /** The bounds of the rendered node in the file in absolute space coordinates **/
+    absoluteRenderBounds: Rectangle;
     /** Width and height of element. This is different from the width and height of the bounding box in that the absolute bounding box represents the element after scaling and rotation. Only present if geometry=paths is passed */
     size?: Vector;
     /** The top two rows of a matrix that represents the 2D transform of this node relative to its parent. The bottom row of the matrix is implicitly always (0, 0, 1). Use to transform coordinates in geometry. Only present if geometry=paths is passed */
     relativeTransform?: Transform;
 }
 /** A node that can have instances created of it that share the same properties */
-export type COMPONENT = FRAME & {
-    /** A mapping of name to ComponentPropertyDefinition for every component property on this component. Each property has a type, defaultValue, and other optional values (see property types section below) */
-    componentPropertyDefinitions: Map<String, ComponentPropertyDefinition>;
-};
+export type COMPONENT = {
+    /** A mapping of name to ComponentPropertyDefinition for every component property on this component. Each property has a type, defaultValue, and other optional values (see property types section **/
+    componentPropertyDefinitions: Map<string, ComponentPropertyDefinition>;
+} & FRAME;
 /** A node that can have instances created of it that share the same properties */
-export type COMPONENT_SET = FRAME & {
-    /** A mapping of name to ComponentPropertyDefinition for every component property on this component. Each property has a type, defaultValue, and other optional values (see property types section below) */
-    componentPropertyDefinitions: Map<String, ComponentPropertyDefinition>;
-};
+export type COMPONENT_SET = {
+    /** A mapping of name to ComponentPropertyDefinition for every component property on this component. Each property has a type, defaultValue, and other optional values (see property types section **/
+    componentPropertyDefinitions: Map<string, ComponentPropertyDefinition>;
+} & FRAME;
 /** An instance of a component, changes to the component result in the same changes applied to the instance */
 export type INSTANCE<ComponentID = string> = FRAME & {
     /** ID of component that this instance came from, refers to components table (see endpoints section below) */
@@ -912,13 +995,20 @@ export type NodeTypes = {
 };
 export type NodeType = keyof NodeTypes;
 export type Node<NType extends NodeType = NodeType> = {
+    /** A string uniquely identifying this node within the document. **/
     id: string;
+    /** The name given to the node by the user in the tool. **/
     name: string;
+    /** Whether or not the node is visible on the canvas. **/
     visible: boolean;
+    /** The type of the node, refer to table below for details. **/
     type: NType;
+    /** Data written by plugins that is visible only to the plugin that wrote it. Requires the `pluginData` to include the ID of the plugin. **/
     pluginData: any;
+    /** Data written by plugins that is visible to all plugins. Requires the `pluginData` parameter to include the string "shared". **/
     sharedPluginData: any;
     isFixed?: boolean;
+    /** A mapping of a layer's property to component property name of component properties attached to this node. The component property name can be used to look up more information on the node's containing component's or component set's componentPropertyDefinitions. **/
     componentPropertyReferences?: Map<String, String>;
     boundVariables?: Map<String, VariableAlias | VariableAlias[]>;
 } & NodeTypes[NType];

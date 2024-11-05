@@ -1,4 +1,4 @@
-import { Vector, FrameOffset, NodeType } from "./ast-types";
+import { Vector, FrameOffset, NodeType, Region, FrameOffsetRegion } from "./ast-types";
 import { GetFileResult, GetFileNodesResult, GetImageResult, GetImageFillsResult, GetCommentsResult, PostCommentResult, DeleteCommentsResult, GetUserMeResult, GetVersionsResult, GetTeamProjectsResult, GetProjectFilesResult, GetTeamComponentsResult, GetFileComponentsResult, GetComponentResult, GetTeamComponentSetsResult, GetFileComponentSetsResult, GetComponentSetResult, GetTeamStylesResult, GetFileStylesResult, GetStyleResult } from "./api-types";
 import { ApiRequestMethod } from "./utils";
 type ApiClass = {
@@ -66,7 +66,7 @@ export declare function postCommentsApi(this: ApiClass, fileKey: string,
 /** The text contents of the comment to post */
 message: string, 
 /** The position of where to place the comment. This can either be an absolute canvas position or the relative position within a frame. */
-client_meta: Vector | FrameOffset, 
+client_meta: Vector | FrameOffset | Region | FrameOffsetRegion, 
 /** (Optional) The comment to reply to, if any. This must be a root comment, that is, you cannot reply to a comment that is a reply itself (a reply has a parent_id). */
 comment_id?: string): Promise<PostCommentResult>;
 export declare function deleteCommentsApi(this: ApiClass, fileKey: string, comment_id: string): Promise<DeleteCommentsResult>;
