@@ -1,6 +1,6 @@
 {
   "name": "figma-api",
-  "version": "1.12.0",
+  "version": "2.0.0-beta",
   "description": "Thin typed wrapper around the Figma REST API",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
