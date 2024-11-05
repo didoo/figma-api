@@ -1,7 +1,7 @@
 {
   "name": "figma-api",
   "version": "1.12.0",
-  "description": "Figma js typed api",
+  "description": "Thin typed wrapper around the Figma REST API",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
@@ -11,14 +11,11 @@
   },
   "keywords": [
     "figma",
-    "figmajs",
-    "json",
+    "rest",
     "api",
-    "parser",
-    "ast",
     "typed"
   ],
-  "author": "morglod",
+  "author": "didoo",
   "license": "MIT",
   "dependencies": {
     "@types/node": "^22.8.7",
