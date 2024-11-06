@@ -291,14 +291,14 @@ export function getWebhookRequestsApi(
 // https://www.figma.com/developers/api#activity-logs-endpoints
 // -----------------------------------------------------------------
 
-// TODO - Open to contributions if someone is going to use this
+// TODO - Open to contributions if someone is needs to use these endpoints
 
 
 // PAYMENTS
 // https://www.figma.com/developers/api#payments-endpoints
 // -----------------------------------------------------------------
 
-// TODO - Open to contributions if someone is going to use this
+// TODO - Open to contributions if someone is needs to use these endpoints
 
 
 // VARIABLES

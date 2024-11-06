@@ -42,13 +42,16 @@ export class Api {
 
     getFile = ApiEndpoints.getFileApi;
     getFileNodes = ApiEndpoints.getFileNodesApi;
-    getImage = ApiEndpoints.getImagesApi;
+    getImages = ApiEndpoints.getImagesApi;
     getImageFills = ApiEndpoints.getImageFillsApi;
     getComments = ApiEndpoints.getCommentsApi;
     postComment = ApiEndpoints.postCommentApi;
-    deleteComments = ApiEndpoints.deleteCommentApi;
-    getMe = ApiEndpoints.getUserMeApi;
-    getVersions = ApiEndpoints.getFileVersionsApi;
+    deleteComment = ApiEndpoints.deleteCommentApi;
+    getCommentReactions = ApiEndpoints.getCommentReactionsApi;
+    postCommentReaction = ApiEndpoints.postCommentReactionApi;
+    deleteCommentReactions = ApiEndpoints.deleteCommentReactionsApi;
+    getUserMe = ApiEndpoints.getUserMeApi;
+    getFileVersions = ApiEndpoints.getFileVersionsApi;
     getTeamProjects = ApiEndpoints.getTeamProjectsApi;
     getProjectFiles = ApiEndpoints.getProjectFilesApi;
     getTeamComponents = ApiEndpoints.getTeamComponentsApi;
@@ -60,6 +63,25 @@ export class Api {
     getTeamStyles = ApiEndpoints.getTeamStylesApi;
     getFileStyles = ApiEndpoints.getFileStylesApi;
     getStyle = ApiEndpoints.getStyleApi;
+    getWebhook = ApiEndpoints.getWebhookApi;
+    postWebhook = ApiEndpoints.postWebhookApi;
+    putWebhook = ApiEndpoints.putWebhookApi;
+    deleteWebhook = ApiEndpoints.deleteWebhookApi;
+    getTeamWebhooks = ApiEndpoints.getTeamWebhooksApi;
+    getWebhookRequests = ApiEndpoints.getWebhookRequestsApi;
+    getLocalVariables = ApiEndpoints.getLocalVariablesApi;
+    getPublishedVariables = ApiEndpoints.getPublishedVariablesApi;
+    postVariables = ApiEndpoints.postVariablesApi;
+    getDevResources = ApiEndpoints.getDevResourcesApi;
+    postDevResources = ApiEndpoints.postDevResourcesApi;
+    putDevResources = ApiEndpoints.putDevResourcesApi;
+    deleteDevResources = ApiEndpoints.deleteDevResourcesApi;
+    getLibraryAnalyticsComponentActions = ApiEndpoints.getLibraryAnalyticsComponentActionsApi;
+    getLibraryAnalyticsComponentUsages = ApiEndpoints.getLibraryAnalyticsComponentUsagesApi;
+    getLibraryAnalyticsStyleActions = ApiEndpoints.getLibraryAnalyticsStyleActionsApi;
+    getLibraryAnalyticsStyleUsages = ApiEndpoints.getLibraryAnalyticsStyleUsagesApi;
+    getLibraryAnalyticsVariableActions = ApiEndpoints.getLibraryAnalyticsVariableActionsApi;
+    getLibraryAnalyticsVariableUsages = ApiEndpoints.getLibraryAnalyticsVariableUsagesApi;
 }
 
 // see: https://www.figma.com/developers/api#auth-oauth2
