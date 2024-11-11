@@ -34,12 +34,12 @@ export async function main() {
         personalAccessToken: 'my-token',
     });
 
-    const file = await api.getFile('my-file-key');
+    const file = await api.getFile({ file_key: 'my-file-key'});
     // ... access file data ...
 }
 ```
 
-or in a browser script:
+In a browser script:
 
 ```js
 const api = new Figma.Api({ personalAccessToken: 'my-personal-access-token' });
@@ -98,6 +98,9 @@ Other helpers:
 ### Endpoints
 
 All these endpoints methods receive objects like `pathParams`, `queryParams`, `requestBody`, as arguments, and return a Promise. For details about the shape of these objects refer to the official Figma REST API documentation (see links below).
+
+> [!IMPORTANT]
+> Version 2.x differs considerably from version 1.x in that the arguments of the API endpoint methods are _always_ contained in these objects, while before they were passed singularly as values directly to the function.
 
 #### Files
 
