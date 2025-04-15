@@ -37,7 +37,7 @@ export class Api {
 
         const res = await axios(axiosParams);
         if (Math.floor(res.status / 100) !== 2) throw res.statusText;
-        return res.data;
+        return res.data as T;
     };
 
     getFile = ApiEndpoints.getFileApi;
@@ -102,18 +102,20 @@ export function oAuthLink(
     return `https://www.figma.com/oauth?${queryParams}`;
 }
 
+type OAuthTokenResponseData = {
+    user_id: string,
+    access_token: string,
+    refresh_token: string,
+    expires_in: number,
+};
+
 export async function oAuthToken(
     client_id: string,
     client_secret: string,
     redirect_uri: string,
     code: string,
     grant_type: 'authorization_code',
-): Promise<{
-    user_id: string,
-    access_token: string,
-    refresh_token: string,
-    expires_in: number,
-}> {
+): Promise<OAuthTokenResponseData> {
     // see: https://www.figma.com/developers/api#update-oauth-credentials-handling
     const headers = {
         'Authorization': `Basic ${Buffer.from(`${client_id}:${client_secret}`).toString('base64')}`,
@@ -126,5 +128,5 @@ export async function oAuthToken(
     const url = `https://api.figma.com/v1/oauth/token?${queryParams}`;
     const res = await axios({ url, method: 'POST', headers });
     if (res.status !== 200) throw res.statusText;
-    return res.data;
+    return res.data as unknown as OAuthTokenResponseData;
 }
