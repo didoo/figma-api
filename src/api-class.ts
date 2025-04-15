@@ -35,7 +35,7 @@ export class Api {
             headers,
         };
 
-        const res = await axios(axiosParams);
+        const res = await axios<T>(axiosParams);
         if (Math.floor(res.status / 100) !== 2) throw res.statusText;
         return res.data as T;
     };
