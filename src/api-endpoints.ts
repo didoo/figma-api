@@ -317,7 +317,7 @@ export function getPublishedVariablesApi(
     this: ApiClass,
     pathParams: FigmaRestAPI.GetPublishedVariablesPathParams,
 ): Promise<FigmaRestAPI.GetPublishedVariablesResponse> {
-    return this.request(`${API_DOMAIN}/${API_VER}/analytics/libraries/${pathParams.file_key}/variables/published`);
+    return this.request(`${API_DOMAIN}/${API_VER}/files/${pathParams.file_key}/variables/published`);
 }
 
 export function postVariablesApi(
