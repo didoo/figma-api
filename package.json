@@ -19,7 +19,7 @@
   "license": "MIT",
   "dependencies": {
     "@types/node": "^22.14.1",
-    "axios": "^0.30.0"
+    "axios": "^1.12.2"
   },
   "devDependencies": {
     "@figma/rest-api-spec": "^0.27.0",
@@ -27,6 +27,12 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3",
     "uglifyify": "^5.0.2"
+  },
+  "browserify": {
+    "transform": []
+  },
+  "browser": {
+    "axios": "axios/dist/browser/axios.cjs"
   },
   "repository": {
     "type": "git",
