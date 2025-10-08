@@ -5,9 +5,7 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "build": "tsc && npm run-script browserify && npm run-script uglify",
-    "browserify": "browserify lib/index.js --standalone Figma -o lib/figma-api.js",
-    "uglify": "browserify -g [ uglifyify ] lib/index.js --standalone Figma -o lib/figma-api.min.js"
+    "build": "esbuild src/index.ts --bundle --platform=node --outfile=lib/index.js && esbuild src/index.ts --bundle --format=iife --global-name=Figma --outfile=lib/figma-api.js && esbuild src/index.ts --bundle --format=iife --global-name=Figma --minify --outfile=lib/figma-api.min.js"
   },
   "keywords": [
     "figma",
@@ -17,16 +15,13 @@
   ],
   "author": "didoo",
   "license": "MIT",
-  "dependencies": {
-    "@types/node": "^22.14.1",
-    "axios": "^0.30.0"
-  },
   "devDependencies": {
     "@figma/rest-api-spec": "^0.27.0",
-    "browserify": "^17.0.1",
+    "@types/node": "^22.14.1",
+    "axios": "^1.12.2",
+    "esbuild": "^0.25.10",
     "ts-node": "^10.9.2",
-    "typescript": "^5.8.3",
-    "uglifyify": "^5.0.2"
+    "typescript": "^5.8.3"
   },
   "repository": {
     "type": "git",

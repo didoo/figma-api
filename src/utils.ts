@@ -1,4 +1,4 @@
-import { AxiosResponse, Method as AxiosMethod, AxiosRequestConfig } from 'axios';
+import { AxiosError, Method as AxiosMethod, AxiosRequestConfig } from 'axios';
 
 export function toQueryParams(x: any): string {
     if (!x) return '';
@@ -11,10 +11,9 @@ export type Disposer = () => void;
 
 export class ApiError extends Error {
     constructor(
-        public response: AxiosResponse,
-        message?: string,
+        public error: AxiosError,
     ) {
-        super(message);
+        super(error.message);
     }
 }
 
