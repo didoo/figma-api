@@ -5,10 +5,10 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "build": "tsc && npm run-script browserify && npm run-script uglify",
-    "build:full": "npm test && npm run build",
-    "browserify": "browserify lib/index.js --standalone Figma -o lib/figma-api.js",
-    "uglify": "browserify -g [ uglifyify ] lib/index.js --standalone Figma -o lib/figma-api.min.js",
+    "build": "npm run build:node && npm run build:browser && npm run build:browser:min",
+    "build:node": "esbuild src/index.ts --bundle --platform=node --outfile=lib/index.js",
+    "build:browser": "esbuild src/index.ts --bundle --format=iife --global-name=Figma --outfile=lib/figma-api.js",
+    "build:browser:min": "esbuild src/index.ts --bundle --format=iife --global-name=Figma --minify --outfile=lib/figma-api.min.js",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage"
@@ -21,19 +21,16 @@
   ],
   "author": "didoo",
   "license": "MIT",
-  "dependencies": {
-    "@types/node": "^22.14.1",
-    "axios": "^0.30.0"
-  },
   "devDependencies": {
     "@figma/rest-api-spec": "^0.27.0",
     "@types/jest": "^30.0.0",
-    "browserify": "^17.0.1",
+    "@types/node": "^22.14.1",
+    "axios": "^1.12.2",
+    "esbuild": "^0.25.10",
     "jest": "^30.2.0",
     "ts-jest": "^29.4.4",
     "ts-node": "^10.9.2",
-    "typescript": "^5.8.3",
-    "uglifyify": "^5.0.2"
+    "typescript": "^5.8.3"
   },
   "repository": {
     "type": "git",

@@ -1,7 +1,7 @@
 import * as ApiEndpoints from './api-endpoints';
-import { ApiRequestMethod, toQueryParams } from './utils';
+import { ApiError, ApiRequestMethod, toQueryParams } from './utils';
 
-import axios, { AxiosRequestConfig, Method as AxiosMethod } from 'axios';
+import axios, { AxiosError, AxiosRequestConfig, Method as AxiosMethod } from 'axios';
 
 export class Api {
     personalAccessToken?: string;
@@ -25,7 +25,7 @@ export class Api {
         if (this.oAuthToken) headers['Authorization'] =  `Bearer ${this.oAuthToken}`;
     }
 
-    request: ApiRequestMethod = async <T>(url: string, opts?: { method: AxiosMethod, data: AxiosRequestConfig["data"] }) => {
+    request: ApiRequestMethod = <T>(url: string, opts?: { method: AxiosMethod, data: AxiosRequestConfig["data"] }) => {
         const headers = {};
         this.appendHeaders(headers);
 
@@ -35,9 +35,11 @@ export class Api {
             headers,
         };
 
-        const res = await axios<T>(axiosParams);
-        if (Math.floor(res.status / 100) !== 2) throw res.statusText;
-        return res.data as T;
+        return axios<T>(axiosParams)
+            .then(response => response.data)
+            .catch((error: AxiosError) => {
+                throw new ApiError(error);
+            });
     };
 
     getFile = ApiEndpoints.getFileApi;
@@ -127,6 +129,6 @@ export async function oAuthToken(
     });
     const url = `https://api.figma.com/v1/oauth/token?${queryParams}`;
     const res = await axios.post<OAuthTokenResponseData>(url, null, { headers });
-    if (res.status !== 200) throw res.statusText;
+    if (res.status !== 200) throw new ApiError(res as any);
     return res.data;
 }
