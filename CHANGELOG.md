@@ -72,6 +72,39 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 - Updated OAuth token exchange method according to new Figma specifications
 
+---
+
+## Migration Guide: v1.x to v2.x
+
+Version 2.0 represents a complete rewrite of the library to align with the official Figma REST API specifications. Here are the key breaking changes:
+
+### Method Signatures
+**Before (v1.x):**
+```javascript
+api.getFile(fileKey, { version, ids, depth, geometry, plugin_data, branch_data })
+```
+
+**After (v2.x):**
+```javascript
+api.getFile(
+  { file_key: fileKey }, // pathParams
+  { version, ids, depth, geometry, plugin_data, branch_data } // queryParams
+)
+```
+
+### Authentication
+OAuth authentication has been updated to follow the new Figma specifications. The `oAuthToken` method signature has changed.
+
+### Benefits of v2.x
+- Full type safety with official Figma API types
+- Complete API coverage with all endpoints
+- Future-proof alignment with Figma's specifications
+- Better error handling and debugging
+
+For detailed migration instructions, please refer to the [README.md](README.md) file.
+
+---
+
 ## [v1.12.0] - 2024-11-05
 
 ### Added
@@ -109,33 +142,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Bumped shell-quote from 1.6.1 to 1.7.3
 - Bumped minimist and mkdirp dependencies for security
 
----
-
-## Migration Guide: v1.x to v2.x
-
-Version 2.0 represents a complete rewrite of the library to align with the official Figma REST API specifications. Here are the key breaking changes:
-
-### Method Signatures
-**Before (v1.x):**
-```javascript
-api.getFile(fileKey, { version, ids, depth, geometry, plugin_data, branch_data })
-```
-
-**After (v2.x):**
-```javascript
-api.getFile(
-  { file_key: fileKey }, // pathParams
-  { version, ids, depth, geometry, plugin_data, branch_data } // queryParams
-)
-```
-
-### Authentication
-OAuth authentication has been updated to follow the new Figma specifications. The `oAuthToken` method signature has changed.
-
-### Benefits of v2.x
-- Full type safety with official Figma API types
-- Complete API coverage with all endpoints
-- Future-proof alignment with Figma's specifications
-- Better error handling and debugging
-
-For detailed migration instructions, please refer to the [README.md](README.md) file.
