@@ -218,14 +218,22 @@ The library is fully typed using the official [Figma REST API specifications](ht
 
 Alternatively, you can refer to the official Figma REST API documentation (see links above).
 
+---
+
 ## Development
 
 ```
 git clone https://github.com/didoo/figma-api.git
 cd figma-api
 git checkout main
-npm i
+npm install
 npm run build
+```
+
+## Testing
+
+```
+npm run test
 ```
 
 ## Release
