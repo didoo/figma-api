@@ -5,9 +5,7 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "build": "tsc && npm run-script bundle && npm run-script bundle:min",
-    "bundle": "esbuild lib/index.js --bundle --format=iife --global-name=Figma --outfile=lib/figma-api.js",
-    "bundle:min": "esbuild lib/index.js --bundle --format=iife --global-name=Figma --minify --outfile=lib/figma-api.min.js"
+    "build": "esbuild src/index.ts --bundle --platform=node --outfile=lib/index.js && esbuild src/index.ts --bundle --format=iife --global-name=Figma --outfile=lib/figma-api.js && esbuild src/index.ts --bundle --format=iife --global-name=Figma --minify --outfile=lib/figma-api.min.js"
   },
   "keywords": [
     "figma",
@@ -18,11 +16,11 @@
   "author": "didoo",
   "license": "MIT",
   "dependencies": {
-    "@types/node": "^22.14.1",
     "axios": "^1.12.2"
   },
   "devDependencies": {
     "@figma/rest-api-spec": "^0.27.0",
+    "@types/node": "^22.14.1",
     "esbuild": "^0.25.10",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
