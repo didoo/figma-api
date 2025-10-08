@@ -94,6 +94,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated follow-redirects from 1.14.8 to 1.15.9
 - Updated minimatch from 3.0.4 to 3.1.2
 
+## [v1.11.0] - 2022-10-29
+
+### Added
+- Autolayout v4 properties support
+- Improved `getFileNodesApi` response type
+- Enhanced type definitions for various API responses
+
+### Fixed
+- Minor type issues in API definitions
+- Updated `file.components` type definition
+
+### Security
+- Bumped shell-quote from 1.6.1 to 1.7.3
+- Bumped minimist and mkdirp dependencies for security
+
 ---
 
 ## Migration Guide: v1.x to v2.x
