@@ -71,6 +71,24 @@ export function getExampleApi(
 - Browser and Node.js compatibility is maintained through build process
 - Keep the public API surface minimal and focused on REST API exposure
 
+### Security & Dependencies
+- Check for vulnerabilities before adding new dependencies: `npm audit`
+- Keep dependencies minimal and focused on the library's core purpose
+- When adding dependencies, verify they're well-maintained and trusted
+- Address security vulnerabilities promptly but carefully to avoid breaking changes
+
+### Error Handling
+- API errors should be handled consistently using the existing error patterns
+- Preserve error information from the Figma API in responses
+- Use TypeScript's strict typing to catch errors at compile time
+- Handle network errors gracefully in the request utility functions
+
+### File Management
+- Exclude build artifacts from version control (already configured in `.gitignore`)
+- Keep the source in `src/` and compiled output in `lib/`
+- Don't commit `node_modules`, `playground`, or temporary files
+- Use `.npmignore` to control what gets published to npm
+
 ## When Making Changes
 
 1. Ensure TypeScript compilation succeeds: `npm run build`
@@ -78,3 +96,5 @@ export function getExampleApi(
 3. Check that new endpoints follow the established patterns
 4. Update documentation in README.md if adding major new functionality
 5. Maintain backward compatibility within major version
+6. Run `npm audit` to check for security vulnerabilities
+7. Test both Node.js and browser environments when possible
