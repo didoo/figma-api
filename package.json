@@ -21,11 +21,13 @@
   ],
   "author": "didoo",
   "license": "MIT",
-  "devDependencies": {
+  "dependencies": {
     "@figma/rest-api-spec": "^0.27.0",
+    "axios": "^1.12.2"
+  },
+  "devDependencies": {
     "@types/jest": "^30.0.0",
     "@types/node": "^22.14.1",
-    "axios": "^1.12.2",
     "esbuild": "^0.25.10",
     "jest": "^30.2.0",
     "ts-jest": "^29.4.4",
