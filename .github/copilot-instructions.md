@@ -57,6 +57,20 @@ export function getExampleApi(
 - Run `npm run build` to compile TypeScript and create browser builds
 - Browser builds use Browserify with UMD format
 - No test framework currently - focus on type safety from `@figma/rest-api-spec`
+- Verify builds work in both Node.js and browser environments
+
+### Development Workflow
+- Use TypeScript strict mode for all development
+- Run builds frequently during development to catch issues early
+- Use the existing patterns consistently - don't create new patterns
+- When in doubt, follow the Figma REST API documentation exactly
+- Check `lib/` output after builds to ensure proper compilation
+
+### Tool Configuration
+- TypeScript config in `tsconfig.json` targets ES5 with CommonJS modules
+- Browserify creates UMD builds for browser compatibility
+- Exclude `node_modules`, `playground`, and build artifacts from TypeScript compilation
+- Use `@figma/rest-api-spec` types exclusively - never create custom API types
 
 ### Version Alignment
 - This library stays in sync with official Figma REST API specifications
