@@ -5,7 +5,10 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "build": "esbuild src/index.ts --bundle --platform=node --outfile=lib/index.js && esbuild src/index.ts --bundle --format=iife --global-name=Figma --outfile=lib/figma-api.js && esbuild src/index.ts --bundle --format=iife --global-name=Figma --minify --outfile=lib/figma-api.min.js"
+    "build": "npm run build:node && npm run build:browser && npm run build:browser:min",
+    "build:node": "esbuild src/index.ts --bundle --platform=node --outfile=lib/index.js",
+    "build:browser": "esbuild src/index.ts --bundle --format=iife --global-name=Figma --outfile=lib/figma-api.js",
+    "build:browser:min": "esbuild src/index.ts --bundle --format=iife --global-name=Figma --minify --outfile=lib/figma-api.min.js"
   },
   "keywords": [
     "figma",
