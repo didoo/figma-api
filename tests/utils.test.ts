@@ -43,35 +43,37 @@ describe('utils', () => {
 
   describe('ApiError', () => {
     test('should create ApiError instance', () => {
-      const mockResponse = {
-        status: 404,
-        statusText: 'Not Found',
-        data: {},
-        headers: {},
-        config: {},
+      const mockAxiosError = {
+        message: 'Request failed with status code 404',
+        name: 'AxiosError',
+        response: {
+          status: 404,
+          statusText: 'Not Found',
+          data: {},
+          headers: {},
+          config: {},
+        }
       } as any;
       
-      const error = new ApiError(mockResponse, 'Test error');
+      const error = new ApiError(mockAxiosError);
       
       expect(error).toBeInstanceOf(Error);
       expect(error.name).toBe('ApiError');
-      expect(error.message).toBe('Test error');
-      expect(error.response).toBe(mockResponse);
+      expect(error.message).toBe('Request failed with status code 404');
+      expect(error.error).toBe(mockAxiosError);
     });
 
-    test('should create ApiError without message', () => {
-      const mockResponse = {
-        status: 500,
-        statusText: 'Internal Server Error',
-        data: {},
-        headers: {},
-        config: {},
+    test('should create ApiError and maintain stack trace', () => {
+      const mockAxiosError = {
+        message: 'Network Error',
+        name: 'AxiosError',
       } as any;
       
-      const error = new ApiError(mockResponse);
+      const error = new ApiError(mockAxiosError);
       
       expect(error.name).toBe('ApiError');
-      expect(error.response).toBe(mockResponse);
+      expect(error.error).toBe(mockAxiosError);
+      expect(error.stack).toBeDefined();
     });
   });
 });

@@ -1,4 +1,5 @@
 import { Api, oAuthLink, oAuthToken } from '../src/api-class';
+import { ApiError } from '../src/utils';
 import axios, { AxiosResponse } from 'axios';
 
 // Mock axios module
@@ -118,15 +119,19 @@ describe('api-class', () => {
         expect(result).toEqual({ created: true });
       });
 
-      test('should throw error for non-2xx status codes', async () => {
-        const mockResponse: AxiosResponse = {
-          status: 404,
-          statusText: 'Not Found',
-          data: {},
-          headers: {},
-          config: {} as any,
+      test('should throw ApiError for axios errors', async () => {
+        const mockAxiosError = {
+          message: 'Request failed with status code 404',
+          name: 'AxiosError',
+          response: {
+            status: 404,
+            statusText: 'Not Found',
+            data: {},
+            headers: {},
+            config: {} as any,
+          }
         };
-        mockedAxios.mockResolvedValueOnce(mockResponse);
+        mockedAxios.mockRejectedValueOnce(mockAxiosError);
 
         const api = new Api({ personalAccessToken: 'test-token' });
         
@@ -134,7 +139,8 @@ describe('api-class', () => {
           await api.request('https://api.figma.com/v1/test');
           fail('Expected request to throw an error');
         } catch (error) {
-          expect(error).toBe('Not Found');
+          expect(error).toBeInstanceOf(ApiError);
+          expect((error as ApiError).error).toBe(mockAxiosError);
         }
       });
     });
@@ -210,7 +216,7 @@ describe('api-class', () => {
       expect(result).toEqual(mockResponse.data);
     });
 
-    test('should throw error for non-200 status', async () => {
+    test('should throw ApiError for non-200 status', async () => {
       const mockResponse: AxiosResponse = {
         status: 400,
         statusText: 'Bad Request',
@@ -230,7 +236,7 @@ describe('api-class', () => {
         );
         fail('Expected oAuthToken to throw an error');
       } catch (error) {
-        expect(error).toBe('Bad Request');
+        expect(error).toBeInstanceOf(ApiError);
       }
     });
   });
