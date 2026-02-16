@@ -5,11 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v2.1.2-beta] - 2026-02-16
+
+### Changed
+- Properly upgraded Axios from `1.12.2` to `1.13.5` (before an issue with dependabot didn't upgrade it in `package.json`)
+
 ## [v2.1.1-beta] - 2026-02-13
 
 ### Changed
 - Upgraded `js-yaml` from `3.14.1` to `3.14.2`
-- Upgraded Axios from `1.12.2` to `1.13.5`
+- Upgraded Axios from `1.12.2` to `1.13.5` (note: incorrect upgrade)
 - Fixed vulnerabilities singaled by npm
 
 ## [v2.1.0-beta] - 2025-10-08
