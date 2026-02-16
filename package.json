@@ -23,7 +23,7 @@
   "license": "MIT",
   "dependencies": {
     "@figma/rest-api-spec": "^0.27.0",
-    "axios": "^1.12.2"
+    "axios": "^1.13.5"
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",
