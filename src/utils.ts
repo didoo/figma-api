@@ -3,6 +3,7 @@ import { AxiosError, Method as AxiosMethod, AxiosRequestConfig } from 'axios';
 export function toQueryParams(x: any): string {
     if (!x) return '';
     return Object.entries(x).map(([ k, v ]) => (
+        // Keep explicit false/0 values (e.g. svg_outline_text=false), only omit undefined/null/empty-string.
         k && v !== undefined && v !== null && v !== '' && `${k}=${encodeURIComponent(v as any)}`
     )).filter(Boolean).join('&')
 }
