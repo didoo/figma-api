@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [NEXT] - YYYY-MM-DD
+
+### Changed
+- Widened `@figma/rest-api-spec` dependency range to `>=0.37.0 <1.0.0` (floor bumped from `0.27.0` to `0.37.0`, which is the current latest release,
+
 ## [v2.1.4-beta] - 2026-04-22
 
 ### Changed
@@ -170,4 +175,3 @@ For detailed migration instructions, please refer to the [README.md](README.md) 
 ### Security
 - Bumped shell-quote from 1.6.1 to 1.7.3
 - Bumped minimist and mkdirp dependencies for security
-

@@ -22,7 +22,7 @@
   "author": "didoo",
   "license": "MIT",
   "dependencies": {
-    "@figma/rest-api-spec": "^0.27.0",
+    "@figma/rest-api-spec": ">=0.37.0 <1.0.0",
     "axios": "^1.15.2"
   },
   "devDependencies": {
