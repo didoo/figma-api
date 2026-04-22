@@ -22,7 +22,7 @@ describe('utils', () => {
       expect(result).toBe('search=hello%20world&special=a%2Bb%3Dc');
     });
 
-    test('should filter out falsy values', () => {
+    test('should filter out null/undefined/empty string values', () => {
       const params = { key1: 'value1', key2: '', key3: null, key4: 'value4', key5: undefined };
       const result = toQueryParams(params);
       expect(result).toBe('key1=value1&key4=value4');
@@ -37,7 +37,13 @@ describe('utils', () => {
     test('should handle boolean values', () => {
       const params = { enabled: true, disabled: false };
       const result = toQueryParams(params);
-      expect(result).toBe('enabled=true');
+      expect(result).toBe('enabled=true&disabled=false');
+    });
+
+    test('should preserve explicit false and zero values', () => {
+      const params = { svg_outline_text: false, scale: 0 };
+      const result = toQueryParams(params);
+      expect(result).toBe('svg_outline_text=false&scale=0');
     });
   });
 

@@ -3,7 +3,7 @@ import { AxiosError, Method as AxiosMethod, AxiosRequestConfig } from 'axios';
 export function toQueryParams(x: any): string {
     if (!x) return '';
     return Object.entries(x).map(([ k, v ]) => (
-        k && v && `${k}=${encodeURIComponent(v as any)}`
+        k && v !== undefined && v !== null && v !== '' && `${k}=${encodeURIComponent(v as any)}`
     )).filter(Boolean).join('&')
 }
 

@@ -44,6 +44,17 @@ describe('api-endpoints', () => {
       );
     });
 
+    test('getImagesApi should preserve false boolean query parameters', () => {
+      const pathParams = { file_key: 'test-file-key' };
+      const queryParams = { ids: 'node1,node2', format: 'svg' as const, svg_outline_text: false };
+
+      apiEndpoints.getImagesApi.call(mockApiClass, pathParams, queryParams);
+
+      expect(mockApiClass.request).toHaveBeenCalledWith(
+        `${API_DOMAIN}/${API_VER}/images/test-file-key?ids=node1%2Cnode2&format=svg&svg_outline_text=false`
+      );
+    });
+
     test('getImageFillsApi should generate correct URL', () => {
       const pathParams = { file_key: 'test-file-key' };
 
