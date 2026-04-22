@@ -7,6 +7,7 @@ export declare function getFileApi(this: ApiClass, pathParams: FigmaRestAPI.GetF
 export declare function getFileNodesApi(this: ApiClass, pathParams: FigmaRestAPI.GetFileNodesPathParams, queryParams?: FigmaRestAPI.GetFileNodesQueryParams): Promise<FigmaRestAPI.GetFileNodesResponse>;
 export declare function getImagesApi(this: ApiClass, pathParams: FigmaRestAPI.GetImagesPathParams, queryParams?: FigmaRestAPI.GetImagesQueryParams): Promise<FigmaRestAPI.GetImagesResponse>;
 export declare function getImageFillsApi(this: ApiClass, pathParams: FigmaRestAPI.GetImageFillsPathParams): Promise<FigmaRestAPI.GetImageFillsResponse>;
+export declare function getFileMetaApi(this: ApiClass, pathParams: FigmaRestAPI.GetFileMetaPathParams): Promise<FigmaRestAPI.GetFileMetaResponse>;
 export declare function getCommentsApi(this: ApiClass, pathParams: FigmaRestAPI.GetCommentsPathParams): Promise<FigmaRestAPI.GetCommentsResponse>;
 export declare function postCommentApi(this: ApiClass, pathParams: FigmaRestAPI.PostCommentPathParams, requestBody?: FigmaRestAPI.PostCommentRequestBody): Promise<FigmaRestAPI.PostCommentResponse>;
 export declare function deleteCommentApi(this: ApiClass, pathParams: FigmaRestAPI.DeleteCommentPathParams): Promise<FigmaRestAPI.DeleteCommentResponse>;

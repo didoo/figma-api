@@ -16,6 +16,7 @@ export declare class Api {
     getFileNodes: typeof ApiEndpoints.getFileNodesApi;
     getImages: typeof ApiEndpoints.getImagesApi;
     getImageFills: typeof ApiEndpoints.getImageFillsApi;
+    getFileMeta: typeof ApiEndpoints.getFileMetaApi;
     getComments: typeof ApiEndpoints.getCommentsApi;
     postComment: typeof ApiEndpoints.postCommentApi;
     deleteComment: typeof ApiEndpoints.deleteCommentApi;
