@@ -153,6 +153,7 @@ describe('api-class', () => {
         expect(typeof api.getFile).toBe('function');
         expect(typeof api.getFileNodes).toBe('function');
         expect(typeof api.getImages).toBe('function');
+        expect(typeof api.getFileMeta).toBe('function');
         expect(typeof api.getUserMe).toBe('function');
         expect(typeof api.getComments).toBe('function');
         expect(typeof api.postComment).toBe('function');
