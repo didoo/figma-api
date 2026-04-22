@@ -48,6 +48,13 @@ export function getImageFillsApi(
     return this.request(`${API_DOMAIN}/${API_VER}/files/${pathParams.file_key}/images`);
 }
 
+export function getFileMetaApi(
+    this: ApiClass,
+    pathParams: FigmaRestAPI.GetFileMetaPathParams,
+): Promise<FigmaRestAPI.GetFileMetaResponse> {
+    return this.request(`${API_DOMAIN}/${API_VER}/files/${pathParams.file_key}/meta`);
+}
+
 
 // COMMENTS
 // https://www.figma.com/developers/api#comments-endpoints
@@ -433,4 +440,3 @@ export function getLibraryAnalyticsVariableUsagesApi(
     const encodedQueryParams = toQueryParams(queryParams);
     return this.request(`${API_DOMAIN}/${API_VER}/analytics/libraries/${pathParams.file_key}/variable/usages?${encodedQueryParams}`);
 }
-

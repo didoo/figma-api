@@ -64,6 +64,16 @@ describe('api-endpoints', () => {
         `${API_DOMAIN}/${API_VER}/files/test-file-key/images`
       );
     });
+
+    test('getFileMetaApi should generate correct URL', () => {
+      const pathParams = { file_key: 'test-file-key' };
+
+      apiEndpoints.getFileMetaApi.call(mockApiClass, pathParams);
+
+      expect(mockApiClass.request).toHaveBeenCalledWith(
+        `${API_DOMAIN}/${API_VER}/files/test-file-key/meta`
+      );
+    });
   });
 
   describe('Comments endpoints', () => {
@@ -188,6 +198,7 @@ describe('api-endpoints', () => {
       expect(typeof apiEndpoints.getFileNodesApi).toBe('function');
       expect(typeof apiEndpoints.getImagesApi).toBe('function');
       expect(typeof apiEndpoints.getImageFillsApi).toBe('function');
+      expect(typeof apiEndpoints.getFileMetaApi).toBe('function');
       expect(typeof apiEndpoints.getCommentsApi).toBe('function');
       expect(typeof apiEndpoints.postCommentApi).toBe('function');
       expect(typeof apiEndpoints.deleteCommentApi).toBe('function');

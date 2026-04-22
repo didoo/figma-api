@@ -46,6 +46,7 @@ export class Api {
     getFileNodes = ApiEndpoints.getFileNodesApi;
     getImages = ApiEndpoints.getImagesApi;
     getImageFills = ApiEndpoints.getImageFillsApi;
+    getFileMeta = ApiEndpoints.getFileMetaApi;
     getComments = ApiEndpoints.getCommentsApi;
     postComment = ApiEndpoints.postCommentApi;
     deleteComment = ApiEndpoints.deleteCommentApi;
