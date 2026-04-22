@@ -67,13 +67,13 @@ Creates new Api object with specified `personalAccessToken` or `oAuthToken`. For
 function oAuthLink(
     client_id: string,
     redirect_uri: string,
-    scope: 'file_read',
+    scope: string | string[],
     state: string,
     response_type: 'code',
 ): string;
 ```
 
-Returns link for OAuth auth flow. Users should open this link, allow access and they will be redirected to `redirect_uri?code=<code>`. Then they should use `oAuthToken` method to get an access token.
+Returns link for OAuth auth flow. `scope` can be a single scope string (for example `file_content:read`) or an array of scope strings for multiple permissions. Users should open this link, allow access and they will be redirected to `redirect_uri?code=<code>`. Then they should use `oAuthToken` method to get an access token.
 
 ```ts
 function oAuthToken(

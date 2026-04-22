@@ -174,6 +174,34 @@ describe('api-class', () => {
         'https://www.figma.com/oauth?client_id=client123&redirect_uri=https%3A%2F%2Fexample.com%2Fcallback&scope=file_read&state=state123&response_type=code'
       );
     });
+
+    test('should generate correct OAuth link for newer granular scopes', () => {
+      const link = oAuthLink(
+        'client123',
+        'https://example.com/callback',
+        'file_content:read',
+        'state123',
+        'code'
+      );
+
+      expect(link).toBe(
+        'https://www.figma.com/oauth?client_id=client123&redirect_uri=https%3A%2F%2Fexample.com%2Fcallback&scope=file_content%3Aread&state=state123&response_type=code'
+      );
+    });
+
+    test('should generate correct OAuth link for multiple scopes', () => {
+      const link = oAuthLink(
+        'client123',
+        'https://example.com/callback',
+        ['file_content:read', 'file_comments:read'],
+        'state123',
+        'code'
+      );
+
+      expect(link).toBe(
+        'https://www.figma.com/oauth?client_id=client123&redirect_uri=https%3A%2F%2Fexample.com%2Fcallback&scope=file_content%3Aread%20file_comments%3Aread&state=state123&response_type=code'
+      );
+    });
   });
 
   describe('oAuthToken', () => {
