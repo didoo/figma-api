@@ -216,6 +216,8 @@ See: https://www.figma.com/developers/api#library-analytics-endpoints
 
 The library is fully typed using the official [Figma REST API specifications](https://github.com/figma/rest-api-spec). You can see those types in the generated file here: https://github.com/figma/rest-api-spec/blob/main/dist/api_types.ts.
 
+`figma-api` currently supports `@figma/rest-api-spec` versions in the range `>=0.27.0 <1.0.0`.
+
 Alternatively, you can refer to the official Figma REST API documentation (see links above).
 
 ---
