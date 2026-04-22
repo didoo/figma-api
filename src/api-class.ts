@@ -90,14 +90,14 @@ export class Api {
 export function oAuthLink(
     client_id: string,
     redirect_uri: string,
-    scope: 'file_read',
+    scope: string | string[],
     state: string,
     response_type: 'code',
 ) {
     const queryParams = toQueryParams({
         client_id,
         redirect_uri,
-        scope,
+        scope: Array.isArray(scope) ? scope.join(' ') : scope,
         state,
         response_type,
     });
