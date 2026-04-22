@@ -33,6 +33,16 @@ describe('api-endpoints', () => {
       );
     });
 
+    test('getFileMetaApi should generate correct URL', () => {
+      const pathParams = { file_key: 'test-file-key' };
+
+      apiEndpoints.getFileMetaApi.call(mockApiClass, pathParams);
+
+      expect(mockApiClass.request).toHaveBeenCalledWith(
+        `${API_DOMAIN}/${API_VER}/files/test-file-key/meta`
+      );
+    });
+
     test('getImagesApi should generate correct URL', () => {
       const pathParams = { file_key: 'test-file-key' };
       const queryParams = { ids: 'node1,node2', format: 'png' as const };
@@ -62,16 +72,6 @@ describe('api-endpoints', () => {
 
       expect(mockApiClass.request).toHaveBeenCalledWith(
         `${API_DOMAIN}/${API_VER}/files/test-file-key/images`
-      );
-    });
-
-    test('getFileMetaApi should generate correct URL', () => {
-      const pathParams = { file_key: 'test-file-key' };
-
-      apiEndpoints.getFileMetaApi.call(mockApiClass, pathParams);
-
-      expect(mockApiClass.request).toHaveBeenCalledWith(
-        `${API_DOMAIN}/${API_VER}/files/test-file-key/meta`
       );
     });
   });
