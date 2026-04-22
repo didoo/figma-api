@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v2.1.3-beta] - 2026-04-22
+
+### Changed
+- Updated `minimatch` from `9.0.5` to `9.0.9`
+- Updated `picomatch` from `4.0.3` to `4.0.4`
+- Bumped `handlebars` from `4.7.8` to `4.7.9`
+- Bumped `axios` from `1.13.5` to `1.15.0`
+- Bumped `follow-redirects` from `1.15.11` to `1.16.0`
+
 ## [v2.1.2-beta] - 2026-02-16
 
 ### Changed
