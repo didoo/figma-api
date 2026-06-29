@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v2.2.1-beta] - 2026-06-29
+
+### Changed
+- Updated `axios` from `1.15.2` to `1.18.1`
+- Updated `esbuild` from `0.25.10` to `0.28.1`
+- Updated `form-data` from `4.0.5` to `4.0.6`
+
+
 ## [v2.2.0-beta] - 2026-04-22
 
 ### Added
