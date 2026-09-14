@@ -138,8 +138,29 @@ See: https://www.figma.com/developers/api#version-history-endpoints
 
 See: https://www.figma.com/developers/api#projects-endpoints
 
-- `Api.getTeamProjects(pathParams)`
-- `Api.getProjectFiles(pathParams,queryParams)`
+> [!WARNING]
+> These endpoints were deprecated by Figma in August 2026 in favour of the folders endpoints below. Personal access tokens created now cannot be granted the `files:read` scope they require, so they return `403 Invalid scope`. Use the folders endpoints instead.
+
+- `Api.getTeamProjects(pathParams)` — deprecated, use `Api.getTeamFolders(pathParams)`
+- `Api.getProjectFiles(pathParams,queryParams)` — deprecated, use `Api.getFolderFiles(pathParams,queryParams)`
+
+#### Folders
+
+See: https://www.figma.com/developers/api#folders-endpoints
+
+These replace the projects endpoints above and require the `folders:read` scope (`folder_metadata:read` for `getFolderMeta`). Folder IDs are the same values as the old project IDs, and the responses keep the same shape, so migrating is a one-line change:
+
+```ts
+// before
+const project = await api.getProjectFiles({ project_id: '12345678' });
+// after
+const folder = await api.getFolderFiles({ folder_id: '12345678' });
+```
+
+- `Api.getTeamFolders(pathParams)`
+- `Api.getFolderFolders(pathParams)`
+- `Api.getFolderFiles(pathParams,queryParams)`
+- `Api.getFolderMeta(pathParams)`
 
 #### Components and Styles (Library Items)
 
