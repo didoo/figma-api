@@ -191,11 +191,17 @@ describe('api-endpoints', () => {
       ['/v1/styles/item1', api => api.getStyle(item)],
 
       ['/v2/webhooks/hook1', api => api.getWebhook(webhook)],
+      ['/v2/webhooks?context=team&context_id=team1', api => api.getWebhooks({ context: 'team', context_id: team.team_id })],
+      ['/v2/webhooks?plan_api_id=team-team1&cursor=next%2Bpage', api => api.getWebhooks({ plan_api_id: 'team-team1', cursor: 'next+page' })],
       ['/v2/webhooks', api => api.postWebhook(hookCreate), { method: 'POST', data: hookCreate }],
       ['/v2/webhooks/hook1', api => api.putWebhook(webhook, hookUpdate), { method: 'PUT', data: hookUpdate }],
       ['/v2/webhooks/hook1', api => api.deleteWebhook(webhook), { method: 'DELETE', data: '' }],
       ['/v2/teams/team1/webhooks', api => api.getTeamWebhooks(team)],
       ['/v2/webhooks/hook1/requests', api => api.getWebhookRequests(webhook)],
+
+      ['/v1/oembed?url=https%3A%2F%2Fexample.figma.site', api => api.getOEmbed({ url: 'https://example.figma.site' })],
+      ['/v1/oembed?url=https%3A%2F%2Fwww.figma.com%2Fdesign%2Fkey%3Fnode-id%3D1-2%26mode%3Ddesign&maxwidth=640&maxheight=360',
+        api => api.getOEmbed({ url: 'https://www.figma.com/design/key?node-id=1-2&mode=design', maxwidth: 640, maxheight: 360 })],
 
       ['/v1/files/file1/variables/local', api => api.getLocalVariables(file)],
       ['/v1/files/file1/variables/published', api => api.getPublishedVariables(file)],

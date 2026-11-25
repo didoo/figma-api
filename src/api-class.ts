@@ -72,10 +72,12 @@ export class Api {
     getTeamStyles = ApiEndpoints.getTeamStylesApi;
     getFileStyles = ApiEndpoints.getFileStylesApi;
     getStyle = ApiEndpoints.getStyleApi;
+    getWebhooks = ApiEndpoints.getWebhooksApi;
     getWebhook = ApiEndpoints.getWebhookApi;
     postWebhook = ApiEndpoints.postWebhookApi;
     putWebhook = ApiEndpoints.putWebhookApi;
     deleteWebhook = ApiEndpoints.deleteWebhookApi;
+    /** @deprecated Use getWebhooks({ context: 'team', context_id: team_id }) instead. */
     getTeamWebhooks = ApiEndpoints.getTeamWebhooksApi;
     getWebhookRequests = ApiEndpoints.getWebhookRequestsApi;
     getLocalVariables = ApiEndpoints.getLocalVariablesApi;
@@ -91,6 +93,7 @@ export class Api {
     getLibraryAnalyticsStyleUsages = ApiEndpoints.getLibraryAnalyticsStyleUsagesApi;
     getLibraryAnalyticsVariableActions = ApiEndpoints.getLibraryAnalyticsVariableActionsApi;
     getLibraryAnalyticsVariableUsages = ApiEndpoints.getLibraryAnalyticsVariableUsagesApi;
+    getOEmbed = ApiEndpoints.getOEmbedApi;
 }
 
 // see: https://www.figma.com/developers/api#auth-oauth2

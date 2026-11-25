@@ -171,11 +171,11 @@ See: https://developers.figma.com/docs/rest-api/webhooks-endpoints/
 > [!NOTE]
 > Creating a webhook requires `webhooks:write`. You must be a team admin to create a team webhook, or have **Can edit** access to the folder or file to create a webhook there.
 
+- `Api.getWebhooks(queryParams)`
 - `Api.getWebhook(pathParams)`
 - `Api.postWebhook(requestBody)`
 - `Api.putWebhook(pathParams,requestBody)`
 - `Api.deleteWebhook(pathParams)`
-- `Api.getTeamWebhooks(pathParams)` — deprecated by Figma in favour of `GET /v2/webhooks`. This library does not wrap the replacement yet.
 - `Api.getWebhookRequests(pathParams)`
 
 #### Variables
@@ -214,9 +214,15 @@ All six methods require `group_by` in `queryParams`. For example, pass `{ group_
 - `Api.getLibraryAnalyticsVariableActions(pathParams,queryParams)`
 - `Api.getLibraryAnalyticsVariableUsages(pathParams,queryParams)`
 
+#### oEmbed
+
+See: https://developers.figma.com/docs/rest-api/oembed-endpoints/
+
+- `Api.getOEmbed(queryParams)`
+
 #### Other endpoints (not exposed yet)
 
-The `0.42.0` spec also includes project metadata, listing webhooks by context or plan, activity logs, developer logs, daily AI usage, payments and oEmbed. This library does not have methods for those endpoints yet. Contributions are welcome if you need one of them.
+The `0.42.0` spec also includes activity logs, developer logs, daily AI usage and payments. This library does not have methods for those endpoints yet. Contributions are welcome if you need one of them.
 
 ## Types
 
