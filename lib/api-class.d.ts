@@ -25,7 +25,9 @@ export declare class Api {
     deleteCommentReactions: typeof ApiEndpoints.deleteCommentReactionsApi;
     getUserMe: typeof ApiEndpoints.getUserMeApi;
     getFileVersions: typeof ApiEndpoints.getFileVersionsApi;
+    /** @deprecated Use getTeamFolders instead. */
     getTeamProjects: typeof ApiEndpoints.getTeamProjectsApi;
+    /** @deprecated Use getFolderFiles instead. */
     getProjectFiles: typeof ApiEndpoints.getProjectFilesApi;
     getTeamFolders: typeof ApiEndpoints.getTeamFoldersApi;
     getFolderFolders: typeof ApiEndpoints.getFolderFoldersApi;

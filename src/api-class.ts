@@ -55,7 +55,9 @@ export class Api {
     deleteCommentReactions = ApiEndpoints.deleteCommentReactionsApi;
     getUserMe = ApiEndpoints.getUserMeApi;
     getFileVersions = ApiEndpoints.getFileVersionsApi;
+    /** @deprecated Use getTeamFolders instead. */
     getTeamProjects = ApiEndpoints.getTeamProjectsApi;
+    /** @deprecated Use getFolderFiles instead. */
     getProjectFiles = ApiEndpoints.getProjectFilesApi;
     getTeamFolders = ApiEndpoints.getTeamFoldersApi;
     getFolderFolders = ApiEndpoints.getFolderFoldersApi;
