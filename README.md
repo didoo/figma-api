@@ -1,8 +1,5 @@
 [![NPM Version](https://badge.fury.io/js/figma-api.svg?style=flat)](https://www.npmjs.com/package/figma-api)
 
-> [!IMPORTANT]
-> **Version 2.0 Beta** - This version is a complete rewrite of the library, based on the [Figma REST API specifications](https://github.com/figma/rest-api-spec). Many endpoint methods have been renamed from version 1.x, and all the endpoint methods' arguments now match the [Figma REST API](https://www.figma.com/developers/api) documentation. If you were using the previous version, and intend to use the new one, **you will have to update your code accordingly**. The good news is that from now on they should always remain in sync, so no major disruptions in the future, with the benefit of a full alignment with the official Figma REST API documentation and specifications.
-
 # figma-api
 
 JavaScript client-side implementation of the [Figma REST API](https://www.figma.com/developers/api#intro).
@@ -58,10 +55,12 @@ We have followed the same organisation as the official [Figma API documentation]
 ### Authentication
 
 ```ts
-new Api ({ personalAccessToken, oAuthToken })
+new Api({ personalAccessToken })
+// or
+new Api({ oAuthToken })
 ```
 
-Creates new Api object with specified `personalAccessToken` or `oAuthToken`. For details about how to get these tokens, [see the documentation](https://www.figma.com/developers/api#authentication)
+Creates an `Api` object with either a personal access token or an OAuth token. See Figma's [authentication documentation](https://developers.figma.com/docs/rest-api/authentication/) for how to get a token and the [scope reference](https://developers.figma.com/docs/rest-api/scopes/) for the permissions each method requires.
 
 ```ts
 function oAuthLink(
@@ -73,22 +72,14 @@ function oAuthLink(
 ): string;
 ```
 
-Returns link for OAuth auth flow. `scope` can be a single scope string (for example `file_content:read`) or an array of scope strings for multiple permissions. Users should open this link, allow access and they will be redirected to `redirect_uri?code=<code>`. Then they should use `oAuthToken` method to get an access token.
+Returns a link for the OAuth flow. `scope` can be a single scope string (for example `file_content:read`) or an array of scopes. Generate a random `state` and keep it for the callback. After the user allows access, Figma redirects them to `redirect_uri` with `code` and `state`. Check that `state` matches the value you saved before exchanging the code.
 
 ```ts
-function oAuthToken(
-    client_id: string,
-    client_secret: string,
-    redirect_uri: string,
-    code: string,
-    grant_type: 'authorization_code',
-): Promise<{
-    access_token: string,
-    refresh_token: string,
-    expires_in: number,
-}>
+const { access_token, refresh_token, expires_in } = await oAuthToken(
+    client_id, client_secret, redirect_uri, code, 'authorization_code',
+);
 ```
-Returns the access token from oauth code (see `oAuthLink` method). If the exchange fails with an HTTP or network error, the promise rejects with an `ApiError`; its `error` property contains the original Axios error.
+Use `oAuthToken` on the server so your client secret stays private. If the exchange fails with an HTTP or network error, the promise rejects with an `ApiError`; its `error` property contains the original Axios error.
 
 Other helpers:
 
@@ -97,10 +88,10 @@ Other helpers:
 
 ### Endpoints
 
-All these endpoints methods receive objects like `pathParams`, `queryParams`, `requestBody`, as arguments, and return a Promise. For details about the shape of these objects refer to the official Figma REST API documentation (see links below).
+Call the methods below on your `Api` instance. They take `pathParams`, `queryParams` or `requestBody` objects (where needed) and return a Promise. You can leave out `queryParams` unless Figma requires a value, as noted below.
 
 > [!IMPORTANT]
-> Version 2.x differs considerably from version 1.x in that the arguments of the API endpoint methods are _always_ contained in these objects, while before they were passed singularly as values directly to the function.
+> **Upgrading from 1.x?** Version 2.x is a rewrite based on the [Figma REST API specifications](https://github.com/figma/rest-api-spec). Many endpoint methods have new names and now take objects instead of individual values. Use the signatures below to update your calls.
 
 #### Files
 
@@ -108,6 +99,7 @@ See: https://www.figma.com/developers/api#files-endpoints
 
 - `Api.getFile(pathParams,queryParams)`
 - `Api.getFileNodes(pathParams,queryParams)`
+- `Api.getFileMeta(pathParams)`
 - `Api.getImages(pathParams,queryParams)`
 - `Api.getImageFills(pathParams)`
 
@@ -115,7 +107,9 @@ See: https://www.figma.com/developers/api#files-endpoints
 
 See: https://www.figma.com/developers/api#comments-endpoints
 
-- `Api.getComments(pathParams)`
+You can only delete your own comments and reactions.
+
+- `Api.getComments(pathParams)` — the `as_md` query parameter is not supported by this library yet.
 - `Api.postComment(pathParams,requestBody)`
 - `Api.deleteComment(pathParams)`
 - `Api.getCommentReactions(pathParams,queryParams)`
@@ -136,26 +130,20 @@ See: https://www.figma.com/developers/api#version-history-endpoints
 
 #### Projects
 
-See: https://www.figma.com/developers/api#projects-endpoints
+See: https://developers.figma.com/docs/rest-api/projects-endpoints/
 
 > [!WARNING]
-> These endpoints were deprecated by Figma in August 2026 in favour of the folders endpoints below. Personal access tokens created now cannot be granted the `files:read` scope they require, so they return `403 Invalid scope`. Use the folders endpoints instead.
+> Figma has deprecated these endpoints in favour of the [folders endpoints](#folders). The legacy endpoints require the `projects:read` scope and are not available to public OAuth apps.
 
 - `Api.getTeamProjects(pathParams)` — deprecated, use `Api.getTeamFolders(pathParams)`
 - `Api.getProjectFiles(pathParams,queryParams)` — deprecated, use `Api.getFolderFiles(pathParams,queryParams)`
 
 #### Folders
 
-See: https://www.figma.com/developers/api#folders-endpoints
+See: https://developers.figma.com/docs/rest-api/folders-endpoints/
 
-These replace the projects endpoints above and require the `folders:read` scope (`folder_metadata:read` for `getFolderMeta`). Folder IDs are the same values as the old project IDs, and the responses keep the same shape, so migrating is a one-line change:
-
-```ts
-// before
-const project = await api.getProjectFiles({ project_id: '12345678' });
-// after
-const folder = await api.getFolderFiles({ folder_id: '12345678' });
-```
+> [!NOTE]
+> Listing folders or files requires `folders:read`, which public OAuth apps cannot request. `getFolderMeta` uses `folder_metadata:read` instead and accepts OAuth tokens (including from public apps) or plan access tokens, but not personal access tokens.
 
 - `Api.getTeamFolders(pathParams)`
 - `Api.getFolderFolders(pathParams)`
@@ -178,34 +166,22 @@ See: https://www.figma.com/developers/api#library-items-endpoints
 
 #### Webhooks
 
-See: https://www.figma.com/developers/api#webhooks_v2
+See: https://developers.figma.com/docs/rest-api/webhooks-endpoints/
+
+> [!NOTE]
+> Creating a webhook requires `webhooks:write`. You must be a team admin to create a team webhook, or have **Can edit** access to the folder or file to create a webhook there.
 
 - `Api.getWebhook(pathParams)`
 - `Api.postWebhook(requestBody)`
 - `Api.putWebhook(pathParams,requestBody)`
 - `Api.deleteWebhook(pathParams)`
-- `Api.getTeamWebhooks(pathParams)`
+- `Api.getTeamWebhooks(pathParams)` — deprecated by Figma in favour of `GET /v2/webhooks`. This library does not wrap the replacement yet.
 - `Api.getWebhookRequests(pathParams)`
-
-#### Activity Logs
-
-See: https://www.figma.com/developers/api#activity-logs-endpoints
-
-> [!TIP]
-> [TODO] Open to contributions if someone is needs to use these endpoints
-
-
-#### Payments
-
-See: https://www.figma.com/developers/api#payments-endpoints
-
-> [!TIP]
-> [TODO] Open to contributions if someone is needs to use these endpoints
 
 #### Variables
 
 > [!NOTE]
-> These APIs are available only to full members of Enterprise orgs.
+> These APIs are available only to full members of Enterprise orgs. To write variables with `postVariables`, you also need an Editor seat.
 
 See: https://www.figma.com/developers/api#variables-endpoints
 
@@ -226,6 +202,11 @@ See: https://www.figma.com/developers/api#dev-resources-endpoints
 
 See: https://www.figma.com/developers/api#library-analytics-endpoints
 
+> [!NOTE]
+> Library analytics is available only on the Enterprise plan. Anyone with a seat on that plan can use these methods if their token has the `library_analytics:read` scope.
+
+All six methods require `group_by` in `queryParams`. For example, pass `{ group_by: 'component' }` to `getLibraryAnalyticsComponentActions`.
+
 - `Api.getLibraryAnalyticsComponentActions(pathParams,queryParams)`
 - `Api.getLibraryAnalyticsComponentUsages(pathParams,queryParams)`
 - `Api.getLibraryAnalyticsStyleActions(pathParams,queryParams)`
@@ -233,9 +214,13 @@ See: https://www.figma.com/developers/api#library-analytics-endpoints
 - `Api.getLibraryAnalyticsVariableActions(pathParams,queryParams)`
 - `Api.getLibraryAnalyticsVariableUsages(pathParams,queryParams)`
 
+#### Other endpoints (not exposed yet)
+
+The `0.42.0` spec also includes project metadata, listing webhooks by context or plan, activity logs, developer logs, daily AI usage, payments and oEmbed. This library does not have methods for those endpoints yet. Contributions are welcome if you need one of them.
+
 ## Types
 
-The library is fully typed using the official [Figma REST API specifications](https://github.com/figma/rest-api-spec). You can see those types in the generated file here: https://github.com/figma/rest-api-spec/blob/main/dist/api_types.ts.
+The library uses the types from the official `@figma/rest-api-spec` package. See the [generated types for `0.42.0`](https://github.com/figma/rest-api-spec/blob/v0.42.0/dist/api_types.ts), the minimum supported version. The [latest spec](https://github.com/figma/rest-api-spec) may include endpoints that this library does not wrap yet.
 
 Alternatively, you can refer to the official Figma REST API documentation (see links above).
 
