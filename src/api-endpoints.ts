@@ -1,4 +1,4 @@
-import { API_DOMAIN, API_VER, API_VER_WEBHOOKS } from "./config";
+import { API_DOMAIN, API_VER, API_VER_FOLDERS, API_VER_WEBHOOKS } from "./config";
 import { ApiRequestMethod, toQueryParams } from "./utils";
 
 // types
@@ -144,6 +144,11 @@ export function getFileVersionsApi(
 // PROJECTS
 // https://www.figma.com/developers/api#projects-endpoints
 // -----------------------------------------------------------------
+//
+// @deprecated These endpoints were deprecated in August 2026 in favour of the
+// folders endpoints below, and personal access tokens can no longer be granted
+// the files:read scope they require. Use the folders endpoints instead: folder
+// IDs are the same values as project IDs, so only the call has to change.
 
 export function getTeamProjectsApi(
     this: ApiClass,
@@ -159,6 +164,41 @@ export function getProjectFilesApi(
 ): Promise<FigmaRestAPI.GetProjectFilesResponse> {
     const encodedQueryParams = toQueryParams(queryParams);
     return this.request(`${API_DOMAIN}/${API_VER}/projects/${pathParams.project_id}/files?${encodedQueryParams}`);
+}
+
+
+// FOLDERS
+// https://www.figma.com/developers/api#folders-endpoints
+// -----------------------------------------------------------------
+
+export function getTeamFoldersApi(
+    this: ApiClass,
+    pathParams: FigmaRestAPI.GetTeamFoldersPathParams,
+): Promise<FigmaRestAPI.GetTeamFoldersResponse> {
+    return this.request(`${API_DOMAIN}/${API_VER_FOLDERS}/teams/${pathParams.team_id}/folders`);
+}
+
+export function getFolderFoldersApi(
+    this: ApiClass,
+    pathParams: FigmaRestAPI.GetFolderFoldersPathParams,
+): Promise<FigmaRestAPI.GetFolderFoldersResponse> {
+    return this.request(`${API_DOMAIN}/${API_VER_FOLDERS}/folders/${pathParams.folder_id}/folders`);
+}
+
+export function getFolderFilesApi(
+    this: ApiClass,
+    pathParams: FigmaRestAPI.GetFolderFilesPathParams,
+    queryParams?: FigmaRestAPI.GetFolderFilesQueryParams,
+): Promise<FigmaRestAPI.GetFolderFilesResponse> {
+    const encodedQueryParams = toQueryParams(queryParams);
+    return this.request(`${API_DOMAIN}/${API_VER_FOLDERS}/folders/${pathParams.folder_id}/files?${encodedQueryParams}`);
+}
+
+export function getFolderMetaApi(
+    this: ApiClass,
+    pathParams: FigmaRestAPI.GetFolderMetaPathParams,
+): Promise<FigmaRestAPI.GetFolderMetaResponse> {
+    return this.request(`${API_DOMAIN}/${API_VER_FOLDERS}/folders/${pathParams.folder_id}/meta`);
 }
 
 

@@ -57,6 +57,10 @@ export class Api {
     getFileVersions = ApiEndpoints.getFileVersionsApi;
     getTeamProjects = ApiEndpoints.getTeamProjectsApi;
     getProjectFiles = ApiEndpoints.getProjectFilesApi;
+    getTeamFolders = ApiEndpoints.getTeamFoldersApi;
+    getFolderFolders = ApiEndpoints.getFolderFoldersApi;
+    getFolderFiles = ApiEndpoints.getFolderFilesApi;
+    getFolderMeta = ApiEndpoints.getFolderMetaApi;
     getTeamComponents = ApiEndpoints.getTeamComponentsApi;
     getFileComponents = ApiEndpoints.getFileComponentsApi;
     getComponent = ApiEndpoints.getComponentApi;

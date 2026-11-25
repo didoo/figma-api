@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- Added the folders endpoints: `getTeamFolders`, `getFolderFolders`, `getFolderFiles` and `getFolderMeta`
+- Added `API_VER_FOLDERS` config constant
+
+### Changed
+- Bumped the `@figma/rest-api-spec` floor to `0.42.0` (was `0.37.0`), the release that added the folders types
+
+### Deprecated
+- Marked `getTeamProjects` and `getProjectFiles` as deprecated. Figma deprecated the underlying `/v1/teams/:team_id/projects` and `/v1/projects/:project_id/files` endpoints in August 2026, and personal access tokens can no longer be granted the `files:read` scope they require, so they now fail with `403 Invalid scope`. Folder IDs are the same values as project IDs and the response shapes are unchanged.
+
+
 ## [v2.2.1-beta] - 2026-06-29
 
 ### Changed

@@ -1,5 +1,5 @@
 import * as apiEndpoints from '../src/api-endpoints';
-import { API_DOMAIN, API_VER, API_VER_WEBHOOKS } from '../src/config';
+import { API_DOMAIN, API_VER, API_VER_FOLDERS, API_VER_WEBHOOKS } from '../src/config';
 
 describe('api-endpoints', () => {
   let mockApiClass: { request: jest.Mock };
@@ -191,6 +191,49 @@ describe('api-endpoints', () => {
     });
   });
 
+  describe('Folders endpoints', () => {
+    test('getTeamFoldersApi should generate correct URL', () => {
+      const pathParams = { team_id: 'team123' };
+
+      apiEndpoints.getTeamFoldersApi.call(mockApiClass, pathParams);
+
+      expect(mockApiClass.request).toHaveBeenCalledWith(
+        `${API_DOMAIN}/${API_VER_FOLDERS}/teams/team123/folders`
+      );
+    });
+
+    test('getFolderFoldersApi should generate correct URL', () => {
+      const pathParams = { folder_id: 'folder123' };
+
+      apiEndpoints.getFolderFoldersApi.call(mockApiClass, pathParams);
+
+      expect(mockApiClass.request).toHaveBeenCalledWith(
+        `${API_DOMAIN}/${API_VER_FOLDERS}/folders/folder123/folders`
+      );
+    });
+
+    test('getFolderFilesApi should generate correct URL', () => {
+      const pathParams = { folder_id: 'folder123' };
+      const queryParams = { branch_data: true };
+
+      apiEndpoints.getFolderFilesApi.call(mockApiClass, pathParams, queryParams);
+
+      expect(mockApiClass.request).toHaveBeenCalledWith(
+        `${API_DOMAIN}/${API_VER_FOLDERS}/folders/folder123/files?branch_data=true`
+      );
+    });
+
+    test('getFolderMetaApi should generate correct URL', () => {
+      const pathParams = { folder_id: 'folder123' };
+
+      apiEndpoints.getFolderMetaApi.call(mockApiClass, pathParams);
+
+      expect(mockApiClass.request).toHaveBeenCalledWith(
+        `${API_DOMAIN}/${API_VER_FOLDERS}/folders/folder123/meta`
+      );
+    });
+  });
+
   describe('Endpoint function existence', () => {
     test('should export all expected endpoint functions', () => {
       // Test that key endpoint functions are exported
@@ -205,6 +248,10 @@ describe('api-endpoints', () => {
       expect(typeof apiEndpoints.getUserMeApi).toBe('function');
       expect(typeof apiEndpoints.getFileVersionsApi).toBe('function');
       expect(typeof apiEndpoints.getTeamProjectsApi).toBe('function');
+      expect(typeof apiEndpoints.getTeamFoldersApi).toBe('function');
+      expect(typeof apiEndpoints.getFolderFoldersApi).toBe('function');
+      expect(typeof apiEndpoints.getFolderFilesApi).toBe('function');
+      expect(typeof apiEndpoints.getFolderMetaApi).toBe('function');
     });
   });
 

@@ -157,6 +157,10 @@ describe('api-class', () => {
         expect(typeof api.getUserMe).toBe('function');
         expect(typeof api.getComments).toBe('function');
         expect(typeof api.postComment).toBe('function');
+        expect(typeof api.getTeamFolders).toBe('function');
+        expect(typeof api.getFolderFolders).toBe('function');
+        expect(typeof api.getFolderFiles).toBe('function');
+        expect(typeof api.getFolderMeta).toBe('function');
       });
     });
   });
