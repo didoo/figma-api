@@ -279,8 +279,15 @@ export function getStyleApi(
 
 
 // WEBHOOKS
-// https://www.figma.com/developers/api#webhooks_v2
+// https://developers.figma.com/docs/rest-api/webhooks-endpoints/
 // -----------------------------------------------------------------
+
+export function getWebhooksApi(
+    this: ApiClass,
+    queryParams: FigmaRestAPI.GetWebhooksQueryParams,
+): Promise<FigmaRestAPI.GetWebhooksResponse> {
+    return this.request(`${API_DOMAIN}/${API_VER_WEBHOOKS}/webhooks?${toQueryParams(queryParams)}`);
+}
 
 export function getWebhookApi(
     this: ApiClass,
@@ -481,4 +488,15 @@ export function getLibraryAnalyticsVariableUsagesApi(
 ): Promise<FigmaRestAPI.GetLibraryAnalyticsVariableUsagesResponse> {
     const encodedQueryParams = toQueryParams(queryParams);
     return this.request(`${API_DOMAIN}/${API_VER}/analytics/libraries/${pathParams.file_key}/variable/usages?${encodedQueryParams}`);
+}
+
+// OEMBED
+// https://developers.figma.com/docs/rest-api/oembed-endpoints/
+// -----------------------------------------------------------------
+
+export function getOEmbedApi(
+    this: ApiClass,
+    queryParams: FigmaRestAPI.GetOEmbedQueryParams,
+): Promise<FigmaRestAPI.GetOEmbedResponse> {
+    return this.request(`${API_DOMAIN}/${API_VER}/oembed?${toQueryParams(queryParams)}`);
 }

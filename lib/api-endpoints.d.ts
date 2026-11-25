@@ -31,6 +31,7 @@ export declare function getComponentSetApi(this: ApiClass, pathParams: FigmaRest
 export declare function getTeamStylesApi(this: ApiClass, pathParams: FigmaRestAPI.GetTeamStylesPathParams, queryParams?: FigmaRestAPI.GetTeamStylesQueryParams): Promise<FigmaRestAPI.GetTeamStylesResponse>;
 export declare function getFileStylesApi(this: ApiClass, pathParams: FigmaRestAPI.GetFileStylesPathParams): Promise<FigmaRestAPI.GetFileStylesResponse>;
 export declare function getStyleApi(this: ApiClass, pathParams: FigmaRestAPI.GetStylePathParams): Promise<FigmaRestAPI.GetStyleResponse>;
+export declare function getWebhooksApi(this: ApiClass, queryParams: FigmaRestAPI.GetWebhooksQueryParams): Promise<FigmaRestAPI.GetWebhooksResponse>;
 export declare function getWebhookApi(this: ApiClass, pathParams: FigmaRestAPI.GetWebhookPathParams): Promise<FigmaRestAPI.GetWebhookResponse>;
 export declare function postWebhookApi(this: ApiClass, requestBody?: FigmaRestAPI.PostWebhookRequestBody): Promise<FigmaRestAPI.PostWebhookResponse>;
 export declare function putWebhookApi(this: ApiClass, pathParams: FigmaRestAPI.PutWebhookPathParams, requestBody?: FigmaRestAPI.PutWebhookRequestBody): Promise<FigmaRestAPI.PutWebhookResponse>;
@@ -50,4 +51,5 @@ export declare function getLibraryAnalyticsStyleActionsApi(this: ApiClass, pathP
 export declare function getLibraryAnalyticsStyleUsagesApi(this: ApiClass, pathParams: FigmaRestAPI.GetLibraryAnalyticsStyleUsagesPathParams, queryParams?: FigmaRestAPI.GetLibraryAnalyticsStyleUsagesQueryParams): Promise<FigmaRestAPI.GetLibraryAnalyticsStyleUsagesResponse>;
 export declare function getLibraryAnalyticsVariableActionsApi(this: ApiClass, pathParams: FigmaRestAPI.GetLibraryAnalyticsVariableActionsPathParams, queryParams?: FigmaRestAPI.GetLibraryAnalyticsVariableActionsQueryParams): Promise<FigmaRestAPI.GetLibraryAnalyticsVariableActionsResponse>;
 export declare function getLibraryAnalyticsVariableUsagesApi(this: ApiClass, pathParams: FigmaRestAPI.GetLibraryAnalyticsVariableUsagesPathParams, queryParams?: FigmaRestAPI.GetLibraryAnalyticsVariableUsagesQueryParams): Promise<FigmaRestAPI.GetLibraryAnalyticsVariableUsagesResponse>;
+export declare function getOEmbedApi(this: ApiClass, queryParams: FigmaRestAPI.GetOEmbedQueryParams): Promise<FigmaRestAPI.GetOEmbedResponse>;
 export {};
