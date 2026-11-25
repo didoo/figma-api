@@ -42,10 +42,12 @@ export declare class Api {
     getTeamStyles: typeof ApiEndpoints.getTeamStylesApi;
     getFileStyles: typeof ApiEndpoints.getFileStylesApi;
     getStyle: typeof ApiEndpoints.getStyleApi;
+    getWebhooks: typeof ApiEndpoints.getWebhooksApi;
     getWebhook: typeof ApiEndpoints.getWebhookApi;
     postWebhook: typeof ApiEndpoints.postWebhookApi;
     putWebhook: typeof ApiEndpoints.putWebhookApi;
     deleteWebhook: typeof ApiEndpoints.deleteWebhookApi;
+    /** @deprecated Use getWebhooks({ context: 'team', context_id: team_id }) instead. */
     getTeamWebhooks: typeof ApiEndpoints.getTeamWebhooksApi;
     getWebhookRequests: typeof ApiEndpoints.getWebhookRequestsApi;
     getLocalVariables: typeof ApiEndpoints.getLocalVariablesApi;
@@ -61,6 +63,7 @@ export declare class Api {
     getLibraryAnalyticsStyleUsages: typeof ApiEndpoints.getLibraryAnalyticsStyleUsagesApi;
     getLibraryAnalyticsVariableActions: typeof ApiEndpoints.getLibraryAnalyticsVariableActionsApi;
     getLibraryAnalyticsVariableUsages: typeof ApiEndpoints.getLibraryAnalyticsVariableUsagesApi;
+    getOEmbed: typeof ApiEndpoints.getOEmbedApi;
 }
 export declare function oAuthLink(client_id: string, redirect_uri: string, scope: string | string[], state: string, response_type: 'code'): string;
 type OAuthTokenResponseData = {
