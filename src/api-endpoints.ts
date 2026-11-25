@@ -91,7 +91,7 @@ export function getCommentReactionsApi(
     this: ApiClass,
     pathParams: FigmaRestAPI.GetCommentReactionsPathParams,
     queryParams?: FigmaRestAPI.GetCommentReactionsQueryParams,
-): Promise<FigmaRestAPI.GetCommentsResponse> {
+): Promise<FigmaRestAPI.GetCommentReactionsResponse> {
     const encodedQueryParams = toQueryParams(queryParams);
     return this.request(`${API_DOMAIN}/${API_VER}/files/${pathParams.file_key}/comments/${pathParams.comment_id}/reactions?${encodedQueryParams}`);
 }
@@ -100,7 +100,7 @@ export function postCommentReactionApi(
     this: ApiClass,
     pathParams: FigmaRestAPI.PostCommentReactionPathParams,
     requestBody?: FigmaRestAPI.PostCommentReactionRequestBody,
-): Promise<FigmaRestAPI.PostCommentResponse> {
+): Promise<FigmaRestAPI.PostCommentReactionResponse> {
     return this.request(`${API_DOMAIN}/${API_VER}/files/${pathParams.file_key}/comments/${pathParams.comment_id}/reactions`, {
         method: 'POST',
         data: requestBody,
@@ -110,8 +110,10 @@ export function postCommentReactionApi(
 export function deleteCommentReactionsApi(
     this: ApiClass,
     pathParams: FigmaRestAPI.DeleteCommentReactionPathParams,
+    queryParams: FigmaRestAPI.DeleteCommentReactionQueryParams,
 ): Promise<FigmaRestAPI.DeleteCommentReactionResponse> {
-    return this.request(`${API_DOMAIN}/${API_VER}/files/${pathParams.file_key}/comments/${pathParams.comment_id}/reactions`, {
+    const encodedQueryParams = toQueryParams(queryParams);
+    return this.request(`${API_DOMAIN}/${API_VER}/files/${pathParams.file_key}/comments/${pathParams.comment_id}/reactions?${encodedQueryParams}`, {
         method: 'DELETE',
         data: ''
     });
@@ -312,7 +314,7 @@ export function deleteWebhookApi(
     this: ApiClass,
     pathParams: FigmaRestAPI.DeleteWebhookPathParams,
 ): Promise<FigmaRestAPI.DeleteWebhookResponse> {
-    return this.request(`${API_DOMAIN}/${API_VER_WEBHOOKS}/webhooks/${pathParams.webhook_id}/`, {
+    return this.request(`${API_DOMAIN}/${API_VER_WEBHOOKS}/webhooks/${pathParams.webhook_id}`, {
         method: 'DELETE',
         data: ''
     });
@@ -388,7 +390,8 @@ export function getDevResourcesApi(
     queryParams?: FigmaRestAPI.GetDevResourcesQueryParams,
 ): Promise<FigmaRestAPI.GetDevResourcesResponse> {
     const encodedQueryParams = toQueryParams(queryParams);
-    return this.request(`${API_DOMAIN}/${API_VER}/files/${pathParams.file_key}/dev_resources`);
+    const url = `${API_DOMAIN}/${API_VER}/files/${pathParams.file_key}/dev_resources`;
+    return this.request(encodedQueryParams ? `${url}?${encodedQueryParams}` : url);
 }
 
 export function postDevResourcesApi(

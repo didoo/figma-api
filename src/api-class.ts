@@ -135,7 +135,14 @@ export async function oAuthToken(
         grant_type,
     });
     const url = `https://api.figma.com/v1/oauth/token?${queryParams}`;
-    const res = await axios.post<OAuthTokenResponseData>(url, null, { headers });
-    if (res.status !== 200) throw new ApiError(res as any);
-    return res.data;
+    try {
+        const res = await axios.post<OAuthTokenResponseData>(url, null, {
+            headers,
+            validateStatus: status => status === 200,
+        });
+        return res.data;
+    } catch (error) {
+        if (axios.isAxiosError(error)) throw new ApiError(error);
+        throw error;
+    }
 }

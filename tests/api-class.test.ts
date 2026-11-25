@@ -210,8 +210,10 @@ describe('api-class', () => {
   });
 
   describe('oAuthToken', () => {
+    const realAxios = jest.requireActual<typeof import('axios')>('axios');
     beforeEach(() => {
       jest.clearAllMocks();
+      jest.mocked(axios.isAxiosError).mockImplementation(realAxios.isAxiosError);
     });
 
     test('should exchange code for OAuth token', async () => {
@@ -244,33 +246,35 @@ describe('api-class', () => {
           headers: {
             'Authorization': `Basic ${Buffer.from('client123:secret456').toString('base64')}`,
           },
+          validateStatus: expect.any(Function),
         }
       );
+      const config = jest.mocked(axios.post).mock.calls[0][2];
+      expect(config?.validateStatus?.(200)).toBe(true);
+      expect(config?.validateStatus?.(201)).toBe(false);
+      expect(config?.validateStatus?.(400)).toBe(false);
       expect(result).toEqual(mockResponse.data);
     });
 
-    test('should throw ApiError for non-200 status', async () => {
-      const mockResponse: AxiosResponse = {
+    test('wraps a rejected token exchange and preserves the Axios response', async () => {
+      const failure = new realAxios.AxiosError('Bad Request', 'ERR_BAD_REQUEST', undefined, undefined, {
         status: 400,
         statusText: 'Bad Request',
-        data: {},
+        data: { error: 'invalid_grant' },
         headers: {},
-        config: {} as any,
-      };
-      (mockedAxios.post as jest.MockedFunction<typeof axios.post>).mockResolvedValueOnce(mockResponse);
+        config: { headers: new realAxios.AxiosHeaders() },
+      });
+      jest.mocked(axios.post).mockRejectedValueOnce(failure);
 
-      try {
-        await oAuthToken(
-          'client123',
-          'secret456',
-          'https://example.com/callback',
-          'invalid-code',
-          'authorization_code'
-        );
-        fail('Expected oAuthToken to throw an error');
-      } catch (error) {
-        expect(error).toBeInstanceOf(ApiError);
-      }
+      const result = oAuthToken('client123', 'secret456', 'https://example.com/callback', 'invalid-code', 'authorization_code');
+      await expect(result).rejects.toBeInstanceOf(ApiError);
+      await expect(result).rejects.toMatchObject({ message: failure.message, error: failure });
+    });
+
+    test('does not mislabel a non-Axios exception as an API error', async () => {
+      const failure = new Error('interceptor failed');
+      jest.mocked(axios.post).mockRejectedValueOnce(failure);
+      await expect(oAuthToken('client', 'secret', 'https://example.com', 'code', 'authorization_code')).rejects.toBe(failure);
     });
   });
 });

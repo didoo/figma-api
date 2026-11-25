@@ -88,7 +88,7 @@ function oAuthToken(
     expires_in: number,
 }>
 ```
-Returns the access token from oauth code (see `oAuthLink` method).
+Returns the access token from oauth code (see `oAuthLink` method). If the exchange fails with an HTTP or network error, the promise rejects with an `ApiError`; its `error` property contains the original Axios error.
 
 Other helpers:
 
@@ -120,7 +120,7 @@ See: https://www.figma.com/developers/api#comments-endpoints
 - `Api.deleteComment(pathParams)`
 - `Api.getCommentReactions(pathParams,queryParams)`
 - `Api.postCommentReaction(pathParams,requestBody)`
-- `Api.deleteCommentReactions(pathParams)`
+- `Api.deleteCommentReactions(pathParams, { emoji })` — specify which reaction to remove, for example `{ emoji: ':+1:' }`.
 
 #### Users
 

@@ -14,6 +14,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Bumped the `@figma/rest-api-spec` floor to `0.42.0` (was `0.37.0`), the release that added the folders types
 
+### Fixed
+- `deleteCommentReactions` now requires `{ emoji }` as its second argument. `getCommentReactions` and `postCommentReaction` now return the reaction response types rather than the comment types.
+- `getDevResources` now forwards the `node_ids` filter, and `deleteWebhook` uses the documented URL without a trailing slash.
+- `oAuthToken` now wraps rejected Axios requests in `ApiError`, preserving the original error and response.
+
 ### Deprecated
 - Marked `getTeamProjects` and `getProjectFiles` as deprecated. Figma deprecated the underlying `/v1/teams/:team_id/projects` and `/v1/projects/:project_id/files` endpoints in August 2026, and personal access tokens can no longer be granted the `files:read` scope they require, so they now fail with `403 Invalid scope`. Folder IDs are the same values as project IDs and the response shapes are unchanged.
 

@@ -11,9 +11,9 @@ export declare function getImageFillsApi(this: ApiClass, pathParams: FigmaRestAP
 export declare function getCommentsApi(this: ApiClass, pathParams: FigmaRestAPI.GetCommentsPathParams): Promise<FigmaRestAPI.GetCommentsResponse>;
 export declare function postCommentApi(this: ApiClass, pathParams: FigmaRestAPI.PostCommentPathParams, requestBody?: FigmaRestAPI.PostCommentRequestBody): Promise<FigmaRestAPI.PostCommentResponse>;
 export declare function deleteCommentApi(this: ApiClass, pathParams: FigmaRestAPI.DeleteCommentPathParams): Promise<FigmaRestAPI.DeleteCommentResponse>;
-export declare function getCommentReactionsApi(this: ApiClass, pathParams: FigmaRestAPI.GetCommentReactionsPathParams, queryParams?: FigmaRestAPI.GetCommentReactionsQueryParams): Promise<FigmaRestAPI.GetCommentsResponse>;
-export declare function postCommentReactionApi(this: ApiClass, pathParams: FigmaRestAPI.PostCommentReactionPathParams, requestBody?: FigmaRestAPI.PostCommentReactionRequestBody): Promise<FigmaRestAPI.PostCommentResponse>;
-export declare function deleteCommentReactionsApi(this: ApiClass, pathParams: FigmaRestAPI.DeleteCommentReactionPathParams): Promise<FigmaRestAPI.DeleteCommentReactionResponse>;
+export declare function getCommentReactionsApi(this: ApiClass, pathParams: FigmaRestAPI.GetCommentReactionsPathParams, queryParams?: FigmaRestAPI.GetCommentReactionsQueryParams): Promise<FigmaRestAPI.GetCommentReactionsResponse>;
+export declare function postCommentReactionApi(this: ApiClass, pathParams: FigmaRestAPI.PostCommentReactionPathParams, requestBody?: FigmaRestAPI.PostCommentReactionRequestBody): Promise<FigmaRestAPI.PostCommentReactionResponse>;
+export declare function deleteCommentReactionsApi(this: ApiClass, pathParams: FigmaRestAPI.DeleteCommentReactionPathParams, queryParams: FigmaRestAPI.DeleteCommentReactionQueryParams): Promise<FigmaRestAPI.DeleteCommentReactionResponse>;
 export declare function getUserMeApi(this: ApiClass): Promise<FigmaRestAPI.User>;
 export declare function getFileVersionsApi(this: ApiClass, pathParams: FigmaRestAPI.GetFileVersionsPathParams): Promise<FigmaRestAPI.GetFileVersionsResponse>;
 export declare function getTeamProjectsApi(this: ApiClass, pathParams: FigmaRestAPI.GetTeamProjectsPathParams): Promise<FigmaRestAPI.GetTeamProjectsResponse>;
