@@ -1,8 +1,14 @@
+import * as PublishedAPI from '..';
 import * as FigmaAPI from '../src/index';
 import { API_DOMAIN, API_VER, API_VER_WEBHOOKS } from '../src/config';
 import { Api } from '../src/api-class';
 
 describe('index exports', () => {
+  test('the package entry point exposes the source API and its types', () => {
+    const published: typeof FigmaAPI = PublishedAPI;
+    expect(Object.keys(published).sort()).toEqual(Object.keys(FigmaAPI).sort());
+  });
+
   test('should export config constants', () => {
     expect(FigmaAPI.API_DOMAIN).toBe(API_DOMAIN);
     expect(FigmaAPI.API_VER).toBe(API_VER);

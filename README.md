@@ -251,6 +251,8 @@ npm install
 npm run build
 ```
 
+The build regenerates the TypeScript declarations and JavaScript bundles in `lib/`. To regenerate only the declarations, run `npm run build:types`.
+
 ## Testing
 
 ```

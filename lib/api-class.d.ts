@@ -14,6 +14,7 @@ export declare class Api {
     request: ApiRequestMethod;
     getFile: typeof ApiEndpoints.getFileApi;
     getFileNodes: typeof ApiEndpoints.getFileNodesApi;
+    getFileMeta: typeof ApiEndpoints.getFileMetaApi;
     getImages: typeof ApiEndpoints.getImagesApi;
     getImageFills: typeof ApiEndpoints.getImageFillsApi;
     getComments: typeof ApiEndpoints.getCommentsApi;
@@ -26,6 +27,10 @@ export declare class Api {
     getFileVersions: typeof ApiEndpoints.getFileVersionsApi;
     getTeamProjects: typeof ApiEndpoints.getTeamProjectsApi;
     getProjectFiles: typeof ApiEndpoints.getProjectFilesApi;
+    getTeamFolders: typeof ApiEndpoints.getTeamFoldersApi;
+    getFolderFolders: typeof ApiEndpoints.getFolderFoldersApi;
+    getFolderFiles: typeof ApiEndpoints.getFolderFilesApi;
+    getFolderMeta: typeof ApiEndpoints.getFolderMetaApi;
     getTeamComponents: typeof ApiEndpoints.getTeamComponentsApi;
     getFileComponents: typeof ApiEndpoints.getFileComponentsApi;
     getComponent: typeof ApiEndpoints.getComponentApi;
@@ -55,7 +60,7 @@ export declare class Api {
     getLibraryAnalyticsVariableActions: typeof ApiEndpoints.getLibraryAnalyticsVariableActionsApi;
     getLibraryAnalyticsVariableUsages: typeof ApiEndpoints.getLibraryAnalyticsVariableUsagesApi;
 }
-export declare function oAuthLink(client_id: string, redirect_uri: string, scope: 'file_read', state: string, response_type: 'code'): string;
+export declare function oAuthLink(client_id: string, redirect_uri: string, scope: string | string[], state: string, response_type: 'code'): string;
 type OAuthTokenResponseData = {
     user_id: string;
     access_token: string;

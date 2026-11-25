@@ -60,13 +60,14 @@ export function getExampleApi(
 
 ### Building & Testing
 - Run `npm run build` to compile for all targets (Node.js, browser, minified)
+  - `npm run build:types` - Generate TypeScript declarations in `lib/` without emitting JavaScript
   - `npm run build:node` - Build for Node.js environment using esbuild
   - `npm run build:browser` - Build for browser as IIFE with global `Figma` object
   - `npm run build:browser:min` - Build minified browser version
 - Run `npm test` to execute the Jest test suite
   - `npm run test:watch` - Run tests in watch mode for development
   - `npm run test:coverage` - Generate test coverage reports
-- All builds use esbuild for fast compilation and bundling
+- JavaScript builds use esbuild for fast compilation and bundling
 - Tests are written in TypeScript and located in the `tests/` directory
 
 ### Development Workflow
@@ -80,7 +81,7 @@ export function getExampleApi(
 - Write tests for new functionality in the `tests/` directory following existing patterns
 
 ### Tool Configuration
-- **esbuild** handles all compilation and bundling (replaced TypeScript + Browserify)
+- **esbuild** handles JavaScript compilation and bundling
 - **Jest** configuration in `jest.config.js` with ts-jest preset for TypeScript testing
 - TypeScript config in `tsconfig.json` targets ES5 with CommonJS modules
 - Test files should be placed in `tests/` directory with `.test.ts` extension

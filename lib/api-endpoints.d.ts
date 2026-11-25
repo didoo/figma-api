@@ -5,6 +5,7 @@ type ApiClass = {
 import type * as FigmaRestAPI from '@figma/rest-api-spec';
 export declare function getFileApi(this: ApiClass, pathParams: FigmaRestAPI.GetFilePathParams, queryParams?: FigmaRestAPI.GetFileQueryParams): Promise<FigmaRestAPI.GetFileResponse>;
 export declare function getFileNodesApi(this: ApiClass, pathParams: FigmaRestAPI.GetFileNodesPathParams, queryParams?: FigmaRestAPI.GetFileNodesQueryParams): Promise<FigmaRestAPI.GetFileNodesResponse>;
+export declare function getFileMetaApi(this: ApiClass, pathParams: FigmaRestAPI.GetFileMetaPathParams): Promise<FigmaRestAPI.GetFileMetaResponse>;
 export declare function getImagesApi(this: ApiClass, pathParams: FigmaRestAPI.GetImagesPathParams, queryParams?: FigmaRestAPI.GetImagesQueryParams): Promise<FigmaRestAPI.GetImagesResponse>;
 export declare function getImageFillsApi(this: ApiClass, pathParams: FigmaRestAPI.GetImageFillsPathParams): Promise<FigmaRestAPI.GetImageFillsResponse>;
 export declare function getCommentsApi(this: ApiClass, pathParams: FigmaRestAPI.GetCommentsPathParams): Promise<FigmaRestAPI.GetCommentsResponse>;
@@ -17,6 +18,10 @@ export declare function getUserMeApi(this: ApiClass): Promise<FigmaRestAPI.User>
 export declare function getFileVersionsApi(this: ApiClass, pathParams: FigmaRestAPI.GetFileVersionsPathParams): Promise<FigmaRestAPI.GetFileVersionsResponse>;
 export declare function getTeamProjectsApi(this: ApiClass, pathParams: FigmaRestAPI.GetTeamProjectsPathParams): Promise<FigmaRestAPI.GetTeamProjectsResponse>;
 export declare function getProjectFilesApi(this: ApiClass, pathParams: FigmaRestAPI.GetProjectFilesPathParams, queryParams?: FigmaRestAPI.GetProjectFilesQueryParams): Promise<FigmaRestAPI.GetProjectFilesResponse>;
+export declare function getTeamFoldersApi(this: ApiClass, pathParams: FigmaRestAPI.GetTeamFoldersPathParams): Promise<FigmaRestAPI.GetTeamFoldersResponse>;
+export declare function getFolderFoldersApi(this: ApiClass, pathParams: FigmaRestAPI.GetFolderFoldersPathParams): Promise<FigmaRestAPI.GetFolderFoldersResponse>;
+export declare function getFolderFilesApi(this: ApiClass, pathParams: FigmaRestAPI.GetFolderFilesPathParams, queryParams?: FigmaRestAPI.GetFolderFilesQueryParams): Promise<FigmaRestAPI.GetFolderFilesResponse>;
+export declare function getFolderMetaApi(this: ApiClass, pathParams: FigmaRestAPI.GetFolderMetaPathParams): Promise<FigmaRestAPI.GetFolderMetaResponse>;
 export declare function getTeamComponentsApi(this: ApiClass, pathParams: FigmaRestAPI.GetTeamComponentsPathParams, queryParams?: FigmaRestAPI.GetTeamComponentsQueryParams): Promise<FigmaRestAPI.GetTeamComponentsResponse>;
 export declare function getFileComponentsApi(this: ApiClass, pathParams: FigmaRestAPI.GetFileComponentsPathParams): Promise<FigmaRestAPI.GetFileComponentsResponse>;
 export declare function getComponentApi(this: ApiClass, pathParams: FigmaRestAPI.GetComponentPathParams): Promise<FigmaRestAPI.GetComponentResponse>;

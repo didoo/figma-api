@@ -1,9 +1,9 @@
-import { AxiosResponse, Method as AxiosMethod, AxiosRequestConfig } from 'axios';
+import { AxiosError, Method as AxiosMethod, AxiosRequestConfig } from 'axios';
 export declare function toQueryParams(x: any): string;
 export type Disposer = () => void;
 export declare class ApiError extends Error {
-    response: AxiosResponse;
-    constructor(response: AxiosResponse, message?: string);
+    error: AxiosError;
+    constructor(error: AxiosError);
 }
 export type ApiRequestMethod = <T>(url: string, opts?: {
     method: AxiosMethod;
