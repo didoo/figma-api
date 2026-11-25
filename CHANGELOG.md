@@ -5,22 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [v2.3.0] - 2026-11-25
 
 ### Added
 - Added the folders endpoints: `getTeamFolders`, `getFolderFolders`, `getFolderFiles` and `getFolderMeta`
 - Added `API_VER_FOLDERS` config constant
 
 ### Changed
-- Bumped the `@figma/rest-api-spec` floor to `0.42.0` (was `0.37.0`), the release that added the folders types
+- Raised the minimum `@figma/rest-api-spec` version from `0.37.0` to `0.42.0`
+- Updated `axios` from `1.18.1` to `1.20.0`
+- Updated `follow-redirects` from `1.16.0` to `1.16.3`
+- Updated `browserslist` from `4.28.4` to `4.28.9`
+- Updated `baseline-browser-mapping` from `2.10.40` to `2.11.21`
+- Updated `js-yaml` from `3.15.0` to `3.15.2`
+- Updated `handlebars` from `4.7.9` to `4.7.10`
+- Updated `brace-expansion` from `1.1.15` to `1.1.18` and from `2.1.1` to `2.1.4`
 
 ### Fixed
-- `deleteCommentReactions` now requires `{ emoji }` as its second argument. `getCommentReactions` and `postCommentReaction` now return the reaction response types rather than the comment types.
-- `getDevResources` now forwards the `node_ids` filter, and `deleteWebhook` uses the documented URL without a trailing slash.
-- `oAuthToken` now wraps rejected Axios requests in `ApiError`, preserving the original error and response.
+- `deleteCommentReactions` now requires `{ emoji }` as its second argument
+- Fixed the response types for `getCommentReactions` and `postCommentReaction`
+- Fixed `getDevResources` ignoring the `node_ids` filter
+- Removed the trailing slash from the `deleteWebhook` URL
+- Fixed `oAuthToken` to wrap Axios errors in `ApiError`
 
 ### Deprecated
-- Marked `getTeamProjects` and `getProjectFiles` as deprecated. Figma deprecated the underlying `/v1/teams/:team_id/projects` and `/v1/projects/:project_id/files` endpoints in August 2026, and personal access tokens can no longer be granted the `files:read` scope they require, so they now fail with `403 Invalid scope`. Folder IDs are the same values as project IDs and the response shapes are unchanged.
+- Deprecated `getTeamProjects` in favor of `getTeamFolders`
+- Deprecated `getProjectFiles` in favor of `getFolderFiles`
 
 
 ## [v2.2.1-beta] - 2026-06-29
